@@ -1,0 +1,57 @@
+{% extends 'OroUIBundle:actions:view.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+
+{% block navButtons %}
+    {% if resource_granted('EDIT', subscription) %}
+        {{ UI.editButton({
+            'path' : path('subscriptions.subscription_update', { id: subscription.id }),
+            'entity_label': 'Subscription'|trans
+        }) }}
+    {% endif %}
+
+    {% if resource_granted('DELETE', subscription) %}
+        {{ UI.deleteButton({
+            'dataUrl': path('subscriptions_api_delete_subscription', {'id': subscription.id}),
+            'dataRedirect': path('subscriptions.subscription_index'),
+            'aCss': 'no-hash remove-button',
+            'id': 'btn-remove-subscription',
+            'dataId': subscription.id,
+            'entity_label': 'Subscription'|trans,
+        }) }}
+    {% endif %}
+{% endblock navButtons %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+    'entity':      subscription,
+    'indexPath':   path('subscriptions.subscription_index'),
+    'indexLabel': 'Subscriptions'|trans,
+    'entityTitle': subscription.orderState
+    } %}
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block content_data %}
+    {% set data %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    {{ UI.renderProperty('OrderState'|trans, subscription.orderState) }}
+                </div>
+            </div>
+        </div>
+    {% endset %}
+    {% set dataBlocks = [
+    {
+    'title': 'Data'|trans,
+    'class': 'active',
+    'subblocks': [
+    { 'data' : [data] }
+    ]
+    }
+    ] %}
+
+    {% set id = 'subscriptionView' %}
+    {% set data = { 'dataBlocks': dataBlocks } %}
+    {{ parent() }}
+{% endblock content_data %}

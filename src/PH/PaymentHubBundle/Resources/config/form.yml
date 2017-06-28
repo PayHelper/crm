@@ -1,0 +1,5 @@
+services:
+    inventory.form.type.vehicle:
+        class: PH\PaymentHubBundle\Form\Type\SubscriptionType
+        tags:
+            - { name: form.type, alias: subscriptions_subscription }

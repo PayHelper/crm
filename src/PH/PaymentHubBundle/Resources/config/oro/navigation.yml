@@ -1,0 +1,13 @@
+navigation:
+    menu_config:
+        items:
+            subscription_list:
+                label: Subscriptions
+                route: subscriptions.subscription_index
+        tree:
+            application_menu:
+                children:
+                    subscription_list: ~
+
+    titles:
+        subscriptions.subscription_index: Subscriptions

@@ -1,0 +1,7 @@
+services:
+    subscriptions.subscription_manager.api:
+        class: Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
+        parent: oro_soap.manager.entity_manager.abstract
+        arguments:
+            - PHPaymentHubBundle\Entity\Subscription
+            - "@doctrine.orm.entity_manager"

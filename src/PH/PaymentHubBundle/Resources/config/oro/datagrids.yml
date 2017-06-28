@@ -1,0 +1,68 @@
+datagrids:
+    ph-subscriptions-grid:
+        source:
+            acl_resource: subscriptions.subscription_view
+            type: orm
+            query:
+                select:
+                    - subscription.id
+                    - subscription.orderState
+                from:
+                    - { table: PHPaymentHubBundle:Subscription, alias: subscription }
+        columns:
+            id:
+                label: ID
+                frontend_type: integer
+            orderState:
+                label: 'Order state'
+                frontend_type: string
+
+        properties:
+            id: ~
+            orderState: ~
+            update_link:
+                type: url
+                route: subscriptions.subscription_update
+                params:
+                    - id
+            view_link:
+                type: url
+                route: subscriptions.subscription_view
+                params:
+                    - id
+            delete_link:
+                type: url
+                route: subscriptions_api_delete_subscription
+                params:
+                    - id
+        sorters:
+            columns:
+                orderState:
+                    data_name: subscription.orderState
+            default:
+                orderState: ASC
+        filters:
+            columns:
+                orderState:
+                    type: string
+                    data_name: subscription.orderState
+        actions:
+            view:
+                type:          navigate
+                label:         View
+                link:          view_link
+                icon:          eye-open
+                acl_resource:  subscriptions.subscription_view
+                rowAction:     true
+            update:
+                type:          navigate
+                label:         Update
+                link:          update_link
+                icon:          edit
+                acl_resource:  subscriptions.subscription_update
+            delete:
+                type:          delete
+                label:         Delete
+                link:          delete_link
+                icon:          trash
+                acl_resource:  subscriptions.subscription_delete

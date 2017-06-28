@@ -1,0 +1,3 @@
+ph_payment_hub_homepage:
+    resource:     "@PHPaymentHubBundle/Controller"
+    type:         annotation

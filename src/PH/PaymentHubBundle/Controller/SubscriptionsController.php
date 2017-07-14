@@ -80,6 +80,7 @@ class SubscriptionsController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+            $subscription->setUpdatedAt(new \DateTime());
             $entityManager->persist($subscription);
             $entityManager->flush();
 

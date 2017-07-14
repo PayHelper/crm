@@ -4,10 +4,17 @@ navigation:
             subscription_list:
                 label: Subscriptions
                 route: subscriptions.subscription_index
+            customers_list:
+                label: Payment Hub Customers
+                route: subscriptions.customers_index
         tree:
             application_menu:
                 children:
                     subscription_list: ~
+                    customers_tab:
+                        children:
+                            customers_list: ~
 
     titles:
         subscriptions.subscription_index: Subscriptions
+        subscriptions.customers_index: Customers

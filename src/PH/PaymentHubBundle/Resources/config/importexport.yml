@@ -1,0 +1,26 @@
+parameters:
+    ph_payment_hub.entity.subscription.class: PH\PaymentHubBundle\Entity\Subscription
+
+services:
+    ph_payment_hub.importexport.data_converter.subscription:
+        parent: oro_importexport.data_converter.configurable
+
+    ph_payment_hub.importexport.processor.export.subscription:
+        parent: oro_importexport.processor.export_abstract
+        calls:
+            - [setDataConverter, ['@ph_payment_hub.importexport.data_converter.subscription']]
+        tags:
+            - name: oro_importexport.processor
+              type: export
+              entity: %ph_payment_hub.entity.subscription.class%
+              alias: ph_subscription
+
+    ph_payment_hub.importexport.processor.import.subscription:
+        parent: oro_importexport.processor.import_abstract
+        calls:
+            - [setDataConverter, ['@ph_payment_hub.importexport.data_converter.subscription']]
+        tags:
+            - name: oro_importexport.processor
+              type: import
+              entity: %ph_payment_hub.entity.subscription.class%
+              alias: ph_subscription

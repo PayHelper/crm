@@ -47,14 +47,15 @@
     {% set id = 'subscription-edit' %}
 
     {% set dataBlocks = [{
-    'title': 'General'|trans,
-    'class': 'active',
-    'subblocks': [{
-    'title': '',
-    'data': [
-    form_row(form.orderState),
-    ]
-    }]
+        'title': 'General'|trans,
+        'class': 'active',
+        'subblocks': [{
+            'title': '',
+            'data': [
+                form_row(form.total, { 'label': 'Total ammount' }),
+                form_row(form.notes, { 'label': 'Notes' }),
+            ]
+        }]
     }]
     %}
     {% set data = {

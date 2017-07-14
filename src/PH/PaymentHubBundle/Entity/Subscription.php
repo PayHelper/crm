@@ -2,6 +2,7 @@
 
 namespace PH\PaymentHubBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
@@ -11,13 +12,8 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
  * @ORM\Table(name="ph_subscription")
  * @Config
  */
-class Subscription
+class Subscription implements SubscriptionInterface
 {
-    const STATE_CART = 'cart';
-    const STATE_COMPLETED = 'completed';
-    const STATE_PAYMENT_SELECTED = 'payment_selected';
-    const STATE_PAYMENT_SKIPPED = 'payment_skipped';
-
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -28,18 +24,18 @@ class Subscription
     private $id;
 
     /**
-     * @ORM\Column(type="string")
-     * @ConfigField
-     * @var string
+     * @ORM\Column(type="integer")
+     *
+     * @var int
      */
-    protected $checkoutState = OrderCheckoutInterface::STATE_CART;
+    protected $orderId;
 
     /**
-     * @ORM\Column(type="string")
-     * @ConfigField
+     * @ORM\Column(type="string", nullable=true)
+     *
      * @var string
      */
-    protected $paymentState = PaymentInterface::STATE_NEW;
+    protected $providerType;
 
     /**
      * @ORM\Column(type="string")
@@ -47,11 +43,28 @@ class Subscription
      *
      * @var string
      */
-    protected $orderState = self::STATE_CART;
+    protected $checkoutState = OrderCheckoutInterface::STATE_CART;
+
+    /**
+     * @ORM\Column(type="string")
+     * @ConfigField
+     *
+     * @var string
+     */
+    protected $paymentState = PaymentInterface::STATE_CART;
+
+    /**
+     * @ORM\Column(type="string")
+     * @ConfigField
+     *
+     * @var string
+     */
+    protected $orderState = SubscriptionInterface::STATE_CART;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      * @ConfigField
+     *
      * @var \DateTime
      */
     protected $checkoutCompletedAt;
@@ -59,6 +72,7 @@ class Subscription
     /**
      * @ORM\Column(type="float")
      * @ConfigField
+     *
      * @var int
      */
     protected $number = 0;
@@ -66,6 +80,7 @@ class Subscription
     /**
      * @ORM\Column(type="text", nullable=true)
      * @ConfigField
+     *
      * @var string
      */
     protected $notes;
@@ -73,12 +88,62 @@ class Subscription
     /**
      * @ORM\Column(type="float")
      * @ConfigField
+     *
      * @var float
      */
     protected $total = 0;
 
     /**
-     * @return int
+     * @ORM\Column(type="datetime")
+     *
+     * @var \DateTime
+     */
+    protected $createdAt;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     *
+     * @var \DateTime
+     */
+    protected $updatedAt;
+
+    /**
+     * @ORM\OneToMany(targetEntity="PH\PaymentHubBundle\Entity\OrderItem", mappedBy="subscription")
+     */
+    protected $items;
+
+    /**
+     * @ORM\OneToMany(targetEntity="PH\PaymentHubBundle\Entity\Payment", mappedBy="subscription")
+     */
+    protected $payments;
+
+    /**
+     * Many Features have One Product.
+     *
+     * @ORM\ManyToOne(targetEntity="PH\PaymentHubBundle\Entity\Customer", inversedBy="subscriptions")
+     * @ORM\JoinColumn(name="customer_id", referencedColumnName="id")
+     */
+    protected $customer;
+
+    /**
+     * @ORM\Column(type="string")
+     *
+     * @var string
+     */
+    protected $interval;
+
+    /**
+     * Subscription constructor.
+     */
+    public function __construct()
+    {
+        $this->items = new ArrayCollection();
+        $this->payments = new ArrayCollection();
+        $this->interval = SubscriptionInterface::INTERVAL_DONATION;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function getId()
     {
@@ -86,7 +151,7 @@ class Subscription
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getCheckoutState()
     {
@@ -94,7 +159,7 @@ class Subscription
     }
 
     /**
-     * @param string $checkoutState
+     * {@inheritdoc}
      */
     public function setCheckoutState($checkoutState)
     {
@@ -102,7 +167,7 @@ class Subscription
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getPaymentState()
     {
@@ -110,7 +175,7 @@ class Subscription
     }
 
     /**
-     * @param string $paymentState
+     * {@inheritdoc}
      */
     public function setPaymentState($paymentState)
     {
@@ -118,7 +183,7 @@ class Subscription
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getOrderState()
     {
@@ -126,7 +191,7 @@ class Subscription
     }
 
     /**
-     * @param string $orderState
+     * {@inheritdoc}
      */
     public function setOrderState($orderState)
     {
@@ -134,7 +199,7 @@ class Subscription
     }
 
     /**
-     * @return \DateTime
+     * {@inheritdoc}
      */
     public function getCheckoutCompletedAt()
     {
@@ -142,7 +207,7 @@ class Subscription
     }
 
     /**
-     * @param \DateTime $checkoutCompletedAt
+     * {@inheritdoc}
      */
     public function setCheckoutCompletedAt($checkoutCompletedAt)
     {
@@ -150,7 +215,7 @@ class Subscription
     }
 
     /**
-     * @return int
+     * {@inheritdoc}
      */
     public function getNumber()
     {
@@ -158,7 +223,7 @@ class Subscription
     }
 
     /**
-     * @param int $number
+     * {@inheritdoc}
      */
     public function setNumber($number)
     {
@@ -166,7 +231,7 @@ class Subscription
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getNotes()
     {
@@ -174,7 +239,7 @@ class Subscription
     }
 
     /**
-     * @param string $notes
+     * {@inheritdoc}
      */
     public function setNotes($notes)
     {
@@ -182,7 +247,7 @@ class Subscription
     }
 
     /**
-     * @return float
+     * {@inheritdoc}
      */
     public function getTotal()
     {
@@ -190,10 +255,138 @@ class Subscription
     }
 
     /**
-     * @param float $total
+     * {@inheritdoc}
      */
     public function setTotal($total)
     {
         $this->total = $total;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOrderId()
+    {
+        return $this->orderId;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setOrderId($orderId)
+    {
+        $this->orderId = $orderId;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getProviderType()
+    {
+        return $this->providerType;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setProviderType($providerType)
+    {
+        $this->providerType = $providerType;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getItems()
+    {
+        return $this->items;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setItems($items)
+    {
+        $this->items = $items;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPayments()
+    {
+        return $this->payments;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setPayments($payments)
+    {
+        $this->payments = $payments;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCustomer()
+    {
+        return $this->customer;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setCustomer($customer)
+    {
+        $this->customer = $customer;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getInterval()
+    {
+        return $this->interval;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setInterval($interval)
+    {
+        $this->interval = $interval;
     }
 }

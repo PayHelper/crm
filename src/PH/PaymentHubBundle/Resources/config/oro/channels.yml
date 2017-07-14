@@ -1,0 +1,11 @@
+channels:
+    channel_types:
+        payment_hub:
+            label: Payment Hub
+            entities:
+                - PH\PaymentHubBundle\Entity\Subscription
+                - PH\PaymentHubBundle\Entity\OrderItem
+                - PH\PaymentHubBundle\Entity\Payment
+            integration_type: custom
+            lifetime_value: lifetime
+            customer_identity: Oro\Bundle\ChannelBundle\Entity\CustomerIdentity

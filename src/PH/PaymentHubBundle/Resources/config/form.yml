@@ -1,5 +1,9 @@
 services:
-    inventory.form.type.vehicle:
+    ph_payment_hub.form.type.subscription:
         class: PH\PaymentHubBundle\Form\Type\SubscriptionType
         tags:
             - { name: form.type, alias: subscriptions_subscription }
+    ph_payment_hub.form.type.customer:
+        class: PH\PaymentHubBundle\Form\Type\CustomerType
+        tags:
+            - { name: form.type, alias: subscriptions_customer }

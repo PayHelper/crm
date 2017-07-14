@@ -1,0 +1,26 @@
+{% extends 'OroUIBundle:actions:index.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+
+{% set gridName = 'ph-customers-grid' %}
+{% set pageTitle = 'Customers'|trans %}
+
+
+{% block navButtons %}
+    {#{% if resource_granted('subscriptions.subscription_create') %}#}
+        {#<div class="btn-group">#}
+            {#{{ UI.addButton({#}
+                {#'path': path('subscriptions.subscription_create'),#}
+                {#'entity_label': 'Subscription'|trans#}
+            {#}) }}#}
+        {#</div>#}
+    {#{% endif %}#}
+
+    {#{% include 'OroImportExportBundle:ImportExport:buttons.html.twig' with {#}
+    {#entity_class: 'PH\\PaymentHubBundle\\Entity\\Subscription',#}
+    {#exportProcessor: 'ph_subscription',#}
+    {#exportTitle: 'Export',#}
+    {#importProcessor: 'ph_subscription',#}
+    {#importTitle: 'Import',#}
+    {#datagridName: gridName#}
+    {#} %}#}
+{% endblock %}

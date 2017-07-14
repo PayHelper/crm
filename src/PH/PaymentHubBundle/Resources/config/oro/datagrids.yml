@@ -1,4 +1,99 @@
 datagrids:
+    ph-customers-grid:
+        source:
+            acl_resource: subscriptions.customer_view
+            type: orm
+            query:
+                select:
+                    - c.id
+                    - c.namePrefix
+                    - c.firstName
+                    - c.createdAt
+                    - c.updatedAt
+                    - c.middleName
+                    - c.lastName
+                    - c.nameSuffix
+                    - c.gender
+                    - c.birthday
+                    - c.email
+                from:
+                    - { table: PHPaymentHubBundle:Customer, alias: c }
+        columns:
+            id:
+                label: 'Customer Id'
+                frontend_type: integer
+            firstName:
+                label: 'First name'
+                frontend_type: string
+            lastName:
+                label: 'Last name'
+                frontend_type: string
+            gender:
+                label: 'Gender'
+                frontend_type: string
+            email:
+                label: 'Email'
+                frontend_type: string
+            birthday:
+                label: 'Birthday'
+                frontend_type: datetime
+            createdAt:
+                label: 'Created'
+                frontend_type: datetime
+            updatedAt:
+                label: 'Updated'
+                frontend_type: datetime
+
+        properties:
+            id: ~
+#            update_link:
+#                type: url
+#                route: subscriptions.subscription_update
+#                params:
+#                    - id
+            view_link:
+                type: url
+                route: subscriptions.customer_view
+                params:
+                    - id
+#            delete_link:
+#                type: url
+#                route: subscriptions_api_delete_subscription
+#                params:
+#                    - id
+        sorters:
+            columns:
+                birthday:
+                    data_name: c.birthday
+                createdAt:
+                    data_name: c.createdAt
+                updatedAt:
+                    data_name: c.createdAt
+            default:
+                createdAt: DESC
+        filters:
+            columns:
+                firstName:
+                    type: string
+                    data_name: c.firstName
+                lastName:
+                    type: string
+                    data_name: c.lastName
+                email:
+                    type: string
+                    data_name: c.email
+                createdAt:
+                    type: datetime
+                    data_name: c.createdAt
+        actions:
+            view:
+                type:          navigate
+                label:         View
+                link:          view_link
+                icon:          eye
+                acl_resource:  subscriptions.customer_view
+                rowAction:     true
+
     ph-subscriptions-grid:
         source:
             acl_resource: subscriptions.subscription_view
@@ -6,20 +101,59 @@ datagrids:
             query:
                 select:
                     - subscription.id
+                    - subscription.orderId
                     - subscription.orderState
+                    - subscription.createdAt
+                    - subscription.updatedAt
+                    - subscription.checkoutState
+                    - subscription.paymentState
+                    - subscription.checkoutCompletedAt
+                    - subscription.notes
+                    - subscription.total
+                    - subscription.providerType
+                    - GROUP_CONCAT(customer.firstName, ' ', customer.lastName) AS customerFullNames
                 from:
                     - { table: PHPaymentHubBundle:Subscription, alias: subscription }
+                join:
+                    left:
+                        - { join: subscription.customer, alias: customer }
         columns:
-            id:
-                label: ID
+            orderId:
+                label: 'Order Id'
                 frontend_type: integer
+            total:
+                label: 'Total ammount'
+                frontend_type: string
             orderState:
                 label: 'Order state'
                 frontend_type: string
+            checkoutState:
+                label: 'Checkout State'
+                frontend_type: string
+            paymentState:
+                label: 'Payment state'
+                frontend_type: string
+            checkoutCompletedAt:
+                label: 'Checkout Completed'
+                frontend_type: datetime
+            notes:
+                label: 'Notes'
+                frontend_type: string
+            providerType:
+                label: 'Provider'
+                fontend_type: string
+            customerFullNames:
+                label: 'Customer'
+                fontend_type: string
+            createdAt:
+                label: 'Created'
+                frontend_type: datetime
+            updatedAt:
+                label: 'Updated'
+                frontend_type: datetime
 
         properties:
             id: ~
-            orderState: ~
             update_link:
                 type: url
                 route: subscriptions.subscription_update
@@ -39,6 +173,12 @@ datagrids:
             columns:
                 orderState:
                     data_name: subscription.orderState
+                createdAt:
+                    data_name: subscription.createdAt
+                updatedAt:
+                    data_name: subscription.createdAt
+                providerType:
+                    data_name: subscription.providerType
             default:
                 orderState: ASC
         filters:
@@ -46,12 +186,135 @@ datagrids:
                 orderState:
                     type: string
                     data_name: subscription.orderState
+                createdAt:
+                    type: datetime
+                    data_name: subscription.createdAt
         actions:
             view:
                 type:          navigate
                 label:         View
                 link:          view_link
-                icon:          eye-open
+                icon:          eye
+                acl_resource:  subscriptions.subscription_view
+                rowAction:     true
+            update:
+                type:          navigate
+                label:         Update
+                link:          update_link
+                icon:          edit
+                acl_resource:  subscriptions.subscription_update
+            delete:
+                type:          delete
+                label:         Delete
+                link:          delete_link
+                icon:          trash
+                acl_resource:  subscriptions.subscription_delete
+
+    ph-customer-subscriptions-grid:
+        source:
+            acl_resource: subscriptions.subscription_view
+            type: orm
+            query:
+                select:
+                    - subscription.id
+                    - subscription.orderId
+                    - subscription.orderState
+                    - subscription.createdAt
+                    - subscription.updatedAt
+                    - subscription.checkoutState
+                    - subscription.paymentState
+                    - subscription.checkoutCompletedAt
+                    - subscription.notes
+                    - subscription.total
+                    - subscription.providerType
+                from:
+                    - { table: PHPaymentHubBundle:Subscription, alias: subscription }
+                where:
+                    and:
+                        - subscription.customer = :customer
+                join:
+                    left:
+                        - { join: subscription.customer, alias: customer }
+            bind_parameters:
+                customer:
+                    path: customer
+                    default: null
+                    type: integer
+        columns:
+            orderId:
+                label: 'Order Id'
+                frontend_type: integer
+            total:
+                label: 'Total ammount'
+                frontend_type: string
+            orderState:
+                label: 'Order state'
+                frontend_type: string
+            checkoutState:
+                label: 'Checkout State'
+                frontend_type: string
+            paymentState:
+                label: 'Payment state'
+                frontend_type: string
+            checkoutCompletedAt:
+                label: 'Checkout Completed'
+                frontend_type: datetime
+            notes:
+                label: 'Notes'
+                frontend_type: string
+            providerType:
+                label: 'Provider'
+                fontend_type: string
+            createdAt:
+                label: 'Created'
+                frontend_type: datetime
+            updatedAt:
+                label: 'Updated'
+                frontend_type: datetime
+
+        properties:
+            id: ~
+            update_link:
+                type: url
+                route: subscriptions.subscription_update
+                params:
+                    - id
+            view_link:
+                type: url
+                route: subscriptions.subscription_view
+                params:
+                    - id
+            delete_link:
+                type: url
+                route: subscriptions_api_delete_subscription
+                params:
+                    - id
+        sorters:
+            columns:
+                orderState:
+                    data_name: subscription.orderState
+                createdAt:
+                    data_name: subscription.createdAt
+                updatedAt:
+                    data_name: subscription.createdAt
+                providerType:
+                    data_name: subscription.providerType
+            default:
+                orderState: ASC
+        filters:
+            columns:
+                orderState:
+                    type: string
+                    data_name: subscription.orderState
+                createdAt:
+                    type: datetime
+                    data_name: subscription.createdAt
+        actions:
+            view:
+                type:          navigate
+                label:         View
+                link:          view_link
+                icon:          open
                 acl_resource:  subscriptions.subscription_view
                 rowAction:     true
             update:

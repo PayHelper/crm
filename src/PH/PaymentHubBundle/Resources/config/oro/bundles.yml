@@ -1,2 +1,2 @@
-bundles:
-    - PH\PaymentHubBundle\PHPaymentHubBundle
+#bundles:
+#    - PH\PaymentHubBundle\PHPaymentHubBundle

@@ -23,10 +23,10 @@
 
 {% block pageHeader %}
     {% set breadcrumbs = {
-    'entity':      subscription,
-    'indexPath':   path('subscriptions.subscription_index'),
-    'indexLabel': 'Subscriptions'|trans,
-    'entityTitle': subscription.orderState
+        'entity':      subscription,
+        'indexPath':   path('subscriptions.subscription_index'),
+        'indexLabel': 'Subscriptions'|trans,
+        'entityTitle': 'Subscription #'~subscription.orderId
     } %}
     {{ parent() }}
 {% endblock pageHeader %}
@@ -36,19 +36,76 @@
         <div class="widget-content">
             <div class="row-fluid form-horizontal">
                 <div class="responsive-block">
-                    {{ UI.renderProperty('OrderState'|trans, subscription.orderState) }}
+                    {{ UI.renderProperty('Order id'|trans, subscription.orderId) }}
+                    {{ UI.renderProperty('Total ammount'|trans, subscription.total) }}
+                    {{ UI.renderProperty('Interval'|trans, subscription.interval) }}
+                    {{ UI.renderProperty('Notes'|trans, subscription.notes) }}
+                    {{ UI.renderProperty('Order state'|trans, subscription.orderState) }}
+                    {{ UI.renderProperty('Payment state'|trans, subscription.paymentState) }}
+                    {{ UI.renderProperty('Checkout state'|trans, subscription.checkoutState) }}
+                    {{ UI.renderProperty('Created date'|trans, subscription.createdAt | date('Y-m-d H:i:s')) }}
+                    {{ UI.renderProperty('Updated date'|trans, subscription.updatedAt ?  subscription.updatedAt|date('Y-m-d H:i:s'): '') }}
+                    {{ UI.renderProperty('Checkout completed'|trans, subscription.checkoutCompletedAt?  subscription.checkoutCompletedAt|date('Y-m-d H:i:s'): '') }}
                 </div>
             </div>
         </div>
     {% endset %}
+    {% set items %}
+        <div class="widget-content" style="border-bottom: 1px solid #ccc;">
+            {% for item in subscription.items %}
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    {{ UI.renderProperty('Order item id'|trans, item.orderItemId) }}
+                    {{ UI.renderProperty('Name'|trans, item.name) }}
+                    {{ UI.renderProperty('Order item total ammount'|trans, item.total) }}
+                    {{ UI.renderProperty('Quantity'|trans, item.quantity) }}
+                    {{ UI.renderProperty('Unit price'|trans, item.unitPrice) }}
+                    {{ UI.renderProperty('Created date'|trans, item.createdAt | date('Y-m-d H:i:s')) }}
+                    {{ UI.renderProperty('Updated date'|trans, item.updatedAt ?  item.updatedAt|date('Y-m-d H:i:s'): '') }}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% endset %}
+    {% set payments %}
+        <div class="widget-content" style="border-bottom: 1px solid #ccc;">
+            {% for payment in subscription.payments %}
+                <div class="row-fluid form-horizontal">
+                    <div class="responsive-block">
+                        {{ UI.renderProperty('Payment id'|trans, payment.paymentId) }}
+                        {{ UI.renderProperty('Method code'|trans, payment.methodCode) }}
+                        {{ UI.renderProperty('Ammount'|trans, payment.amount) }}
+                        {{ UI.renderProperty('Currency code'|trans, payment.currencyCode) }}
+                        {{ UI.renderProperty('State'|trans, payment.state) }}
+                        {{ UI.renderProperty('Created date'|trans, payment.createdAt | date('Y-m-d H:i:s')) }}
+                        {{ UI.renderProperty('Updated date'|trans, payment.updatedAt ?  payment.updatedAt|date('Y-m-d H:i:s'): '') }}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endset %}
     {% set dataBlocks = [
-    {
-    'title': 'Data'|trans,
-    'class': 'active',
-    'subblocks': [
-    { 'data' : [data] }
-    ]
-    }
+        {
+            'title': 'Subscription Data'|trans,
+            'class': 'active',
+            'subblocks': [
+                { 'data' : [data] },
+            ]
+        },
+        {
+            'title': 'Subscription order items'|trans,
+            'class': 'inactive',
+            'subblocks': [
+                { 'data' : [items] },
+            ]
+        },
+        {
+            'title': 'Subscription payments'|trans,
+            'class': 'inactive',
+            'subblocks': [
+                { 'data' : [payments] },
+            ]
+        }
     ] %}
 
     {% set id = 'subscriptionView' %}

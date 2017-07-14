@@ -14,4 +14,13 @@
             }) }}
         </div>
     {% endif %}
+
+    {% include 'OroImportExportBundle:ImportExport:buttons.html.twig' with {
+        entity_class: 'PH\\PaymentHubBundle\\Entity\\Subscription',
+        exportProcessor: 'ph_subscription',
+        exportTitle: 'Export',
+        importProcessor: 'ph_subscription',
+        importTitle: 'Import',
+        datagridName: gridName
+    } %}
 {% endblock %}

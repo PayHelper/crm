@@ -9,6 +9,7 @@ class AppKernel extends OroKernel
     public function registerBundles()
     {
         $bundles = array(
+            new PH\PaymentHubBundle\PHPaymentHubBundle(),
         //bundles
         );
 

@@ -5,3 +5,10 @@ services:
         arguments:
             - PHPaymentHubBundle\Entity\Subscription
             - "@doctrine.orm.entity_manager"
+
+    ph_payment_hub.service.subscription:
+        class: PH\PaymentHubBundle\Service\SubscriptionService
+        arguments:
+            - "@oro_email.mailer.processor"
+            - "@oro_email.email_renderer"
+            - "@doctrine.orm.entity_manager"

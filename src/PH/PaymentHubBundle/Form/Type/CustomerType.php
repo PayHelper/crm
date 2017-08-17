@@ -4,6 +4,7 @@ namespace PH\PaymentHubBundle\Form\Type;
 
 use PH\PaymentHubBundle\Entity\Customer;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -21,7 +22,10 @@ class CustomerType extends AbstractType
             ->add('gender')
             ->add('birthday')
             ->add('email')
-        ;
+            ->add('addresses', CollectionType::class, array(
+                'entry_type' => AddressType::class,
+                'allow_add' => true,
+            ));
     }
 
     public function configureOptions(OptionsResolver $resolver)

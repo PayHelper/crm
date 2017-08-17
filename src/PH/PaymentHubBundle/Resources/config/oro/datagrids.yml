@@ -112,6 +112,7 @@ datagrids:
                     - subscription.total
                     - subscription.providerType
                     - GROUP_CONCAT(customer.firstName, ' ', customer.lastName) AS customerFullNames
+                    - subscription.total/100 AS dividedPrice
                 from:
                     - { table: PHPaymentHubBundle:Subscription, alias: subscription }
                 join:
@@ -121,7 +122,7 @@ datagrids:
             orderId:
                 label: 'Order Id'
                 frontend_type: integer
-            total:
+            dividedPrice:
                 label: 'Total ammount'
                 frontend_type: string
             orderState:

@@ -16,7 +16,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
  * @ORM\Table(name="ph_customer")
  * @Config
  */
-class Customer extends BasePerson implements ChannelAwareInterface
+class Customer extends BasePerson implements ChannelAwareInterface, CustomerInterface
 {
     use ChannelEntityTrait;
 
@@ -24,6 +24,11 @@ class Customer extends BasePerson implements ChannelAwareInterface
      * @ORM\OneToMany(targetEntity="PH\PaymentHubBundle\Entity\Subscription", mappedBy="customer")
      */
     protected $subscriptions;
+
+    /**
+     * @ORM\OneToMany(targetEntity="PH\PaymentHubBundle\Entity\Address", mappedBy="owner", cascade={"all"}, orphanRemoval=true, fetch="EAGER")
+     */
+    protected $addresses;
 
     /**
      * Customer constructor.

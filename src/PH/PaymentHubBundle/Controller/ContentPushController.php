@@ -25,7 +25,7 @@ class ContentPushController extends Controller
         $subscriptionService = $this->container->get('ph_payment_hub.service.subscription');
 
         /** @var SubscriptionInterface $subscription */
-        $subscription = $subscriptionRepository->findOneBy(['orderId' => $data['id']]);
+        $subscription = $subscriptionRepository->findOneBy(['token' => $data['token_value']]);
 
         if ($subscription === null) {
             $subscription = new Subscription();

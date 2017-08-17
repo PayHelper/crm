@@ -78,6 +78,13 @@ class Subscription implements SubscriptionInterface
     protected $number = 0;
 
     /**
+     * @ORM\Column(type="string")
+     *
+     * @var string
+     */
+    protected $token = 0;
+
+    /**
      * @ORM\Column(type="text", nullable=true)
      * @ConfigField
      *
@@ -120,7 +127,7 @@ class Subscription implements SubscriptionInterface
     /**
      * Many Features have One Product.
      *
-     * @ORM\ManyToOne(targetEntity="PH\PaymentHubBundle\Entity\Customer", inversedBy="subscriptions")
+     * @ORM\ManyToOne(targetEntity="PH\PaymentHubBundle\Entity\Customer", inversedBy="subscriptions", fetch="EAGER")
      * @ORM\JoinColumn(name="customer_id", referencedColumnName="id")
      */
     protected $customer;
@@ -233,6 +240,22 @@ class Subscription implements SubscriptionInterface
     /**
      * {@inheritdoc}
      */
+    public function getToken()
+    {
+        return $this->token;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setToken($token)
+    {
+        $this->token = $token;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getNotes()
     {
         return $this->notes;
@@ -251,6 +274,10 @@ class Subscription implements SubscriptionInterface
      */
     public function getTotal()
     {
+        if ($this->total > 0) {
+            return $this->total / 100;
+        }
+
         return $this->total;
     }
 

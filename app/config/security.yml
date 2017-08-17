@@ -8,9 +8,10 @@ security:
             provider:  chain_provider
             anonymous: true
         subscription_customer_data:
-            pattern: ^/subscriptions/[0-9]+/customer_data
+            pattern: ^/subscriptions/[a-zA-Z\d]+/customer_data
             provider:  chain_provider
             anonymous: true
         dev:
             pattern:  ^/(_(profiler|wdt)|css|images|js)/
             security: false
+

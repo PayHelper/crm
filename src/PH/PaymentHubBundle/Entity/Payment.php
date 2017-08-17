@@ -139,6 +139,10 @@ class Payment implements PaymentInterface
      */
     public function getAmount()
     {
+        if ($this->amount > 0) {
+            return $this->amount / 100;
+        }
+
         return $this->amount;
     }
 

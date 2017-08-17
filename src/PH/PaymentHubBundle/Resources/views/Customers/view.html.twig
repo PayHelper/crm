@@ -52,6 +52,24 @@
             {{ dataGrid.renderGrid(gridName, params, renderParams) }}
         </div>
     {% endset %}
+    {% set adresses %}
+        <div class="widget-content">
+            {% for item in customer.addresses %}
+                <div class="row-fluid form-horizontal">
+                    <div class="responsive-block">
+                        {{ UI.renderProperty('Street'|trans, item.street) }}
+                        {{ UI.renderProperty('Street 2'|trans, item.street2) }}
+                        {{ UI.renderProperty('Postal code'|trans, item.postalCode) }}
+                        {{ UI.renderProperty('City'|trans, item.city) }}
+                        {{ UI.renderProperty('Region'|trans, item.regionText) }}
+                        {{ UI.renderProperty('Organization'|trans, item.organization) }}
+                        {{ UI.renderProperty('Created date'|trans, item.created | date('Y-m-d H:i:s')) }}
+                        {{ UI.renderProperty('Updated date'|trans, item.updated ?  item.updated|date('Y-m-d H:i:s'): '') }}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endset %}
     {% set dataBlocks = [
         {
             'title': 'Customer data'|trans,
@@ -61,8 +79,15 @@
             ]
         },
         {
+            'title': 'Customer adresses'|trans,
+            'class': '',
+            'subblocks': [
+                { 'data' : [adresses] },
+            ]
+        },
+        {
             'title': 'Customer subscriptions'|trans,
-            'class': 'active',
+            'class': '',
             'subblocks': [
                 { 'data' : [subscriptions] },
             ]

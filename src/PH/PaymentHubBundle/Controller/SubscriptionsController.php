@@ -4,6 +4,7 @@ namespace PH\PaymentHubBundle\Controller;
 
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use PH\PaymentHubBundle\Entity\PaymentInterface;
 use PH\PaymentHubBundle\Entity\Subscription;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -39,7 +40,7 @@ class SubscriptionsController extends Controller
     {
         return array(
             'subscription' => $subscription,
-            'entity' => $subscription
+            'entity' => $subscription,
         );
     }
 
@@ -77,11 +78,16 @@ class SubscriptionsController extends Controller
     {
         $form = $this->get('form.factory')->create('subscriptions_subscription', $subscription);
         $form->handleRequest($request);
+        $originalPaymentState = $subscription->getPaymentState();
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $subscription->setUpdatedAt(new \DateTime());
+            $subscription->setTotal($subscription->getTotal() * 100);
             $entityManager->persist($subscription);
+            if ($originalPaymentState !== $subscription->getPaymentState()) {
+                $this->updatePayment($subscription);
+            }
             $entityManager->flush();
 
             return $this->get('oro_ui.router')->redirectAfterSave(
@@ -98,5 +104,14 @@ class SubscriptionsController extends Controller
             'entity' => $subscription,
             'form' => $form->createView(),
         );
+    }
+
+    private function updatePayment(Subscription $subscription)
+    {
+        /** @var PaymentInterface $payment */
+        foreach ($subscription->getPayments() as $payment) {
+            $payment->setState($subscription->getPaymentState());
+            $payment->setUpdatedAt(new \DateTime('now'));
+        }
     }
 }

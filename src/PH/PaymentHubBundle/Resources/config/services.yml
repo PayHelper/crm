@@ -1,11 +1,8 @@
-services:
-    subscriptions.subscription_manager.api:
-        class: Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
-        parent: oro_soap.manager.entity_manager.abstract
-        arguments:
-            - PHPaymentHubBundle\Entity\Subscription
-            - "@doctrine.orm.entity_manager"
+parameters:
+    oro_address.address.entity.class: PH\PaymentHubBundle\Entity\Address
+    oro_address.form.type.address.class: PH\PaymentHubBundle\Form\Type\AddressType
 
+services:
     ph_payment_hub.service.subscription:
         class: PH\PaymentHubBundle\Service\SubscriptionService
         arguments:

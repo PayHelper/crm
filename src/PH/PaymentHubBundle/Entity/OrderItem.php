@@ -109,6 +109,10 @@ class OrderItem implements OrderItemInterface
      */
     public function getUnitPrice()
     {
+        if ($this->unitPrice > 0) {
+            return $this->unitPrice / 100;
+        }
+
         return $this->unitPrice;
     }
 
@@ -125,6 +129,10 @@ class OrderItem implements OrderItemInterface
      */
     public function getTotal()
     {
+        if ($this->total > 0) {
+            return $this->total / 100;
+        }
+
         return $this->total;
     }
 

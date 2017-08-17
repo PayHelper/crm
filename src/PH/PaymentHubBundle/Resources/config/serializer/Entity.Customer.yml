@@ -1,0 +1,6 @@
+PH\PaymentHubBundle\Entity\Customer:
+    exclusion_policy: ALL
+    properties:
+        addresses:
+            expose: true
+            type: array<PH\PaymentHubBundle\Entity\Address>

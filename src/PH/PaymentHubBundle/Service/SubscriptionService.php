@@ -51,7 +51,8 @@ class SubscriptionService
         $subscription->setOrderId($data['id']);
         $subscription->setCheckoutState($data['checkout_state']);
         $subscription->setPaymentState($data['payment_state']);
-        //$subscription->setCheckoutCompletedAt($data['checkout_completed_at']);
+        $subscription->setCheckoutCompletedAt($data['checkout_completed_at']);
+        $subscription->setToken($data['token_value']);
 
         if (
             $previousOrderState !== PaymentInterface::STATE_COMPLETED &&
@@ -119,6 +120,7 @@ class SubscriptionService
 
             $payment->setState($singlePayment['state']);
             $payment->setMethodCode($singlePayment['method']['code']);
+            $subscription->setProviderType($singlePayment['method']['code']);
             $payment->setCurrencyCode($singlePayment['currency_code']);
             $payment->setAmount($singlePayment['amount']);
             $payment->setSubscription($subscription);

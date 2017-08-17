@@ -173,4 +173,14 @@ interface SubscriptionInterface
      * @param string $interval
      */
     public function setInterval($interval);
+
+    /**
+     * @return string
+     */
+    public function getToken();
+
+    /**
+     * @param string $token
+     */
+    public function setToken($token);
 }

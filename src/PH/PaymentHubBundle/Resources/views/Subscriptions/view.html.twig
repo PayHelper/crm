@@ -37,15 +37,18 @@
             <div class="row-fluid form-horizontal">
                 <div class="responsive-block">
                     {{ UI.renderProperty('Order id'|trans, subscription.orderId) }}
-                    {{ UI.renderProperty('Total ammount'|trans, subscription.total) }}
-                    {{ UI.renderProperty('Interval'|trans, subscription.interval) }}
+                    {{ UI.renderProperty('Total ammount'|trans, subscription.total|number_format(2, '.', ',')) }}
                     {{ UI.renderProperty('Notes'|trans, subscription.notes) }}
+                    {{ UI.renderProperty('Provider Typer'|trans, subscription.providerType) }}
                     {{ UI.renderProperty('Order state'|trans, subscription.orderState) }}
                     {{ UI.renderProperty('Payment state'|trans, subscription.paymentState) }}
                     {{ UI.renderProperty('Checkout state'|trans, subscription.checkoutState) }}
                     {{ UI.renderProperty('Created date'|trans, subscription.createdAt | date('Y-m-d H:i:s')) }}
                     {{ UI.renderProperty('Updated date'|trans, subscription.updatedAt ?  subscription.updatedAt|date('Y-m-d H:i:s'): '') }}
                     {{ UI.renderProperty('Checkout completed'|trans, subscription.checkoutCompletedAt?  subscription.checkoutCompletedAt|date('Y-m-d H:i:s'): '') }}
+                    {{ UI.renderProperty('Type'|trans, subscription.type) }}
+                    {{ UI.renderProperty('Interval'|trans, subscription.interval) }}
+                    {{ UI.renderProperty('Start date'|trans, subscription.startDate | date('Y-m-d')) }}
                 </div>
             </div>
         </div>
@@ -70,7 +73,7 @@
     {% set payments %}
         <div class="widget-content" style="border-bottom: 1px solid #ccc;">
             {% for payment in subscription.payments %}
-                <div class="row-fluid form-horizontal">
+                <div class="row-fluid form-horizontal" style="border-bottom: 1px solid #ccc;">
                     <div class="responsive-block">
                         {{ UI.renderProperty('Payment id'|trans, payment.paymentId) }}
                         {{ UI.renderProperty('Method code'|trans, payment.methodCode) }}

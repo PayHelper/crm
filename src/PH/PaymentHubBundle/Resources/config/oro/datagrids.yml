@@ -46,21 +46,21 @@ datagrids:
 
         properties:
             id: ~
-#            update_link:
-#                type: url
-#                route: subscriptions.subscription_update
-#                params:
-#                    - id
+            update_link:
+                type: url
+                route: subscriptions.customer_update
+                params:
+                    - id
             view_link:
                 type: url
                 route: subscriptions.customer_view
                 params:
                     - id
-#            delete_link:
-#                type: url
-#                route: subscriptions_api_delete_subscription
-#                params:
-#                    - id
+            delete_link:
+                type: url
+                route: ph_customers_api_delete_customer
+                params:
+                    - id
         sorters:
             columns:
                 birthday:
@@ -93,6 +93,18 @@ datagrids:
                 icon:          eye
                 acl_resource:  subscriptions.customer_view
                 rowAction:     true
+            update:
+                type:          navigate
+                label:         Update
+                link:          update_link
+                icon:          edit
+                acl_resource:  subscriptions.customer_update
+            delete:
+                type:          delete
+                label:         Delete
+                link:          delete_link
+                icon:          trash
+                acl_resource:  ph_customers_api_delete_customer
 
     ph-subscriptions-grid:
         source:
@@ -112,7 +124,6 @@ datagrids:
                     - subscription.total
                     - subscription.providerType
                     - GROUP_CONCAT(customer.firstName, ' ', customer.lastName) AS customerFullNames
-                    - subscription.total/100 AS dividedPrice
                 from:
                     - { table: PHPaymentHubBundle:Subscription, alias: subscription }
                 join:
@@ -121,8 +132,8 @@ datagrids:
         columns:
             orderId:
                 label: 'Order Id'
-                frontend_type: integer
-            dividedPrice:
+                frontend_type: string
+            total:
                 label: 'Total ammount'
                 frontend_type: string
             orderState:
@@ -244,7 +255,7 @@ datagrids:
         columns:
             orderId:
                 label: 'Order Id'
-                frontend_type: integer
+                frontend_type: string
             total:
                 label: 'Total ammount'
                 frontend_type: string

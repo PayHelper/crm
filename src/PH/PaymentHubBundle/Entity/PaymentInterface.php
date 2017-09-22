@@ -22,6 +22,16 @@ interface PaymentInterface
     public function getId();
 
     /**
+     * @return int
+     */
+    public function getPaymentId();
+
+    /**
+     * @param int $paymentId
+     */
+    public function setPaymentId($paymentId);
+
+    /**
      * @return string
      */
     public function getMethodCode();

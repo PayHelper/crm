@@ -8,7 +8,7 @@ security:
             provider:  chain_provider
             anonymous: true
         subscription_customer_data:
-            pattern: ^/subscriptions/[a-zA-Z\d]+/customer_data
+            pattern: ^/subscriptions/[a-zA-Z\d~_\+]+/customer_data
             provider:  chain_provider
             anonymous: true
         dev:

@@ -4,8 +4,11 @@ namespace PH\PaymentHubBundle\Controller;
 
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use PH\PaymentHubBundle\Entity\OrderCheckoutInterface;
+use PH\PaymentHubBundle\Entity\OrderItemInterface;
 use PH\PaymentHubBundle\Entity\PaymentInterface;
 use PH\PaymentHubBundle\Entity\Subscription;
+use PH\PaymentHubBundle\Entity\SubscriptionInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -78,16 +81,17 @@ class SubscriptionsController extends Controller
     {
         $form = $this->get('form.factory')->create('subscriptions_subscription', $subscription);
         $form->handleRequest($request);
-        $originalPaymentState = $subscription->getPaymentState();
-
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
-            $subscription->setUpdatedAt(new \DateTime());
-            $subscription->setTotal($subscription->getTotal() * 100);
-            $entityManager->persist($subscription);
-            if ($originalPaymentState !== $subscription->getPaymentState()) {
-                $this->updatePayment($subscription);
+
+            if (null === $subscription->getOrderId() || false !== strpos($subscription->getOrderId(), 'internal_')) {
+                if (null === $subscription->getCheckoutCompletedAt() && OrderCheckoutInterface::STATE_COMPLETED === $subscription->getCheckoutState()) {
+                    $subscription->setCheckoutCompletedAt(new \DateTime());
+                }
             }
+            $this->handleSubscription($subscription);
+
+            $entityManager->persist($subscription);
             $entityManager->flush();
 
             return $this->get('oro_ui.router')->redirectAfterSave(
@@ -95,7 +99,7 @@ class SubscriptionsController extends Controller
                     'route' => 'subscriptions.subscription_update',
                     'parameters' => array('id' => $subscription->getId()),
                 ),
-                array('route' => 'subscriptions.subscription_index'),
+                array('route' => 'subscriptions.subscription_view', 'parameters' => array('id' => $subscription->getId())),
                 $subscription
             );
         }
@@ -106,12 +110,40 @@ class SubscriptionsController extends Controller
         );
     }
 
-    private function updatePayment(Subscription $subscription)
+    /**
+     * @param Subscription $subscription
+     */
+    private function handleSubscription(Subscription $subscription)
     {
+        $orderItems = $subscription->getItems();
+        $payments = $subscription->getPayments();
+        $subscription->setTotal(0);
+        $dateCode = date('ymdhis');
+        if (null === $subscription->getOrderId()) {
+            $subscription->setOrderId('internal_'.$dateCode);
+        }
+
+        if (SubscriptionInterface::TYPE_NONRECURRING === $subscription->getType()) {
+            $subscription->setInterval(null);
+            $subscription->setStartDate(null);
+        }
+
+        /** @var OrderItemInterface $item */
+        foreach ($orderItems as $item) {
+            if (null === $item->getOrderItemId()) {
+                $item->setOrderItemId('internal_item'.$dateCode);
+            }
+            $item->setTotal(floatval($item->getUnitPrice()) * floatval($item->getQuantity()));
+            $subscription->setTotal(floatval($subscription->getTotal()) + floatval($item->getTotal()));
+            $item->setSubscription($subscription);
+        }
+
         /** @var PaymentInterface $payment */
-        foreach ($subscription->getPayments() as $payment) {
-            $payment->setState($subscription->getPaymentState());
-            $payment->setUpdatedAt(new \DateTime('now'));
+        foreach ($payments as $payment) {
+            if (null === $payment->getPaymentId()) {
+                $payment->setPaymentId('internal_payment'.$dateCode);
+            }
+            $payment->setSubscription($subscription);
         }
     }
 }

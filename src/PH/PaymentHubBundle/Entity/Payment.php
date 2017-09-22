@@ -3,12 +3,17 @@
 namespace PH\PaymentHubBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 
 /**
  * Class Payment.
  *
  * @ORM\Entity()
  * @ORM\Table(name="ph_payment")
+ *
+ * @Config
  */
 class Payment implements PaymentInterface
 {
@@ -17,12 +22,20 @@ class Payment implements PaymentInterface
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer")
      *
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "identity"=true
+     *          }
+     *      }
+     * )
+     *
      * @var int
      */
     protected $id;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string", nullable=true)
      *
      * @var int
      */
@@ -59,13 +72,14 @@ class Payment implements PaymentInterface
     /**
      * Many Features have One Product.
      *
-     * @ORM\ManyToOne(targetEntity="PH\PaymentHubBundle\Entity\Subscription", inversedBy="payments")
+     * @ORM\ManyToOne(targetEntity="PH\PaymentHubBundle\Entity\Subscription", inversedBy="payments", cascade={"persist"})
      * @ORM\JoinColumn(name="subscription_id", referencedColumnName="id")
      */
     protected $subscription;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Gedmo\Timestampable(on="create")
      *
      * @var \DateTime
      */
@@ -73,6 +87,7 @@ class Payment implements PaymentInterface
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Gedmo\Timestampable(on="update")
      *
      * @var \DateTime
      */
@@ -87,7 +102,7 @@ class Payment implements PaymentInterface
     }
 
     /**
-     * @return int
+     * {@inheritdoc}
      */
     public function getPaymentId()
     {
@@ -95,7 +110,7 @@ class Payment implements PaymentInterface
     }
 
     /**
-     * @param int $paymentId
+     * {@inheritdoc}
      */
     public function setPaymentId($paymentId)
     {
@@ -139,10 +154,6 @@ class Payment implements PaymentInterface
      */
     public function getAmount()
     {
-        if ($this->amount > 0) {
-            return $this->amount / 100;
-        }
-
         return $this->amount;
     }
 

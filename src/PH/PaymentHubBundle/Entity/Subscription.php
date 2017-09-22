@@ -4,6 +4,7 @@ namespace PH\PaymentHubBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation\Timestampable;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 
@@ -18,13 +19,20 @@ class Subscription implements SubscriptionInterface
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer")
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "identity"=true
+     *          }
+     *      }
+     * )
      *
      * @var int
      */
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string", nullable=true)
      *
      * @var int
      */
@@ -102,6 +110,7 @@ class Subscription implements SubscriptionInterface
 
     /**
      * @ORM\Column(type="datetime")
+     * @Timestampable(on="create")
      *
      * @var \DateTime
      */
@@ -109,18 +118,35 @@ class Subscription implements SubscriptionInterface
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Timestampable(on="update")
      *
      * @var \DateTime
      */
     protected $updatedAt;
 
     /**
-     * @ORM\OneToMany(targetEntity="PH\PaymentHubBundle\Entity\OrderItem", mappedBy="subscription")
+     * @ORM\OneToMany(targetEntity="PH\PaymentHubBundle\Entity\OrderItem", mappedBy="subscription", cascade={"remove", "persist"})
+     *
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "full"=true
+     *          }
+     *      }
+     * )
      */
     protected $items;
 
     /**
-     * @ORM\OneToMany(targetEntity="PH\PaymentHubBundle\Entity\Payment", mappedBy="subscription")
+     * @ORM\OneToMany(targetEntity="PH\PaymentHubBundle\Entity\Payment", mappedBy="subscription", cascade={"remove", "persist"})
+     *
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "full"=true
+     *          }
+     *      }
+     * )
      */
     protected $payments;
 
@@ -133,11 +159,25 @@ class Subscription implements SubscriptionInterface
     protected $customer;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      *
      * @var string
      */
     protected $interval;
+
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     *
+     * @var |Date
+     */
+    protected $startDate;
+
+    /**
+     * @ORM\Column(type="string")
+     *
+     * @var string
+     */
+    protected $type;
 
     /**
      * Subscription constructor.
@@ -146,7 +186,6 @@ class Subscription implements SubscriptionInterface
     {
         $this->items = new ArrayCollection();
         $this->payments = new ArrayCollection();
-        $this->interval = SubscriptionInterface::INTERVAL_DONATION;
     }
 
     /**
@@ -274,10 +313,6 @@ class Subscription implements SubscriptionInterface
      */
     public function getTotal()
     {
-        if ($this->total > 0) {
-            return $this->total / 100;
-        }
-
         return $this->total;
     }
 
@@ -415,5 +450,37 @@ class Subscription implements SubscriptionInterface
     public function setInterval($interval)
     {
         $this->interval = $interval;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStartDate()
+    {
+        return $this->startDate;
+    }
+
+    /**
+     * @param mixed $startDate
+     */
+    public function setStartDate($startDate)
+    {
+        $this->startDate = $startDate;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param mixed $type
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
     }
 }

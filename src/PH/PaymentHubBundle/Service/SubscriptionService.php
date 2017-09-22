@@ -43,16 +43,19 @@ class SubscriptionService
      * @param SubscriptionInterface $subscription
      * @param                       $data
      */
-    public function processIncoimingData(SubscriptionInterface $subscription, $data)
+    public function processIncomingData(SubscriptionInterface $subscription, $data)
     {
         $previousOrderState = $subscription->getOrderState();
         $subscription->setOrderState($data['state']);
-        $subscription->setTotal($data['total']);
+        $subscription->setTotal($data['total'] / 100);
         $subscription->setOrderId($data['id']);
         $subscription->setCheckoutState($data['checkout_state']);
         $subscription->setPaymentState($data['payment_state']);
-        $subscription->setCheckoutCompletedAt($data['checkout_completed_at']);
+        $subscription->setCheckoutCompletedAt(new \DateTime($data['checkout_completed_at']));
         $subscription->setToken($data['token_value']);
+        $subscription->setType($data['subscription']['type']);
+        $subscription->setInterval($data['subscription']['interval']);
+        $subscription->setStartDate(new \DateTime($data['subscription']['start_date']));
 
         if (
             $previousOrderState !== PaymentInterface::STATE_COMPLETED &&
@@ -88,7 +91,7 @@ class SubscriptionService
 
             $orderItem->setQuantity($item['quantity']);
             $orderItem->setUnitPrice($item['unit_price']);
-            $orderItem->setTotal($item['total']);
+            $orderItem->setTotal($item['total'] / 100);
             $orderItem->setName('change ME!!');
             $orderItem->setSubscription($subscription);
             $orderItems[] = $orderItem;
@@ -122,7 +125,7 @@ class SubscriptionService
             $payment->setMethodCode($singlePayment['method']['code']);
             $subscription->setProviderType($singlePayment['method']['code']);
             $payment->setCurrencyCode($singlePayment['currency_code']);
-            $payment->setAmount($singlePayment['amount']);
+            $payment->setAmount($singlePayment['amount'] / 100);
             $payment->setSubscription($subscription);
             $payments[] = $payment;
         }

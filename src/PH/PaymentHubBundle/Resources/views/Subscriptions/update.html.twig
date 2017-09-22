@@ -46,20 +46,59 @@
 {% block content_data %}
     {% set id = 'subscription-edit' %}
 
-    {% set dataBlocks = [{
+    {% set dataBlocks = [
+       {
         'title': 'General'|trans,
         'class': 'active',
         'subblocks': [{
             'title': '',
             'data': [
-                form_row(form.total, { 'label': 'Total ammount' }),
                 form_row(form.notes, { 'label': 'Notes' }),
+            ]
+        }, {
+            'title': '',
+            'data': [
                 form_row(form.orderState, { 'label': 'Order state' }),
                 form_row(form.checkoutState, { 'label': 'Checkout state' }),
                 form_row(form.paymentState, { 'label': 'Payment state' }),
+                form_row(form.providerType, { 'label': 'Provider Type' }),
             ]
-        }]
-    }]
+        }]},
+        {
+        'title': 'Customer'|trans,
+        'subblocks': [{
+            'title': '',
+            'class': 'customer',
+            'data': [
+                form_row(form.customer),
+            ]
+        }, {
+            'title': '',
+            'class': 'customer',
+            'data': [
+                form_row(form.type),
+                form_row(form.interval),
+                form_row(form.startDate),
+            ]
+        }]},
+        {
+        'title': 'Order items'|trans,
+        'subblocks': [{
+            'title': '',
+            'class': 'order_items',
+            'data': [
+                form_widget(form.items, { 'attr': {'class': 'oro-address-collection'} }),
+            ]
+        }]},
+        {
+        'title': 'Payments'|trans,
+        'subblocks': [{
+            'title': '',
+            'data': [
+                form_widget(form.payments, { 'attr': {'class': 'oro-address-collection'} }),
+            ]
+        }]}
+    ]
     %}
     {% set data = {
     'formErrors': form_errors(form)? form_errors(form) : null,

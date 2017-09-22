@@ -14,10 +14,12 @@ interface SubscriptionInterface
     const STATE_CANCELED = 'canceled';
     const STATE_REFUNDED = 'refunded';
 
-    const INTERVAL_DONATION = 'donation';
-    const INTERVAL_DAY = 'day';
-    const INTERVAL_MONTH = 'month';
-    const INTERVAL_YEAR = 'year';
+    const INTERVAL_MONTH = '1 month';
+    const INTERVAL_YEAR = '1 year';
+    const INTERVAL_QUARTERLY = '3 months';
+
+    const TYPE_RECURRING = 'recurring';
+    const TYPE_NONRECURRING = 'non-recurring';
 
     /**
      * @return int
@@ -183,4 +185,24 @@ interface SubscriptionInterface
      * @param string $token
      */
     public function setToken($token);
+
+    /**
+     * @return mixed
+     */
+    public function getStartDate();
+
+    /**
+     * @param mixed $startDate
+     */
+    public function setStartDate($startDate);
+
+    /**
+     * @return mixed
+     */
+    public function getType();
+
+    /**
+     * @param mixed $type
+     */
+    public function setType($type);
 }

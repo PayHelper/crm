@@ -9,3 +9,17 @@ services:
             - "@oro_email.mailer.processor"
             - "@oro_email.email_renderer"
             - "@doctrine.orm.entity_manager"
+
+    subscriptions.subscription_manager.api:
+        class: Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
+        parent: oro_soap.manager.entity_manager.abstract
+        arguments:
+            - PH\PaymentHubBundle\Entity\Subscription
+            - "@doctrine.orm.entity_manager"
+
+    subscriptions.customer_manager.api:
+        class: Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
+        parent: oro_soap.manager.entity_manager.abstract
+        arguments:
+            - PH\PaymentHubBundle\Entity\Customer
+            - "@doctrine.orm.entity_manager"

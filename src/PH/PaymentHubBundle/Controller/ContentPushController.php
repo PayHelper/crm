@@ -27,7 +27,7 @@ class ContentPushController extends Controller
         /** @var SubscriptionInterface $subscription */
         $subscription = $subscriptionRepository->findOneBy(['token' => $data['token_value']]);
 
-        if ($subscription === null) {
+        if (null === $subscription) {
             $subscription = new Subscription();
             $subscription->setCreatedAt(new \DateTime());
             $manager->persist($subscription);
@@ -35,7 +35,7 @@ class ContentPushController extends Controller
             $subscription->setUpdatedAt(new \DateTime());
         }
 
-        $subscriptionService->processIncoimingData($subscription, $data);
+        $subscriptionService->processIncomingData($subscription, $data);
         $manager->flush();
 
         return new JsonResponse(['status' => 'OK']);

@@ -3,7 +3,9 @@
 namespace PH\PaymentHubBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 
 /**
  * Class OrderItem.
@@ -19,12 +21,20 @@ class OrderItem implements OrderItemInterface
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer")
      *
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "identity"=true
+     *          }
+     *      }
+     * )
+     *
      * @var int
      */
     protected $id;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string", nullable=true)
      *
      * @var int
      */
@@ -61,13 +71,14 @@ class OrderItem implements OrderItemInterface
     /**
      * Many Features have One Product.
      *
-     * @ORM\ManyToOne(targetEntity="PH\PaymentHubBundle\Entity\Subscription", inversedBy="items")
+     * @ORM\ManyToOne(targetEntity="PH\PaymentHubBundle\Entity\Subscription", inversedBy="items", cascade={"persist"})
      * @ORM\JoinColumn(name="subscription_id", referencedColumnName="id")
      */
     private $subscription;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Gedmo\Timestampable(on="create")
      *
      * @var \DateTime
      */
@@ -75,6 +86,7 @@ class OrderItem implements OrderItemInterface
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Gedmo\Timestampable(on="update")
      *
      * @var \DateTime
      */
@@ -109,10 +121,6 @@ class OrderItem implements OrderItemInterface
      */
     public function getUnitPrice()
     {
-        if ($this->unitPrice > 0) {
-            return $this->unitPrice / 100;
-        }
-
         return $this->unitPrice;
     }
 
@@ -129,10 +137,6 @@ class OrderItem implements OrderItemInterface
      */
     public function getTotal()
     {
-        if ($this->total > 0) {
-            return $this->total / 100;
-        }
-
         return $this->total;
     }
 

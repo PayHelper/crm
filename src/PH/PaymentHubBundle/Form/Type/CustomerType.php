@@ -2,9 +2,10 @@
 
 namespace PH\PaymentHubBundle\Form\Type;
 
+use Oro\Bundle\FormBundle\Form\Type\OroBirthdayType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use PH\PaymentHubBundle\Entity\Customer;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -19,13 +20,20 @@ class CustomerType extends AbstractType
             ->add('firstName')
             ->add('middleName')
             ->add('lastName')
-            ->add('gender')
-            ->add('birthday')
-            ->add('email')
-            ->add('addresses', CollectionType::class, array(
-                'entry_type' => AddressType::class,
-                'allow_add' => true,
-            ));
+            ->add('gender', 'oro_gender', array('required' => false, 'label' => 'oro.contact.gender.label'))
+            ->add(
+                'birthday',
+                OroBirthdayType::class,
+                array('required' => false, 'label' => 'oro.contact.birthday.label')
+            )
+            ->add('email', EmailType::class)
+            ->add('addresses', 'oro_address_collection', array(
+                    'label' => '',
+                    'type' => 'oro_typed_address',
+                    'required' => false,
+                    'options' => array('data_class' => 'PH\PaymentHubBundle\Entity\Address'),
+                )
+            );
     }
 
     public function configureOptions(OptionsResolver $resolver)

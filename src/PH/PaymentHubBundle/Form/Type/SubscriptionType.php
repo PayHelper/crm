@@ -2,9 +2,12 @@
 
 namespace PH\PaymentHubBundle\Form\Type;
 
+use Oro\Bundle\FormBundle\Form\Type\OroDateType;
+use PH\PaymentHubBundle\Entity\Customer;
 use PH\PaymentHubBundle\Entity\PaymentInterface;
 use PH\PaymentHubBundle\Entity\Subscription;
 use PH\PaymentHubBundle\Entity\SubscriptionInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -15,7 +18,7 @@ class SubscriptionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('total')
+            ->add('providerType')
             ->add('notes')
             ->add('orderState', ChoiceType::class, [
                 'choices' => [
@@ -46,6 +49,43 @@ class SubscriptionType extends AbstractType
                     PaymentInterface::STATE_REFUNDED => 'Refunded',
                     PaymentInterface::STATE_UNKNOWN => 'Unknown',
                 ],
+            ])
+            ->add('items', OrderItemsCollectionType::class, array(
+                    'label' => '',
+                    'type' => OrderItemType::class,
+                    'required' => false,
+                    'options' => array('data_class' => 'PH\PaymentHubBundle\Entity\OrderItem'),
+                )
+            )
+            ->add('payments', PaymentsCollectionType::class, [
+                'label' => '',
+                'type' => PaymentType::class,
+                'required' => false,
+                'options' => array('data_class' => 'PH\PaymentHubBundle\Entity\Payment'),
+            ])
+            ->add('customer', EntityType::class, [
+                'class' => Customer::class,
+                'placeholder' => ' ',
+                'choice_label' => function ($customer) {
+                    return $customer->getFirstName().' '.$customer->getLastName();
+                },
+            ])
+            ->add('interval', ChoiceType::class, [
+                'placeholder' => ' ',
+                'choices' => [
+                    SubscriptionInterface::INTERVAL_MONTH => 'Monthly',
+                    SubscriptionInterface::INTERVAL_QUARTERLY => 'Quarterly',
+                    SubscriptionInterface::INTERVAL_YEAR => 'Yearly',
+                ],
+            ])
+            ->add('type', ChoiceType::class, [
+                'choices' => [
+                    SubscriptionInterface::TYPE_RECURRING => 'Recurring',
+                    SubscriptionInterface::TYPE_NONRECURRING => 'Not recurring',
+                ],
+            ])
+            ->add('startDate', OroDateType::class, [
+                'required' => false,
             ])
         ;
     }

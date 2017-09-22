@@ -5,6 +5,9 @@ services:
     ph_payment_hub.importexport.data_converter.subscription:
         parent: oro_importexport.data_converter.configurable
 
+    ph_payment_hub.importexport.strategy.subscription:
+            parent: oro_importexport.strategy.configurable_add_or_replace
+
     ph_payment_hub.importexport.processor.export.subscription:
         parent: oro_importexport.processor.export_abstract
         calls:
@@ -19,6 +22,7 @@ services:
         parent: oro_importexport.processor.import_abstract
         calls:
             - [setDataConverter, ['@ph_payment_hub.importexport.data_converter.subscription']]
+            - [setStrategy, ['@ph_payment_hub.importexport.strategy.subscription']]
         tags:
             - name: oro_importexport.processor
               type: import

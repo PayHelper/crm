@@ -6,14 +6,14 @@
 
 
 {% block navButtons %}
-    {#{% if resource_granted('subscriptions.subscription_create') %}#}
-        {#<div class="btn-group">#}
-            {#{{ UI.addButton({#}
-                {#'path': path('subscriptions.subscription_create'),#}
-                {#'entity_label': 'Subscription'|trans#}
-            {#}) }}#}
-        {#</div>#}
-    {#{% endif %}#}
+    {% if resource_granted('subscriptions.subscription_create') %}
+        <div class="btn-group">
+            {{ UI.addButton({
+                'path': path('subscriptions.customer_create'),
+                'entity_label': 'Customer'|trans
+            }) }}
+        </div>
+    {% endif %}
 
     {#{% include 'OroImportExportBundle:ImportExport:buttons.html.twig' with {#}
     {#entity_class: 'PH\\PaymentHubBundle\\Entity\\Subscription',#}

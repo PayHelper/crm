@@ -2,6 +2,26 @@
 {% import 'OroUIBundle::macros.html.twig' as UI %}
 {% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
 
+{% block navButtons %}
+    {% if resource_granted('EDIT', customer) %}
+        {{ UI.editButton({
+            'path' : path('subscriptions.customer_update', { id: customer.id }),
+            'entity_label': 'Customer'|trans
+        }) }}
+    {% endif %}
+
+    {% if resource_granted('DELETE', customer) %}
+        {{ UI.deleteButton({
+            'dataUrl': path('ph_customers_api_delete_customer', {'id': customer.id}),
+            'dataRedirect': path('subscriptions.customers_index'),
+            'aCss': 'no-hash remove-button',
+            'id': 'btn-remove-subscription',
+            'dataId': customer.id,
+            'entity_label': 'Customer'|trans,
+        }) }}
+    {% endif %}
+{% endblock navButtons %}
+
 {% block pageHeader %}
     {% set breadcrumbs = {
     'entity':      customer,
@@ -35,21 +55,12 @@
     {% set subscriptions %}
         <div class="widget-content" style="border-bottom: 1px solid #ccc;">
             {% set gridName = 'ph-customer-subscriptions-grid' %}
-            {% set renderParams = {
-                'enableFullScreenLayout': true,
-                'enableViews': true,
-                'showViewsInNavbar': true,
-                'filtersStateElement': '.filters-state-view-container',
-
-            }
-            |merge(renderParams|default({})) %}
-
             {% set params = {
                 'customer': customer.id
             }
             |merge(params|default({})) %}
 
-            {{ dataGrid.renderGrid(gridName, params, renderParams) }}
+            {{ dataGrid.renderGrid(gridName, params, renderParams|default({})) }}
         </div>
     {% endset %}
     {% set adresses %}
@@ -57,16 +68,23 @@
             {% for item in customer.addresses %}
                 <div class="row-fluid form-horizontal">
                     <div class="responsive-block">
+                        {{ UI.renderProperty('Is primary'|trans, item.primary) }}
+                        {{ UI.renderProperty('Label'|trans, item.label) }}
+                        {{ UI.renderProperty('First Name'|trans, item.firstName) }}
+                        {{ UI.renderProperty('Middle Name'|trans, item.middleName) }}
+                        {{ UI.renderProperty('Last Name'|trans, item.lastName) }}
                         {{ UI.renderProperty('Street'|trans, item.street) }}
                         {{ UI.renderProperty('Street 2'|trans, item.street2) }}
                         {{ UI.renderProperty('Postal code'|trans, item.postalCode) }}
                         {{ UI.renderProperty('City'|trans, item.city) }}
                         {{ UI.renderProperty('Region'|trans, item.regionText) }}
+                        {{ UI.renderProperty('Country'|trans, item.country) }}
                         {{ UI.renderProperty('Organization'|trans, item.organization) }}
                         {{ UI.renderProperty('Created date'|trans, item.created | date('Y-m-d H:i:s')) }}
                         {{ UI.renderProperty('Updated date'|trans, item.updated ?  item.updated|date('Y-m-d H:i:s'): '') }}
                     </div>
                 </div>
+                <hr />
             {% endfor %}
         </div>
     {% endset %}

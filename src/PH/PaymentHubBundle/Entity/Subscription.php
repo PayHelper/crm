@@ -1,5 +1,9 @@
 <?php
 
+/*
+ * Copyright 2017 Sourcefabric z.ú. and contributors.
+ */
+
 namespace PH\PaymentHubBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -9,7 +13,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="PH\PaymentHubBundle\Repository\SubscriptionRepository")
  * @ORM\Table(name="ph_subscription")
  * @Config
  */
@@ -151,8 +155,19 @@ class Subscription implements SubscriptionInterface
     protected $payments;
 
     /**
-     * Many Features have One Product.
+     * @ORM\OneToMany(targetEntity="PH\PaymentHubBundle\Entity\NotificationLog", mappedBy="subscription", cascade={"remove", "persist"})
      *
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "full"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $notifications;
+
+    /**
      * @ORM\ManyToOne(targetEntity="PH\PaymentHubBundle\Entity\Customer", inversedBy="subscriptions", fetch="EAGER")
      * @ORM\JoinColumn(name="customer_id", referencedColumnName="id")
      */
@@ -178,6 +193,13 @@ class Subscription implements SubscriptionInterface
      * @var string
      */
     protected $type;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     *
+     * @var \DateTime
+     */
+    protected $activationEmailSend;
 
     /**
      * Subscription constructor.
@@ -423,6 +445,22 @@ class Subscription implements SubscriptionInterface
     /**
      * {@inheritdoc}
      */
+    public function getNotifications()
+    {
+        return $this->notifications;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setNotifications($notifications)
+    {
+        $this->notifications = $notifications;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getCustomer()
     {
         return $this->customer;
@@ -453,7 +491,7 @@ class Subscription implements SubscriptionInterface
     }
 
     /**
-     * @return mixed
+     * {@inheritdoc}
      */
     public function getStartDate()
     {
@@ -461,7 +499,7 @@ class Subscription implements SubscriptionInterface
     }
 
     /**
-     * @param mixed $startDate
+     * {@inheritdoc}
      */
     public function setStartDate($startDate)
     {
@@ -469,7 +507,7 @@ class Subscription implements SubscriptionInterface
     }
 
     /**
-     * @return mixed
+     * {@inheritdoc}
      */
     public function getType()
     {
@@ -477,10 +515,26 @@ class Subscription implements SubscriptionInterface
     }
 
     /**
-     * @param mixed $type
+     * {@inheritdoc}
      */
     public function setType($type)
     {
         $this->type = $type;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getActivationEmailSend()
+    {
+        return $this->activationEmailSend;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setActivationEmailSend($activationEmailSend)
+    {
+        $this->activationEmailSend = $activationEmailSend;
     }
 }

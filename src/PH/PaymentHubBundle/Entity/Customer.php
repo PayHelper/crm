@@ -4,7 +4,6 @@ namespace PH\PaymentHubBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Oro\Bundle\BusinessEntitiesBundle\Entity\BasePerson;
 use Oro\Bundle\ChannelBundle\Model\ChannelAwareInterface;
 use Oro\Bundle\ChannelBundle\Model\ChannelEntityTrait;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
@@ -14,9 +13,15 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
  *
  * @ORM\Entity()
  * @ORM\Table(name="ph_customer")
- * @Config
+ * @Config(
+ *      defaultValues={
+ *          "activity"={
+ *              "show_on_page"="\Oro\Bundle\ActivityBundle\EntityConfig\ActivityScope::VIEW_PAGE "
+ *          }
+ *      }
+ * )
  */
-class Customer extends BasePerson implements ChannelAwareInterface, CustomerInterface
+class Customer extends ExtendPerson implements ChannelAwareInterface, CustomerInterface
 {
     use ChannelEntityTrait;
 
@@ -29,6 +34,16 @@ class Customer extends BasePerson implements ChannelAwareInterface, CustomerInte
      * @ORM\OneToMany(targetEntity="PH\PaymentHubBundle\Entity\Address", mappedBy="owner", cascade={"all"}, orphanRemoval=true, fetch="EAGER")
      */
     protected $addresses;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    protected $newsletterAllowed;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    protected $giftAllowed;
 
     /**
      * Customer constructor.
@@ -62,5 +77,37 @@ class Customer extends BasePerson implements ChannelAwareInterface, CustomerInte
     public function addSubscription(SubscriptionInterface $subscription)
     {
         $this->subscriptions->add($subscription);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNewsletterAllowed()
+    {
+        return $this->newsletterAllowed;
+    }
+
+    /**
+     * @param mixed $newsletterAllowed
+     */
+    public function setNewsletterAllowed($newsletterAllowed)
+    {
+        $this->newsletterAllowed = $newsletterAllowed;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getGiftAllowed()
+    {
+        return $this->giftAllowed;
+    }
+
+    /**
+     * @param mixed $giftAllowed
+     */
+    public function setGiftAllowed($giftAllowed)
+    {
+        $this->giftAllowed = $giftAllowed;
     }
 }

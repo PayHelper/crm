@@ -205,4 +205,24 @@ interface SubscriptionInterface
      * @param mixed $type
      */
     public function setType($type);
+
+    /**
+     * @return \DateTime
+     */
+    public function getActivationEmailSend();
+
+    /**
+     * @param \DateTime $activationEmailSend
+     */
+    public function setActivationEmailSend($activationEmailSend);
+
+    /**
+     * @return mixed
+     */
+    public function getNotifications();
+
+    /**
+     * @param mixed $notifications
+     */
+    public function setNotifications($notifications);
 }

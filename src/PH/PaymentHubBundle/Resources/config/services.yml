@@ -9,6 +9,7 @@ services:
             - "@oro_email.mailer.processor"
             - "@oro_email.email_renderer"
             - "@doctrine.orm.entity_manager"
+            - "%from_email%"
 
     subscriptions.subscription_manager.api:
         class: Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager

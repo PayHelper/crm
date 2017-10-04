@@ -341,3 +341,86 @@ datagrids:
                 link:          delete_link
                 icon:          trash
                 acl_resource:  subscriptions.subscription_delete
+
+
+    ph-customer-notifications-grid:
+        source:
+            type: orm
+            query:
+                select:
+                    - n.id
+                    - n.type
+                    - GROUP_CONCAT(customer.firstName, ' ', customer.lastName) AS customerFullName
+                    - subscription.id AS subscriptionId
+                    - n.sendAt
+                from:
+                    - { table: PHPaymentHubBundle:NotificationLog, alias: n }
+                where:
+                    and:
+                        - n.customer = :customer
+                join:
+                    left:
+                        - { join: n.customer, alias: customer }
+                        - { join: n.subscription, alias: subscription }
+            bind_parameters:
+                customer:
+                    path: customer
+                    default: null
+                    type: integer
+        columns:
+            id:
+                label: 'Notification id'
+                frontend_type: integer
+            type:
+                label: 'Notification type'
+                frontend_type: string
+            customerFullName:
+                label: 'Customer'
+            subscriptionId:
+                label: 'Subscription id'
+            sendAt:
+                label: 'Created'
+                frontend_type: datetime
+
+
+        properties:
+            id: ~
+#            view_link:
+#                type: url
+#                route: subscriptions.subscription_view
+#                params:
+#                    - id
+        sorters:
+            columns:
+                sendAt:
+                    data_name: n.sendAt
+            default:
+                sendAt: DESC
+#        filters:
+#            columns:
+#                orderState:
+#                    type: string
+#                    data_name: subscription.orderState
+#                createdAt:
+#                    type: datetime
+#                    data_name: subscription.createdAt
+#        actions:
+#            view:
+#                type:          navigate
+#                label:         View
+#                link:          view_link
+#                icon:          open
+#                acl_resource:  subscriptions.subscription_view
+#                rowAction:     true
+#            update:
+#                type:          navigate
+#                label:         Update
+#                link:          update_link
+#                icon:          edit
+#                acl_resource:  subscriptions.subscription_update
+#            delete:
+#                type:          delete
+#                label:         Delete
+#                link:          delete_link
+#                icon:          trash
+#                acl_resource:  subscriptions.subscription_delete

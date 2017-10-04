@@ -9,13 +9,13 @@ use Oro\Bundle\EmailBundle\Mailer\Processor;
 use Oro\Bundle\EmailBundle\Provider\EmailRenderer;
 use PH\PaymentHubBundle\Entity\OrderItem;
 use PH\PaymentHubBundle\Entity\Payment;
-use PH\PaymentHubBundle\Entity\PaymentInterface;
+use PH\PaymentHubBundle\Entity\Subscription;
 use PH\PaymentHubBundle\Entity\SubscriptionInterface;
 
 /**
  * Class SubscriptionService.
  */
-class SubscriptionService
+class SubscriptionService implements SubscriptionServiceInterface
 {
     /**
      * @var Processor
@@ -32,20 +32,32 @@ class SubscriptionService
      */
     protected $entityManager;
 
-    public function __construct(Processor $emailProcessor, EmailRenderer $emailRenderer, EntityManagerInterface $entityManager)
+    /**
+     * @var string
+     */
+    protected $fromEmail;
+
+    /**
+     * SubscriptionService constructor.
+     *
+     * @param Processor              $emailProcessor
+     * @param EmailRenderer          $emailRenderer
+     * @param EntityManagerInterface $entityManager
+     * @param                        $fromEmail
+     */
+    public function __construct(Processor $emailProcessor, EmailRenderer $emailRenderer, EntityManagerInterface $entityManager, $fromEmail)
     {
         $this->emailProcessor = $emailProcessor;
         $this->emailRenderer = $emailRenderer;
         $this->entityManager = $entityManager;
+        $this->fromEmail = $fromEmail;
     }
 
     /**
-     * @param SubscriptionInterface $subscription
-     * @param                       $data
+     * {@inheritdoc}
      */
     public function processIncomingData(SubscriptionInterface $subscription, $data)
     {
-        $previousOrderState = $subscription->getOrderState();
         $subscription->setOrderState($data['state']);
         $subscription->setTotal($data['total'] / 100);
         $subscription->setOrderId($data['id']);
@@ -57,20 +69,40 @@ class SubscriptionService
         $subscription->setInterval($data['subscription']['interval']);
         $subscription->setStartDate(new \DateTime($data['subscription']['start_date']));
 
-        if (
-            $previousOrderState !== PaymentInterface::STATE_COMPLETED &&
-            $subscription->getOrderState() === PaymentInterface::STATE_COMPLETED
-        ) {
-            $this->sendTransactionCompletedEmail($subscription);
-        }
-
         $subscription->setItems($this->handleOrderItems($subscription, $data));
         $subscription->setPayments($this->handlePayments($subscription, $data));
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function sendTransactionCompletedEmail(SubscriptionInterface $subscription)
+    {
+        $email = new Email();
+        $emailTemplate = $this->entityManager
+            ->getRepository(EmailTemplate::class)
+            ->findByName('transaction_completed_customer');
+        $templateData = $this->emailRenderer
+            ->compileMessage($emailTemplate, ['entity' => $subscription]);
+        list($subjectRendered, $templateRendered) = $templateData;
+
+        $email->setSubject($subjectRendered);
+        $email->setContexts([$subscription->getCustomer(), $subscription]);
+        $email->setBody($templateRendered);
+        $email->setTo([$subscription->getCustomer()->getEmail()]);
+        $email->setFrom($this->fromEmail);
+
+        $this->emailProcessor->process($email);
+
+        return [
+            'body' => $templateRendered,
+            'subject' => $subjectRendered,
+        ];
+    }
+
+    /**
      * @param SubscriptionInterface $subscription
-     * @param                       $data
+     * @param array                 $data
      *
      * @return array
      */
@@ -102,7 +134,7 @@ class SubscriptionService
 
     /**
      * @param SubscriptionInterface $subscription
-     * @param                       $data
+     * @param array                 $data
      *
      * @return array
      */
@@ -131,21 +163,5 @@ class SubscriptionService
         }
 
         return $payments;
-    }
-
-    protected function sendTransactionCompletedEmail($subscription)
-    {
-        $email = new Email();
-        $emailTemplate = $this->entityManager
-            ->getRepository(EmailTemplate::class)
-            ->findByName('transaction_completed_customer');
-        $templateData = $this->emailRenderer
-            ->compileMessage($emailTemplate, ['entity' => $subscription]);
-        list($subjectRendered, $templateRendered) = $templateData;
-
-        $email->setSubject($subjectRendered);
-        $email->setBody($templateRendered);
-
-        $this->emailProcessor->process($email);
     }
 }

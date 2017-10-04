@@ -70,8 +70,6 @@ class Payment implements PaymentInterface
     protected $state;
 
     /**
-     * Many Features have One Product.
-     *
      * @ORM\ManyToOne(targetEntity="PH\PaymentHubBundle\Entity\Subscription", inversedBy="payments", cascade={"persist"})
      * @ORM\JoinColumn(name="subscription_id", referencedColumnName="id")
      */

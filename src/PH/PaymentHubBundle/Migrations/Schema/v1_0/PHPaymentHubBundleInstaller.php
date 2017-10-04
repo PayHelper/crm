@@ -3,18 +3,26 @@
 namespace PH\PaymentHubBundle\Migrations\Schema;
 
 use Doctrine\DBAL\Schema\Schema;
+use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtension;
+use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtensionAwareInterface;
 use Oro\Bundle\EntityExtendBundle\Migration\ExtendOptionsManager;
 use Oro\Bundle\MigrationBundle\Migration\Installation;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class PHPaymentHubBundleInstaller implements Installation, ContainerAwareInterface
+class PHPaymentHubBundleInstaller implements Installation, ContainerAwareInterface, ActivityExtensionAwareInterface
 {
     protected $container;
 
     protected $extendOptionsManager;
 
+    /** @var ActivityExtension */
+    protected $activityExtension;
+
+    /**
+     * @param ContainerInterface|null $container
+     */
     public function setContainer(ContainerInterface $container = null)
     {
         $this->container = $container;
@@ -42,6 +50,7 @@ class PHPaymentHubBundleInstaller implements Installation, ContainerAwareInterfa
         $this->createPhPaymentTable($schema);
         $this->createPhSubscriptionTable($schema);
         $this->createPhContactAddressTable($schema);
+        $this->createNotificationLogTable($schema);
 
         /* Foreign keys generation **/
         $this->addPhCustomerForeignKeys($schema);
@@ -49,15 +58,67 @@ class PHPaymentHubBundleInstaller implements Installation, ContainerAwareInterfa
         $this->addPhPaymentForeignKeys($schema);
         $this->addPhSubscriptionForeignKeys($schema);
         $this->addPhContactAddressForeignKeys($schema);
+        $this->addPhNotificationLogForeignKeys($schema);
 
         $queries->addQuery('CREATE TABLE ph_contact_adr_to_adr_type (contact_address_id INT NOT NULL, type_name VARCHAR(16) NOT NULL, PRIMARY KEY(contact_address_id, type_name));');
         $queries->addQuery('CREATE INDEX IDX_E6FB3400320EF6E2 ON ph_contact_adr_to_adr_type (contact_address_id);');
         $queries->addQuery('CREATE INDEX IDX_E6FB3400892CBB0E ON ph_contact_adr_to_adr_type (type_name);');
         $queries->addQuery('ALTER TABLE ph_contact_adr_to_adr_type ADD CONSTRAINT FK_E6FB3400320EF6E2 FOREIGN KEY (contact_address_id) REFERENCES ph_contact_address (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;');
         $queries->addQuery('ALTER TABLE ph_contact_adr_to_adr_type ADD CONSTRAINT FK_E6FB3400892CBB0E FOREIGN KEY (type_name) REFERENCES oro_address_type (name) NOT DEFERRABLE INITIALLY IMMEDIATE;');
-        $queries->addQuery('ALTER TABLE ph_contact_address ADD serialized_data TEXT DEFAULT NULL;');
         $queries->addQuery('ALTER TABLE ph_contact_address ADD is_primary BOOLEAN DEFAULT NULL;');
-        $queries->addQuery('COMMENT ON COLUMN ph_contact_address.serialized_data IS \'(DC2Type:array)\';');
+
+        $this->addActivityAssociations($schema, $this->activityExtension);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setActivityExtension(ActivityExtension $activityExtension)
+    {
+        $this->activityExtension = $activityExtension;
+    }
+
+    /**
+     * Enables Email activity for User entity.
+     *
+     * @param Schema            $schema
+     * @param ActivityExtension $activityExtension
+     */
+    public function addActivityAssociations(Schema $schema, ActivityExtension $activityExtension)
+    {
+        $activityExtension->addActivityAssociation($schema, 'oro_email', 'ph_customer', true);
+        $activityExtension->addActivityAssociation($schema, 'orocrm_call', 'ph_customer', true);
+        $activityExtension->addActivityAssociation($schema, 'oro_note', 'ph_customer', true);
+        $activityExtension->addActivityAssociation($schema, 'orocrm_task', 'ph_customer', true);
+        $activityExtension->addActivityAssociation($schema, 'oro_calendar_event', 'ph_customer', true);
+        $activityExtension->addActivityAssociation($schema, 'orocrm_case', 'ph_customer', true);
+        $activityExtension->addActivityAssociation($schema, 'oro_attachment', 'ph_customer', true);
+
+        $activityExtension->addActivityAssociation($schema, 'oro_note', 'ph_subscription', true);
+        $activityExtension->addActivityAssociation($schema, 'orocrm_task', 'ph_subscription', true);
+        $activityExtension->addActivityAssociation($schema, 'oro_calendar_event', 'ph_subscription', true);
+        $activityExtension->addActivityAssociation($schema, 'orocrm_case', 'ph_subscription', true);
+        $activityExtension->addActivityAssociation($schema, 'oro_attachment', 'ph_subscription', true);
+    }
+
+    protected function createNotificationLogTable(Schema $schema)
+    {
+        $table = $schema->createTable('ph_notification_log');
+        $this->extendOptionsManager->setTableOptions('ph_notification_log', [
+            'entity' => [
+                'label' => 'PaymentHub Notification',
+                'plural_label' => 'PaymentHub Notifications',
+            ],
+        ]);
+        $table->addColumn('id', 'integer', ['autoincrement' => true]);
+        $table->addColumn('customer_id', 'integer', ['notnull' => false]);
+        $table->addColumn('subscription_id', 'integer', ['notnull' => false]);
+        $table->addColumn('type', 'string', ['notnull' => true, 'length' => 255]);
+        $table->addColumn('emailContent', 'text', ['notnull' => false]);
+        $table->addColumn('sendAt', 'datetime', ['comment' => '(DC2Type:datetime)']);
+        $table->addIndex(['customer_id'], 'IDX_3CA3D7FE9395C3F3', []);
+        $table->addIndex(['subscription_id'], 'IDX_3CA3D7FE9A1887DC', []);
+        $table->setPrimaryKey(['id']);
     }
 
     /**
@@ -181,6 +242,7 @@ class PHPaymentHubBundleInstaller implements Installation, ContainerAwareInterfa
         $table->addColumn('total', 'float', []);
         $table->addColumn('createdat', 'datetime', ['comment' => '(DC2Type:datetime)']);
         $table->addColumn('updatedat', 'datetime', ['notnull' => false, 'comment' => '(DC2Type:datetime)']);
+        $table->addColumn('activationEmailSend', 'datetime', ['notnull' => false, 'comment' => '(DC2Type:datetime)']);
         $table->addColumn('interval', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('token', 'string', ['length' => 255]);
         $table->addColumn('type', 'string', ['length' => 255]);
@@ -315,6 +377,29 @@ class PHPaymentHubBundleInstaller implements Installation, ContainerAwareInterfa
             $schema->getTable('oro_dictionary_country'),
             ['country_code'],
             ['iso2_code'],
+            ['onUpdate' => null, 'onDelete' => null]
+        );
+    }
+
+    /**
+     * Add ph_subscription foreign keys.
+     *
+     * @param Schema $schema
+     */
+    protected function addPhNotificationLogForeignKeys(Schema $schema)
+    {
+        $table = $schema->getTable('ph_notification_log');
+        $table->addForeignKeyConstraint(
+            $schema->getTable('ph_customer'),
+            ['customer_id'],
+            ['id'],
+            ['onUpdate' => null, 'onDelete' => null]
+        );
+
+        $table->addForeignKeyConstraint(
+            $schema->getTable('ph_subscription'),
+            ['subscription_id'],
+            ['id'],
             ['onUpdate' => null, 'onDelete' => null]
         );
     }

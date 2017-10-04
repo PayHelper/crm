@@ -1,4 +1,5 @@
 {% extends 'OroUIBundle:actions:view.html.twig' %}
+
 {% import 'OroUIBundle::macros.html.twig' as UI %}
 {% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
 
@@ -46,6 +47,8 @@
                     {{ UI.renderProperty('Name suffix'|trans, customer.gender) }}
                     {{ UI.renderProperty('Birthday'|trans, customer.birthday ? customer.birthday|date('Y-m-d'): '' ) }}
                     {{ UI.renderProperty('Email'|trans, customer.email) }}
+                    {{ UI.renderProperty('Newsletter Allowed'|trans, customer.newsletterAllowed ? 'Yes'|trans : 'No'|trans) }}
+                    {{ UI.renderProperty('Gift Allowed'|trans, customer.giftAllowed ? 'Yes'|trans : 'No'|trans) }}
                     {{ UI.renderProperty('Created date'|trans, customer.createdAt | date('Y-m-d H:i:s')) }}
                     {{ UI.renderProperty('Updated date'|trans, customer.updatedAt ?  customer.updatedAt|date('Y-m-d H:i:s'): '') }}
                 </div>
@@ -57,6 +60,17 @@
             {% set gridName = 'ph-customer-subscriptions-grid' %}
             {% set params = {
                 'customer': customer.id
+            }
+            |merge(params|default({})) %}
+
+            {{ dataGrid.renderGrid(gridName, params, renderParams|default({})) }}
+        </div>
+    {% endset %}
+    {% set notifications %}
+        <div class="widget-content" style="border-bottom: 1px solid #ccc;">
+            {% set gridName = 'ph-customer-notifications-grid' %}
+            {% set params = {
+            'customer': customer.id
             }
             |merge(params|default({})) %}
 
@@ -88,6 +102,8 @@
             {% endfor %}
         </div>
     {% endset %}
+
+
     {% set dataBlocks = [
         {
             'title': 'Customer data'|trans,

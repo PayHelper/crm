@@ -33,7 +33,9 @@ class CustomerType extends AbstractType
                     'required' => false,
                     'options' => array('data_class' => 'PH\PaymentHubBundle\Entity\Address'),
                 )
-            );
+            )
+            ->add('newsletterAllowed')
+            ->add('giftAllowed');
     }
 
     public function configureOptions(OptionsResolver $resolver)

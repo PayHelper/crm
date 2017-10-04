@@ -50,12 +50,12 @@ class SubscriptionType extends AbstractType
                     PaymentInterface::STATE_UNKNOWN => 'Unknown',
                 ],
             ])
-            ->add('items', OrderItemsCollectionType::class, array(
+            ->add('items', OrderItemsCollectionType::class, [
                     'label' => '',
                     'type' => OrderItemType::class,
                     'required' => false,
                     'options' => array('data_class' => 'PH\PaymentHubBundle\Entity\OrderItem'),
-                )
+                ]
             )
             ->add('payments', PaymentsCollectionType::class, [
                 'label' => '',

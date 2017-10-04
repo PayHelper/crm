@@ -38,3 +38,4 @@ parameters:
 
     message_queue_transport: 'dbal'
     message_queue_transport_config: ~
+    from_email: contact@example.com

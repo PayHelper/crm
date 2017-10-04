@@ -1,5 +1,9 @@
 <?php
 
+/*
+ * Copyright 2016 Sourcefabric z.ú. and contributors.
+ */
+
 namespace PH\PaymentHubBundle\Entity;
 
 interface OrderCheckoutInterface

@@ -55,7 +55,7 @@ class Subscription implements SubscriptionInterface
      *
      * @var string
      */
-    protected $checkoutState = OrderCheckoutInterface::STATE_CART;
+    protected $purchaseState = OrderCheckoutInterface::STATE_NEW;
 
     /**
      * @ORM\Column(type="string")
@@ -63,7 +63,7 @@ class Subscription implements SubscriptionInterface
      *
      * @var string
      */
-    protected $paymentState = PaymentInterface::STATE_CART;
+    protected $paymentState = PaymentInterface::STATE_NEW;
 
     /**
      * @ORM\Column(type="string")
@@ -71,7 +71,7 @@ class Subscription implements SubscriptionInterface
      *
      * @var string
      */
-    protected $orderState = SubscriptionInterface::STATE_CART;
+    protected $state = SubscriptionInterface::STATE_NEW;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
@@ -221,17 +221,33 @@ class Subscription implements SubscriptionInterface
     /**
      * {@inheritdoc}
      */
-    public function getCheckoutState()
+    public function getPurchaseState()
     {
-        return $this->checkoutState;
+        return $this->purchaseState;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setCheckoutState($checkoutState)
+    public function setPurchaseState($purchaseState)
     {
-        $this->checkoutState = $checkoutState;
+        $this->purchaseState = $purchaseState;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setState($state)
+    {
+        $this->state = $state;
     }
 
     /**
@@ -248,22 +264,6 @@ class Subscription implements SubscriptionInterface
     public function setPaymentState($paymentState)
     {
         $this->paymentState = $paymentState;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getOrderState()
-    {
-        return $this->orderState;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setOrderState($orderState)
-    {
-        $this->orderState = $orderState;
     }
 
     /**

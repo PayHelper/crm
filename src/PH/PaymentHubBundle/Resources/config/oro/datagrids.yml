@@ -114,10 +114,10 @@ datagrids:
                 select:
                     - subscription.id
                     - subscription.orderId
-                    - subscription.orderState
+                    - subscription.state
                     - subscription.createdAt
                     - subscription.updatedAt
-                    - subscription.checkoutState
+                    - subscription.purchaseState
                     - subscription.paymentState
                     - subscription.checkoutCompletedAt
                     - subscription.notes
@@ -136,11 +136,11 @@ datagrids:
             total:
                 label: 'Total ammount'
                 frontend_type: string
-            orderState:
-                label: 'Order state'
+            state:
+                label: 'Subscription state'
                 frontend_type: string
-            checkoutState:
-                label: 'Checkout State'
+            purchaseState:
+                label: 'Purchase State'
                 frontend_type: string
             paymentState:
                 label: 'Payment state'
@@ -183,8 +183,8 @@ datagrids:
                     - id
         sorters:
             columns:
-                orderState:
-                    data_name: subscription.orderState
+                state:
+                    data_name: subscription.state
                 createdAt:
                     data_name: subscription.createdAt
                 updatedAt:
@@ -192,12 +192,12 @@ datagrids:
                 providerType:
                     data_name: subscription.providerType
             default:
-                orderState: ASC
+                state: ASC
         filters:
             columns:
-                orderState:
+                state:
                     type: string
-                    data_name: subscription.orderState
+                    data_name: subscription.state
                 createdAt:
                     type: datetime
                     data_name: subscription.createdAt
@@ -230,10 +230,10 @@ datagrids:
                 select:
                     - subscription.id
                     - subscription.orderId
-                    - subscription.orderState
+                    - subscription.state
                     - subscription.createdAt
                     - subscription.updatedAt
-                    - subscription.checkoutState
+                    - subscription.purchaseState
                     - subscription.paymentState
                     - subscription.checkoutCompletedAt
                     - subscription.notes
@@ -259,11 +259,11 @@ datagrids:
             total:
                 label: 'Total ammount'
                 frontend_type: string
-            orderState:
+            state:
                 label: 'Order state'
                 frontend_type: string
-            checkoutState:
-                label: 'Checkout State'
+            purchaseState:
+                label: 'Purchase State'
                 frontend_type: string
             paymentState:
                 label: 'Payment state'
@@ -303,8 +303,8 @@ datagrids:
                     - id
         sorters:
             columns:
-                orderState:
-                    data_name: subscription.orderState
+                state:
+                    data_name: subscription.state
                 createdAt:
                     data_name: subscription.createdAt
                 updatedAt:
@@ -312,12 +312,12 @@ datagrids:
                 providerType:
                     data_name: subscription.providerType
             default:
-                orderState: ASC
+                state: ASC
         filters:
             columns:
-                orderState:
+                state:
                     type: string
-                    data_name: subscription.orderState
+                    data_name: subscription.state
                 createdAt:
                     type: datetime
                     data_name: subscription.createdAt
@@ -385,42 +385,9 @@ datagrids:
 
         properties:
             id: ~
-#            view_link:
-#                type: url
-#                route: subscriptions.subscription_view
-#                params:
-#                    - id
         sorters:
             columns:
                 sendAt:
                     data_name: n.sendAt
             default:
                 sendAt: DESC
-#        filters:
-#            columns:
-#                orderState:
-#                    type: string
-#                    data_name: subscription.orderState
-#                createdAt:
-#                    type: datetime
-#                    data_name: subscription.createdAt
-#        actions:
-#            view:
-#                type:          navigate
-#                label:         View
-#                link:          view_link
-#                icon:          open
-#                acl_resource:  subscriptions.subscription_view
-#                rowAction:     true
-#            update:
-#                type:          navigate
-#                label:         Update
-#                link:          update_link
-#                icon:          edit
-#                acl_resource:  subscriptions.subscription_update
-#            delete:
-#                type:          delete
-#                label:         Delete
-#                link:          delete_link
-#                icon:          trash
-#                acl_resource:  subscriptions.subscription_delete

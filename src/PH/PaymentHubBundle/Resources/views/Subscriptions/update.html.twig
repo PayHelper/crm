@@ -34,7 +34,7 @@
         'entity':      form.vars.value,
         'indexPath':   path('subscriptions.subscription_index'),
         'indexLabel': 'Subscriptions'|trans,
-        'entityTitle': form.vars.value.orderState
+        'entityTitle': form.vars.value.state
         } %}
         {{ parent() }}
     {% else %}
@@ -58,8 +58,8 @@
         }, {
             'title': '',
             'data': [
-                form_row(form.orderState, { 'label': 'Order state' }),
-                form_row(form.checkoutState, { 'label': 'Checkout state' }),
+                form_row(form.state, { 'label': 'Subscription State' }),
+                form_row(form.purchaseState, { 'label': 'Purchase state' }),
                 form_row(form.paymentState, { 'label': 'Payment state' }),
                 form_row(form.providerType, { 'label': 'Provider Type' }),
             ]

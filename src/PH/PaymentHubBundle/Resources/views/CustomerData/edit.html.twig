@@ -1,0 +1,58 @@
+{% extends 'PHPaymentHubBundle:CustomerData:base.html.twig' %}
+
+{% block body %}
+    <div id="wrapper">
+        <div id="container">
+            <div id="welcome">
+                <h1><span>Thank You for your purchase,  <br>please fill in your data if you want to.</span></h1>
+            </div>
+            {% if app.request.get('token') %}
+                <div style="color: #3D7700">Successfully payed for a subscription {{ app.request.get('token') }}</div>
+            {%  endif %}
+            <div id="next">
+                {{ form_start(form) }}
+                    {{ form_row(form.firstName) }}
+                    {{ form_row(form.middleName) }}
+                    {{ form_row(form.lastName) }}
+                    {{ form_row(form.gender) }}
+                    {{ form_row(form.birthday) }}
+                    {{ form_row(form.newsletterAllowed) }}
+                    {{ form_row(form.giftAllowed) }}
+                    {{ form_row(form.email) }}
+                    <div style="margin: 20px;">
+                        {{ form_row(form.addresses) }}
+                    </div>
+                    <input type="submit" value="Send" />
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        body { background: #F5F5F5; font: 18px/1.5 sans-serif; }
+        h1, h2 { line-height: 1.2; margin: 0 0 .5em; }
+        h1 { font-size: 36px; }
+        h2 { font-size: 21px; margin-bottom: 1em; }
+        p { margin: 0 0 1em 0; }
+        a { color: #0000F0; }
+        a:hover { text-decoration: none; }
+        code { background: #F5F5F5; max-width: 100px; padding: 2px 6px; word-wrap: break-word; }
+        #wrapper { background: #FFF; margin: 1em auto; max-width: 800px; width: 95%; }
+        #container { padding: 2em; }
+        #welcome { margin-bottom: 2em; }
+        #welcome h1 span { display: block; font-size: 75%; }
+        .control-label {float:left; width: 200px; margin-right: 50px;}
+        .control-group{clear: both}
+        .oro-clearfix {display: inline}
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datepicker/0.6.3/datepicker.css" />
+{% endblock %}
+{% block javascripts %}
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/datepicker/0.6.3/datepicker.js"></script>
+    <script>
+        $('.removeRow, .add-list-item').remove();
+    </script>
+{% endblock %}

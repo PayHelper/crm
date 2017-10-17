@@ -85,7 +85,7 @@ class SubscriptionsController extends Controller
             $entityManager = $this->getDoctrine()->getManager();
 
             if (null === $subscription->getOrderId() || false !== strpos($subscription->getOrderId(), 'internal_')) {
-                if (null === $subscription->getCheckoutCompletedAt() && OrderCheckoutInterface::STATE_COMPLETED === $subscription->getCheckoutState()) {
+                if (null === $subscription->getCheckoutCompletedAt() && OrderCheckoutInterface::STATE_COMPLETED === $subscription->getPurchaseState()) {
                     $subscription->setCheckoutCompletedAt(new \DateTime());
                 }
             }
@@ -140,6 +140,10 @@ class SubscriptionsController extends Controller
 
         /** @var PaymentInterface $payment */
         foreach ($payments as $payment) {
+            if (null === $payment->getAmount()) {
+                $payments->removeElement($payment);
+                continue;
+            }
             if (null === $payment->getPaymentId()) {
                 $payment->setPaymentId('internal_payment'.$dateCode);
             }

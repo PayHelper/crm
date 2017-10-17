@@ -7,7 +7,7 @@ namespace PH\PaymentHubBundle\Entity;
  */
 interface SubscriptionInterface
 {
-    const STATE_CART = 'cart';
+    const STATE_NEW = 'new';
     const STATE_COMPLETED = 'completed';
     const STATE_PAYMENT_SELECTED = 'payment_selected';
     const STATE_PAYMENT_SKIPPED = 'payment_skipped';
@@ -29,16 +29,6 @@ interface SubscriptionInterface
     /**
      * @return string
      */
-    public function getCheckoutState();
-
-    /**
-     * @param string $checkoutState
-     */
-    public function setCheckoutState($checkoutState);
-
-    /**
-     * @return string
-     */
     public function getPaymentState();
 
     /**
@@ -49,12 +39,22 @@ interface SubscriptionInterface
     /**
      * @return string
      */
-    public function getOrderState();
+    public function getPurchaseState();
 
     /**
-     * @param string $orderState
+     * @param string $purchaseState
      */
-    public function setOrderState($orderState);
+    public function setPurchaseState($purchaseState);
+
+    /**
+     * @return string
+     */
+    public function getState();
+
+    /**
+     * @param string $state
+     */
+    public function setState($state);
 
     /**
      * @return \DateTime

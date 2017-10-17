@@ -9,7 +9,6 @@ use Oro\Bundle\EmailBundle\Mailer\Processor;
 use Oro\Bundle\EmailBundle\Provider\EmailRenderer;
 use PH\PaymentHubBundle\Entity\OrderItem;
 use PH\PaymentHubBundle\Entity\Payment;
-use PH\PaymentHubBundle\Entity\Subscription;
 use PH\PaymentHubBundle\Entity\SubscriptionInterface;
 
 /**
@@ -58,16 +57,17 @@ class SubscriptionService implements SubscriptionServiceInterface
      */
     public function processIncomingData(SubscriptionInterface $subscription, $data)
     {
-        $subscription->setOrderState($data['state']);
+        $subscription->setState($data['state']);
         $subscription->setTotal($data['total'] / 100);
         $subscription->setOrderId($data['id']);
-        $subscription->setCheckoutState($data['checkout_state']);
+        $subscription->setPurchaseState($data['purchase_state']); //purchase_state
+
         $subscription->setPaymentState($data['payment_state']);
-        $subscription->setCheckoutCompletedAt(new \DateTime($data['checkout_completed_at']));
+        $subscription->setCheckoutCompletedAt(new \DateTime($data['purchase_completed_at'])); //purchase_completed_at
         $subscription->setToken($data['token_value']);
-        $subscription->setType($data['subscription']['type']);
-        $subscription->setInterval($data['subscription']['interval']);
-        $subscription->setStartDate(new \DateTime($data['subscription']['start_date']));
+        $subscription->setType($data['type']);
+        $subscription->setInterval($data['interval']);
+        $subscription->setStartDate(new \DateTime($data['start_date']));
 
         $subscription->setItems($this->handleOrderItems($subscription, $data));
         $subscription->setPayments($this->handlePayments($subscription, $data));

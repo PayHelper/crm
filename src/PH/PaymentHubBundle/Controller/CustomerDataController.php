@@ -3,15 +3,14 @@
 namespace PH\PaymentHubBundle\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
-use FOS\RestBundle\View\View;
 use Oro\Bundle\ChannelBundle\Entity\Channel;
 use PH\PaymentHubBundle\Entity\Customer;
 use PH\PaymentHubBundle\Entity\Subscription;
 use PH\PaymentHubBundle\Entity\SubscriptionInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -21,11 +20,16 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class CustomerDataController extends Controller
 {
     /**
-     * @Route("/{token}/customer_data", name="ph_customer_add_to_subscription")
-     * @Method("POST")
+     * @Route("/customer", name="ph_customer_add_to_subscription")
+     * @Method("POST|GET")
+     * @Template()
      */
-    public function createCustomerAction(Request $request, $token)
+    public function editAction(Request $request)
     {
+        if (null === $token = $request->get('token', null)) {
+            throw new NotFoundHttpException('Subscription not found', null, 404);
+        }
+
         /** @var EntityManagerInterface $entityManager */
         $entityManager = $this->getDoctrine()->getManager();
         $subscriptionRepository = $entityManager->getRepository(Subscription::class);
@@ -47,50 +51,22 @@ class CustomerDataController extends Controller
             $subscription->setCustomer($customer);
         }
 
-        foreach ($customer->getAddresses() as $address) {
-            $entityManager->remove($address);
-        }
-
-        $form = $this->get('form.factory')->create('subscriptions_customer', $customer, ['method' => $request->getMethod()]);
+        $form = $this->get('form.factory')->create('subscriptions_customer', $customer, ['method' => 'POST']);
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid() && $this->updateAllowed($customer)) {
             $customer->setUpdatedAt(new \DateTime());
             foreach ($customer->getAddresses() as $address) {
                 $address->setOwner($customer);
             }
+
+            $entityManager->persist($customer);
             $entityManager->flush();
 
-            return new JsonResponse(['status' => 'OK']);
+            return ['form' => $form->createView()];
         }
 
-        return new JsonResponse(['status' => 'NOK']);
-    }
-
-    /**
-     * @Route("/{token}/customer_data", name="ph_customer_get_by_subscription")
-     * @Method("GET")
-     */
-    public function getCustomerAction(Request $request, $token)
-    {
-        $entityManager = $this->getDoctrine()->getManager();
-        $subscriptionRepository = $entityManager->getRepository(Subscription::class);
-        $channelRepository = $entityManager->getRepository(Channel::class);
-        /** @var SubscriptionInterface $subscription */
-        $subscription = $subscriptionRepository->findOneBy(['token' => $token]);
-
-        if (null === $subscription) {
-            throw new NotFoundHttpException('Subscription not found', null, 404);
-        }
-
-        if (null === $customer = $subscription->getCustomer()) {
-            throw new NotFoundHttpException('Customer not found');
-        }
-
-        $view = View::create();
-        $view->setData($customer);
-        $view->setFormat('json');
-
-        return $this->container->get('fos_rest.view_handler')->handle($view);
+        return ['form' => $form->createView()];
     }
 
     /**

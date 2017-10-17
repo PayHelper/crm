@@ -36,13 +36,14 @@
         <div class="widget-content">
             <div class="row-fluid form-horizontal">
                 <div class="responsive-block">
-                    {{ UI.renderProperty('Order id'|trans, subscription.orderId) }}
+                    {{ UI.renderProperty('Id'|trans, subscription.orderId) }}
+                    {{ UI.renderProperty('Token'|trans, subscription.token) }}
                     {{ UI.renderProperty('Total ammount'|trans, subscription.total|number_format(2, '.', ',')) }}
                     {{ UI.renderProperty('Notes'|trans, subscription.notes) }}
                     {{ UI.renderProperty('Provider Typer'|trans, subscription.providerType) }}
-                    {{ UI.renderProperty('Order state'|trans, subscription.orderState) }}
+                    {{ UI.renderProperty('State'|trans, subscription.state) }}
                     {{ UI.renderProperty('Payment state'|trans, subscription.paymentState) }}
-                    {{ UI.renderProperty('Checkout state'|trans, subscription.checkoutState) }}
+                    {{ UI.renderProperty('Purchase state'|trans, subscription.purchaseState) }}
                     {{ UI.renderProperty('Created date'|trans, subscription.createdAt | date('Y-m-d H:i:s')) }}
                     {{ UI.renderProperty('Updated date'|trans, subscription.updatedAt ?  subscription.updatedAt|date('Y-m-d H:i:s'): '') }}
                     {{ UI.renderProperty('Checkout completed'|trans, subscription.checkoutCompletedAt?  subscription.checkoutCompletedAt|date('Y-m-d H:i:s'): '') }}

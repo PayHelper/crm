@@ -20,9 +20,9 @@ class SubscriptionType extends AbstractType
         $builder
             ->add('providerType')
             ->add('notes')
-            ->add('orderState', ChoiceType::class, [
+            ->add('state', ChoiceType::class, [
                 'choices' => [
-                    SubscriptionInterface::STATE_CART => 'Cart',
+                    SubscriptionInterface::STATE_NEW => 'New',
                     SubscriptionInterface::STATE_COMPLETED => 'Completed',
                     SubscriptionInterface::STATE_PAYMENT_SELECTED => 'Payment Selected',
                     SubscriptionInterface::STATE_PAYMENT_SKIPPED => 'Payment Skipped',
@@ -30,9 +30,9 @@ class SubscriptionType extends AbstractType
                     SubscriptionInterface::STATE_REFUNDED => 'Refunded',
                 ],
             ])
-            ->add('checkoutState', ChoiceType::class, [
+            ->add('purchaseState', ChoiceType::class, [
                 'choices' => [
-                    'cart' => 'Cart',
+                    'new' => 'New',
                     'completed' => 'Completed',
                     'payment_selected' => 'Payment Selected',
                     'payment_skipped' => 'Payment Skipped',

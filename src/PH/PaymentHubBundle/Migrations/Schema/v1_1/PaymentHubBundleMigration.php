@@ -1,6 +1,6 @@
 <?php
 
-namespace PH\PaymentHubBundle\Migrations\Schema;
+namespace PH\PaymentHubBundle\Migrations\Schema\v1_1;
 
 use Doctrine\DBAL\Schema\Schema;
 use Oro\Bundle\MigrationBundle\Migration\Migration;

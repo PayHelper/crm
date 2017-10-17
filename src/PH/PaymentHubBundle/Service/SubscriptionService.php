@@ -124,7 +124,7 @@ class SubscriptionService implements SubscriptionServiceInterface
             $orderItem->setQuantity($item['quantity']);
             $orderItem->setUnitPrice($item['unit_price']);
             $orderItem->setTotal($item['total'] / 100);
-            $orderItem->setName('change ME!!');
+            $orderItem->setName('default order item name');
             $orderItem->setSubscription($subscription);
             $orderItems[] = $orderItem;
         }

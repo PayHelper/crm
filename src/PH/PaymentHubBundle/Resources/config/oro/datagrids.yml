@@ -146,7 +146,7 @@ datagrids:
                 label: 'Payment state'
                 frontend_type: string
             checkoutCompletedAt:
-                label: 'Checkout Completed'
+                label: 'Purchase Completed'
                 frontend_type: datetime
             notes:
                 label: 'Notes'
@@ -269,7 +269,7 @@ datagrids:
                 label: 'Payment state'
                 frontend_type: string
             checkoutCompletedAt:
-                label: 'Checkout Completed'
+                label: 'Purchase Completed'
                 frontend_type: datetime
             notes:
                 label: 'Notes'

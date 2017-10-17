@@ -46,7 +46,7 @@
                     {{ UI.renderProperty('Purchase state'|trans, subscription.purchaseState) }}
                     {{ UI.renderProperty('Created date'|trans, subscription.createdAt | date('Y-m-d H:i:s')) }}
                     {{ UI.renderProperty('Updated date'|trans, subscription.updatedAt ?  subscription.updatedAt|date('Y-m-d H:i:s'): '') }}
-                    {{ UI.renderProperty('Checkout completed'|trans, subscription.checkoutCompletedAt?  subscription.checkoutCompletedAt|date('Y-m-d H:i:s'): '') }}
+                    {{ UI.renderProperty('Purchase completed'|trans, subscription.checkoutCompletedAt?  subscription.checkoutCompletedAt|date('Y-m-d H:i:s'): '') }}
                     {{ UI.renderProperty('Type'|trans, subscription.type) }}
                     {{ UI.renderProperty('Interval'|trans, subscription.interval) }}
                     {{ UI.renderProperty('Start date'|trans, subscription.startDate | date('Y-m-d')) }}
@@ -60,7 +60,6 @@
             <div class="row-fluid form-horizontal">
                 <div class="responsive-block">
                     {{ UI.renderProperty('Order item id'|trans, item.orderItemId) }}
-                    {{ UI.renderProperty('Name'|trans, item.name) }}
                     {{ UI.renderProperty('Order item total ammount'|trans, item.total) }}
                     {{ UI.renderProperty('Quantity'|trans, item.quantity) }}
                     {{ UI.renderProperty('Unit price'|trans, item.unitPrice) }}
@@ -97,7 +96,7 @@
             ]
         },
         {
-            'title': 'Subscription order items'|trans,
+            'title': 'Subscription items'|trans,
             'class': 'inactive',
             'subblocks': [
                 { 'data' : [items] },

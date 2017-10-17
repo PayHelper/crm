@@ -34,7 +34,7 @@
         'entity':      form.vars.value,
         'indexPath':   path('subscriptions.subscription_index'),
         'indexLabel': 'Subscriptions'|trans,
-        'entityTitle': form.vars.value.state
+        'entityTitle': 'Subscription #'~form.vars.value.orderId
         } %}
         {{ parent() }}
     {% else %}

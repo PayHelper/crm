@@ -24,7 +24,7 @@ class SubscriptionRepository extends EntityRepository
         $qb = $this->createQueryBuilder('s')
             ->select('s')
             ->where('s.activationEmailSend IS NULL')
-            ->andWhere('s.orderState = :state')
+            ->andWhere('s.state = :state')
             ->join('s.customer', 'c')
             ->andWhere('c.email IS NOT NULL')
             ->setParameter('state', SubscriptionInterface::STATE_COMPLETED)

@@ -27,7 +27,7 @@ class SubscriptionRepository extends EntityRepository
             ->andWhere('s.state = :state')
             ->join('s.customer', 'c')
             ->andWhere('c.email IS NOT NULL')
-            ->setParameter('state', SubscriptionInterface::STATE_COMPLETED)
+            ->setParameter('state', SubscriptionInterface::STATE_FULFILLED)
             ->setMaxResults($maxResults)
             ->getQuery();
 

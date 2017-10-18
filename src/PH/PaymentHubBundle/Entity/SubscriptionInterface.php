@@ -8,11 +8,9 @@ namespace PH\PaymentHubBundle\Entity;
 interface SubscriptionInterface
 {
     const STATE_NEW = 'new';
-    const STATE_COMPLETED = 'completed';
-    const STATE_PAYMENT_SELECTED = 'payment_selected';
-    const STATE_PAYMENT_SKIPPED = 'payment_skipped';
     const STATE_CANCELED = 'canceled';
     const STATE_REFUNDED = 'refunded';
+    const STATE_FULFILLED = 'fulfilled';
 
     const INTERVAL_MONTH = '1 month';
     const INTERVAL_YEAR = '1 year';

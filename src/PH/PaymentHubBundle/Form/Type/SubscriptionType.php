@@ -23,9 +23,7 @@ class SubscriptionType extends AbstractType
             ->add('state', ChoiceType::class, [
                 'choices' => [
                     SubscriptionInterface::STATE_NEW => 'New',
-                    SubscriptionInterface::STATE_COMPLETED => 'Completed',
-                    SubscriptionInterface::STATE_PAYMENT_SELECTED => 'Payment Selected',
-                    SubscriptionInterface::STATE_PAYMENT_SKIPPED => 'Payment Skipped',
+                    SubscriptionInterface::STATE_FULFILLED => 'Fulfilled',
                     SubscriptionInterface::STATE_CANCELED => 'Canceled',
                     SubscriptionInterface::STATE_REFUNDED => 'Refunded',
                 ],
@@ -40,14 +38,13 @@ class SubscriptionType extends AbstractType
             ])
             ->add('paymentState', ChoiceType::class, [
                 'choices' => [
-                    PaymentInterface::STATE_CART => 'Cart',
                     PaymentInterface::STATE_NEW => 'New',
-                    PaymentInterface::STATE_PROCESSING => 'Processing',
-                    PaymentInterface::STATE_COMPLETED => 'Completed',
-                    PaymentInterface::STATE_FAILED => 'Failed',
+                    PaymentInterface::STATE_AWAITING_PAYMENT => 'Awaiting payment',
+                    PaymentInterface::STATE_PARTIALLY_PAID => 'Partially Paid',
                     PaymentInterface::STATE_CANCELLED => 'Canceled',
+                    PaymentInterface::STATE_PAID => 'Paid',
+                    PaymentInterface::STATE_PARTIALLY_REFUNDED => 'Partialy refunded',
                     PaymentInterface::STATE_REFUNDED => 'Refunded',
-                    PaymentInterface::STATE_UNKNOWN => 'Unknown',
                 ],
             ])
             ->add('items', OrderItemsCollectionType::class, [

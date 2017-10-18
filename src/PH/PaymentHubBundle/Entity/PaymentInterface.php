@@ -7,14 +7,13 @@ namespace PH\PaymentHubBundle\Entity;
  */
 interface PaymentInterface
 {
-    const STATE_CART = 'cart';
     const STATE_NEW = 'new';
-    const STATE_PROCESSING = 'processing';
-    const STATE_COMPLETED = 'completed';
-    const STATE_FAILED = 'failed';
+    const STATE_AWAITING_PAYMENT = 'awaiting_payment';
+    const STATE_PARTIALLY_PAID = 'partially_paid';
     const STATE_CANCELLED = 'cancelled';
+    const STATE_PAID = 'paid';
+    const STATE_PARTIALLY_REFUNDED = 'partially_refunded';
     const STATE_REFUNDED = 'refunded';
-    const STATE_UNKNOWN = 'unknown';
 
     /**
      * @return int

@@ -52,10 +52,14 @@
         'class': 'active',
         'subblocks': [{
             'title': '',
+            'class': 'customer',
             'data': [
-                form_row(form.notes, { 'label': 'Notes' }),
+                form_row(form.type),
+                form_row(form.interval),
+                form_row(form.startDate),
+                form_row(form.customer),
             ]
-        }, {
+            }, {
             'title': '',
             'data': [
                 form_row(form.state, { 'label': 'Subscription State' }),
@@ -65,24 +69,7 @@
             ]
         }]},
         {
-        'title': 'Customer'|trans,
-        'subblocks': [{
-            'title': '',
-            'class': 'customer',
-            'data': [
-                form_row(form.customer),
-            ]
-        }, {
-            'title': '',
-            'class': 'customer',
-            'data': [
-                form_row(form.type),
-                form_row(form.interval),
-                form_row(form.startDate),
-            ]
-        }]},
-        {
-        'title': 'Order items'|trans,
+        'title': 'Subscription items'|trans,
         'subblocks': [{
             'title': '',
             'class': 'order_items',

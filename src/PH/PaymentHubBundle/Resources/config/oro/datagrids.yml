@@ -120,7 +120,6 @@ datagrids:
                     - subscription.purchaseState
                     - subscription.paymentState
                     - subscription.checkoutCompletedAt
-                    - subscription.notes
                     - subscription.total
                     - subscription.providerType
                     - GROUP_CONCAT(customer.firstName, ' ', customer.lastName) AS customerFullNames
@@ -148,9 +147,6 @@ datagrids:
             checkoutCompletedAt:
                 label: 'Purchase Completed'
                 frontend_type: datetime
-            notes:
-                label: 'Notes'
-                frontend_type: string
             providerType:
                 label: 'Provider'
                 fontend_type: string
@@ -236,7 +232,6 @@ datagrids:
                     - subscription.purchaseState
                     - subscription.paymentState
                     - subscription.checkoutCompletedAt
-                    - subscription.notes
                     - subscription.total
                     - subscription.providerType
                 from:
@@ -271,9 +266,6 @@ datagrids:
             checkoutCompletedAt:
                 label: 'Purchase Completed'
                 frontend_type: datetime
-            notes:
-                label: 'Notes'
-                frontend_type: string
             providerType:
                 label: 'Provider'
                 fontend_type: string

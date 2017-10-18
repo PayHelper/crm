@@ -1,6 +1,7 @@
 {% extends 'OroUIBundle:actions:view.html.twig' %}
 {% import 'OroUIBundle::macros.html.twig' as UI %}
 
+{% set pageTitle = 'Subscription'|trans ~' #'~subscription.orderId %}
 {% block navButtons %}
     {% if resource_granted('EDIT', subscription) %}
         {{ UI.editButton({
@@ -39,7 +40,6 @@
                     {{ UI.renderProperty('Id'|trans, subscription.orderId) }}
                     {{ UI.renderProperty('Token'|trans, subscription.token) }}
                     {{ UI.renderProperty('Total ammount'|trans, subscription.total|number_format(2, '.', ',')) }}
-                    {{ UI.renderProperty('Notes'|trans, subscription.notes) }}
                     {{ UI.renderProperty('Provider Typer'|trans, subscription.providerType) }}
                     {{ UI.renderProperty('State'|trans, subscription.state) }}
                     {{ UI.renderProperty('Payment state'|trans, subscription.paymentState) }}
@@ -50,6 +50,7 @@
                     {{ UI.renderProperty('Type'|trans, subscription.type) }}
                     {{ UI.renderProperty('Interval'|trans, subscription.interval) }}
                     {{ UI.renderProperty('Start date'|trans, subscription.startDate | date('Y-m-d')) }}
+                    {{ UI.renderHtmlProperty('Customer'|trans, subscription.customer?  UI.renderUrl(path('subscriptions.customer_view', {'id': subscription.customer.id}), subscription.customer.firstName ~' '~subscription.customer.lastName)) }}
                 </div>
             </div>
         </div>
@@ -89,7 +90,7 @@
     {% endset %}
     {% set dataBlocks = [
         {
-            'title': 'Subscription Data'|trans,
+            'title': 'Subscription data'|trans,
             'class': 'active',
             'subblocks': [
                 { 'data' : [data] },

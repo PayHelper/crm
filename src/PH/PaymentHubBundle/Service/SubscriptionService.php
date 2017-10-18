@@ -90,6 +90,7 @@ class SubscriptionService implements SubscriptionServiceInterface
         $email->setContexts([$subscription->getCustomer(), $subscription]);
         $email->setBody($templateRendered);
         $email->setTo([$subscription->getCustomer()->getEmail()]);
+        $email->setType($emailTemplate->getType());
         $email->setFrom($this->fromEmail);
 
         $this->emailProcessor->process($email);

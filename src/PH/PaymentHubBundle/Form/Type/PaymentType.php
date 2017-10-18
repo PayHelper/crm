@@ -22,14 +22,13 @@ class PaymentType extends AbstractType
             ->add('amount', NumberType::class)
             ->add('state', ChoiceType::class, [
                 'choices' => [
-                    PaymentInterface::STATE_CART => 'Cart',
                     PaymentInterface::STATE_NEW => 'New',
-                    PaymentInterface::STATE_PROCESSING => 'Processing',
-                    PaymentInterface::STATE_COMPLETED => 'Completed',
-                    PaymentInterface::STATE_FAILED => 'Failed',
+                    PaymentInterface::STATE_AWAITING_PAYMENT => 'Awaiting payment',
+                    PaymentInterface::STATE_PARTIALLY_PAID => 'Partially Paid',
                     PaymentInterface::STATE_CANCELLED => 'Canceled',
+                    PaymentInterface::STATE_PAID => 'Paid',
+                    PaymentInterface::STATE_PARTIALLY_REFUNDED => 'Partialy refunded',
                     PaymentInterface::STATE_REFUNDED => 'Refunded',
-                    PaymentInterface::STATE_UNKNOWN => 'Unknown',
                 ],
             ]);
     }

@@ -27,6 +27,7 @@ class CustomerType extends AbstractType
                 array('required' => false, 'label' => 'oro.contact.birthday.label')
             )
             ->add('email', EmailType::class)
+            ->add('phone')
             ->add('addresses', 'oro_address_collection', array(
                     'label' => '',
                     'type' => 'oro_typed_address',
@@ -35,7 +36,10 @@ class CustomerType extends AbstractType
                 )
             )
             ->add('newsletterAllowed')
-            ->add('giftAllowed');
+            ->add('giftAllowed')
+            ->add('comment')
+            ->add('publicComment')
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver)

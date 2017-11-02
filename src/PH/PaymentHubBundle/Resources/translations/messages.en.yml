@@ -2,3 +2,6 @@ ph.paymenthub.customer.middle_name.label: Middle name
 ph.paymenthub.customer.last_name.label: Last name
 ph.paymenthub.customer.newsletter_allowed.label: Newsletter allowed
 ph.paymenthub.customer.gift_allowed.label: Gift allowed
+ph.paymenthub.customer.phone.label: Phone number
+ph.paymenthub.customer.comment.label: Comment
+ph.paymenthub.customer.public_comment.label: Public comment

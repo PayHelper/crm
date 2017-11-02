@@ -24,3 +24,12 @@ services:
         arguments:
             - PH\PaymentHubBundle\Entity\Customer
             - "@doctrine.orm.entity_manager"
+
+    ph_payment_hub.listener.comment_task:
+        class: PH\PaymentHubBundle\EventListener\CreateTaskForCommentListener
+        arguments:
+            - "@doctrine.orm.entity_manager"
+            - "@oro_activity.manager"
+            - "@translator"
+        tags:
+            - { name: kernel.event_listener, event: payment_hub.customer.updated, method: onUpdate }

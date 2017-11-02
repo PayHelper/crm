@@ -5,12 +5,14 @@ namespace PH\PaymentHubBundle\Controller;
 use Doctrine\ORM\EntityManagerInterface;
 use Oro\Bundle\ChannelBundle\Entity\Channel;
 use PH\PaymentHubBundle\Entity\Customer;
+use PH\PaymentHubBundle\Entity\CustomerInterface;
 use PH\PaymentHubBundle\Entity\Subscription;
 use PH\PaymentHubBundle\Entity\SubscriptionInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -34,9 +36,10 @@ class CustomerDataController extends Controller
         $entityManager = $this->getDoctrine()->getManager();
         $subscriptionRepository = $entityManager->getRepository(Subscription::class);
         $channelRepository = $entityManager->getRepository(Channel::class);
+        $action = 'update';
+
         /** @var SubscriptionInterface $subscription */
         $subscription = $subscriptionRepository->findOneBy(['token' => $token]);
-
         if (null === $subscription) {
             throw new NotFoundHttpException('Subscription not found', null, 404);
         }
@@ -49,11 +52,11 @@ class CustomerDataController extends Controller
             $customer->setUpdatedAt(new \DateTime());
             $entityManager->persist($customer);
             $subscription->setCustomer($customer);
+            $action = 'create';
         }
 
         $form = $this->get('form.factory')->create('subscriptions_customer', $customer, ['method' => 'POST']);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid() && $this->updateAllowed($customer)) {
             $customer->setUpdatedAt(new \DateTime());
             foreach ($customer->getAddresses() as $address) {
@@ -62,6 +65,9 @@ class CustomerDataController extends Controller
 
             $entityManager->persist($customer);
             $entityManager->flush();
+            $this->get('event_dispatcher')->dispatch(CustomerInterface::CUSTOMER_UPDATED, new GenericEvent($customer, [
+                'action' => $action,
+            ]));
 
             return ['form' => $form->createView()];
         }

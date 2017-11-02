@@ -16,7 +16,18 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
  * @Config(
  *      defaultValues={
  *          "activity"={
- *              "show_on_page"="\Oro\Bundle\ActivityBundle\EntityConfig\ActivityScope::VIEW_PAGE "
+ *              "show_on_page"="\Oro\Bundle\ActivityBundle\EntityConfig\ActivityScope::VIEW_PAGE"
+ *          },
+ *          "entity"={
+ *              "icon"="fa-user",
+ *              "contact_information"={
+ *                  "email"={
+ *                      {"fieldName"="email"}
+ *                  },
+ *                  "phone"={
+ *                      {"fieldName"="phone"}
+ *                  }
+ *              }
  *          }
  *      }
  * )
@@ -44,6 +55,21 @@ class Customer extends ExtendPerson implements ChannelAwareInterface, CustomerIn
      * @ORM\Column(type="boolean", nullable=true)
      */
     protected $giftAllowed;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    protected $publicComment;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $phone;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    protected $comment;
 
     /**
      * Customer constructor.
@@ -109,5 +135,53 @@ class Customer extends ExtendPerson implements ChannelAwareInterface, CustomerIn
     public function setGiftAllowed($giftAllowed)
     {
         $this->giftAllowed = $giftAllowed;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPhone()
+    {
+        return $this->phone;
+    }
+
+    /**
+     * @param mixed $phone
+     */
+    public function setPhone($phone)
+    {
+        $this->phone = $phone;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPublicComment()
+    {
+        return $this->publicComment;
+    }
+
+    /**
+     * @param mixed $publicComment
+     */
+    public function setPublicComment($publicComment)
+    {
+        $this->publicComment = $publicComment;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getComment()
+    {
+        return $this->comment;
+    }
+
+    /**
+     * @param mixed $comment
+     */
+    public function setComment($comment)
+    {
+        $this->comment = $comment;
     }
 }

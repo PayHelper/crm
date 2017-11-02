@@ -6,9 +6,11 @@ use Oro\Bundle\ChannelBundle\Entity\Channel;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use PH\PaymentHubBundle\Entity\Customer;
+use PH\PaymentHubBundle\Entity\CustomerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -56,7 +58,7 @@ class CustomersController extends Controller
      */
     public function createAction(Request $request)
     {
-        return $this->update(new Customer(), $request);
+        return $this->update(new Customer(), $request, 'create');
     }
 
     /**
@@ -71,10 +73,10 @@ class CustomersController extends Controller
      */
     public function updateAction(Customer $customer, Request $request)
     {
-        return $this->update($customer, $request);
+        return $this->update($customer, $request, 'update');
     }
 
-    private function update(Customer $customer, Request $request)
+    private function update(Customer $customer, Request $request, $action)
     {
         $form = $this->get('form.factory')->create('subscriptions_customer', $customer, ['method' => $request->getMethod()]);
         $form->handleRequest($request);
@@ -91,6 +93,10 @@ class CustomersController extends Controller
 
             $entityManager->persist($customer);
             $entityManager->flush();
+
+            $this->get('event_dispatcher')->dispatch(CustomerInterface::CUSTOMER_UPDATED, new GenericEvent($customer, [
+                'action' => $action,
+            ]));
 
             return $this->get('oro_ui.router')->redirectAfterSave(
                 array(

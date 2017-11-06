@@ -9,6 +9,7 @@ use Oro\Bundle\BusinessEntitiesBundle\Entity\BasePerson;
 interface CustomerInterface
 {
     const CUSTOMER_UPDATED = 'payment_hub.customer.updated';
+    const CUSTOMER_CREATED = 'payment_hub.customer.created';
 
     /**
      * Set addresses.

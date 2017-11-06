@@ -44,13 +44,8 @@ class CreateTaskForCommentListener
     /**
      * @param GenericEvent $event
      */
-    public function onUpdate(GenericEvent $event)
+    public function onCreate(GenericEvent $event)
     {
-        $action = $event->getArgument('action');
-        if ('create' !== $action) {
-            return;
-        }
-
         /** @var CustomerInterface $customer */
         $customer = $event->getSubject();
         if (null === $customer->getComment()) {

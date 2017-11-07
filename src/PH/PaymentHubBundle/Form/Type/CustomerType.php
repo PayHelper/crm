@@ -8,6 +8,7 @@ use PH\PaymentHubBundle\Entity\Customer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Email;
 
 /**
  * Class CustomerType.
@@ -26,7 +27,12 @@ class CustomerType extends AbstractType
                 OroBirthdayType::class,
                 array('required' => false, 'label' => 'oro.contact.birthday.label')
             )
-            ->add('email', EmailType::class)
+            ->add('email', EmailType::class, array(
+                'constraints' => array(
+                    new Email(array('message' => 'Invalid email address.')),
+                ),
+            ))
+            ->add('phone')
             ->add('addresses', 'oro_address_collection', array(
                     'label' => '',
                     'type' => 'oro_typed_address',
@@ -35,15 +41,20 @@ class CustomerType extends AbstractType
                 )
             )
             ->add('newsletterAllowed')
-            ->add('giftAllowed');
+            ->add('giftAllowed')
+            ->add('comment')
+            ->add('publicComment')
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => Customer::class,
-            'csrf_protection' => false,
-        ));
+        $resolver->setDefaults(
+            array(
+                'data_class' => Customer::class,
+                'csrf_protection' => false,
+            )
+        );
     }
 
     public function getName()

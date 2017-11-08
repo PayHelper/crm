@@ -71,13 +71,12 @@ class CreateTaskForUserSubscriber implements EventSubscriberInterface
 
     /**
      * @param GenericEvent $event
-     * @param              $taskSubject
+     * @param string       $taskSubject
      */
     protected function createNewTask(GenericEvent $event, $taskSubject)
     {
         /** @var CustomerInterface $customer */
         $customer = $event->getSubject();
-
         $defaultTaskUser = $this->manager->getRepository('OroUserBundle:User')->findOneBy(['username' => UserInterface::DEFAULT_TASKS_USER_NAME]);
         if (null === $defaultTaskUser) {
             return;

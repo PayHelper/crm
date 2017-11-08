@@ -58,7 +58,7 @@ class CustomersController extends Controller
      */
     public function createAction(Request $request)
     {
-        return $this->update(new Customer(), $request, 'create');
+        return $this->update(new Customer(), $request, CustomerInterface::CUSTOMER_CREATED);
     }
 
     /**
@@ -73,7 +73,7 @@ class CustomersController extends Controller
      */
     public function updateAction(Customer $customer, Request $request)
     {
-        return $this->update($customer, $request, 'update');
+        return $this->update($customer, $request, CustomerInterface::CUSTOMER_UPDATED);
     }
 
     private function update(Customer $customer, Request $request, $action)
@@ -94,9 +94,7 @@ class CustomersController extends Controller
             $entityManager->persist($customer);
             $entityManager->flush();
 
-            $this->get('event_dispatcher')->dispatch(CustomerInterface::CUSTOMER_UPDATED, new GenericEvent($customer, [
-                'action' => $action,
-            ]));
+            $this->get('event_dispatcher')->dispatch($action, new GenericEvent($customer));
 
             return $this->get('oro_ui.router')->redirectAfterSave(
                 array(

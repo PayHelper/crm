@@ -118,6 +118,7 @@ class SubscriptionsController extends Controller
         $orderItems = $subscription->getItems();
         $payments = $subscription->getPayments();
         $subscription->setTotal(0);
+        $subscription->setToken($this->getToken());
         $dateCode = date('ymdhis');
         if (null === $subscription->getOrderId()) {
             $subscription->setOrderId('internal_'.$dateCode);
@@ -149,5 +150,13 @@ class SubscriptionsController extends Controller
             }
             $payment->setSubscription($subscription);
         }
+    }
+
+    /**
+     * @return string
+     */
+    private function getToken()
+    {
+        return $this->container->get('ph_payment_hub.generator.randomness')->generateUriSafeString(10);
     }
 }

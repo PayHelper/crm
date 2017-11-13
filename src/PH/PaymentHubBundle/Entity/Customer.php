@@ -72,6 +72,11 @@ class Customer extends ExtendPerson implements ChannelAwareInterface, CustomerIn
     protected $comment;
 
     /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $customerUpdateToken;
+
+    /**
      * Customer constructor.
      */
     public function __construct()
@@ -183,5 +188,21 @@ class Customer extends ExtendPerson implements ChannelAwareInterface, CustomerIn
     public function setComment($comment)
     {
         $this->comment = $comment;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCustomerUpdateToken()
+    {
+        return $this->customerUpdateToken;
+    }
+
+    /**
+     * @param mixed $customerUpdateToken
+     */
+    public function setCustomerUpdateToken($customerUpdateToken)
+    {
+        $this->customerUpdateToken = $customerUpdateToken;
     }
 }

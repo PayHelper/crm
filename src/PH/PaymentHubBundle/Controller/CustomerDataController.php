@@ -79,9 +79,7 @@ class CustomerDataController extends Controller
             $entityManager->persist($customer);
             $entityManager->flush();
 
-            if (CustomerInterface::CUSTOMER_CREATED === $action) {
-                $this->get('event_dispatcher')->dispatch(CustomerInterface::CUSTOMER_CREATED, new GenericEvent($customer, ['action' => $action]));
-            }
+            $this->get('event_dispatcher')->dispatch($action, new GenericEvent($customer));
 
             return $this->renderForm($form, 201);
         }

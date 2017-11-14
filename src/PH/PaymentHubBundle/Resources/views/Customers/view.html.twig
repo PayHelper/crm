@@ -49,6 +49,7 @@
                     {{ UI.renderProperty('Email'|trans, customer.email) }}
                     {{ UI.renderProperty('Newsletter Allowed'|trans, customer.newsletterAllowed ? 'Yes'|trans : 'No'|trans) }}
                     {{ UI.renderProperty('Gift Allowed'|trans, customer.giftAllowed ? 'Yes'|trans : 'No'|trans) }}
+                    {{ UI.renderHtmlProperty('Customer data edit link'| trans, UI.renderUrl(url('ph_customer_edit', {}, false)~'?token='~customer.customerUpdateToken)) }}
                     {{ UI.renderProperty('Created date'|trans, customer.createdAt | date('Y-m-d H:i:s')) }}
                     {{ UI.renderProperty('Updated date'|trans, customer.updatedAt ?  customer.updatedAt|date('Y-m-d H:i:s'): '') }}
                 </div>

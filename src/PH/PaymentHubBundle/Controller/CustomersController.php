@@ -2,7 +2,6 @@
 
 namespace PH\PaymentHubBundle\Controller;
 
-use Oro\Bundle\ChannelBundle\Entity\Channel;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use PH\PaymentHubBundle\Entity\Customer;
@@ -83,14 +82,8 @@ class CustomersController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
-            $channelRepository = $entityManager->getRepository(Channel::class);
-            $customer->setDataChannel($channelRepository->findOneBy(['name' => 'Payment Hub Channel']));
-            $customer->setCreatedAt(new \DateTime());
-            $customer->setUpdatedAt(new \DateTime());
-            foreach ($customer->getAddresses() as $address) {
-                $address->setOwner($customer);
-            }
-
+            $customerService = $this->container->get('ph_payment_hub.service.customer');
+            $customer = $customerService->prepareCustomer($customer);
             $entityManager->persist($customer);
             $entityManager->flush();
 

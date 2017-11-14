@@ -118,4 +118,40 @@ interface CustomerInterface
      * @param mixed $comment
      */
     public function setComment($comment);
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreatedAt();
+
+    /**
+     * @param \DateTime $createdAt
+     *
+     * @return $this
+     */
+    public function setCreatedAt($createdAt);
+
+    /**
+     * Get contact last update date/time.
+     *
+     * @return \DateTime
+     */
+    public function getUpdatedAt();
+
+    /**
+     * @param \DateTime $updatedAt
+     *
+     * @return $this
+     */
+    public function setUpdatedAt($updatedAt);
+
+    /**
+     * @return mixed
+     */
+    public function getCustomerUpdateToken();
+
+    /**
+     * @param mixed $customerUpdateToken
+     */
+    public function setCustomerUpdateToken($customerUpdateToken);
 }

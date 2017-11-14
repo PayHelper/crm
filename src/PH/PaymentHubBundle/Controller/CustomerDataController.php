@@ -3,49 +3,44 @@
 namespace PH\PaymentHubBundle\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Oro\Bundle\ApiBundle\Exception\ActionNotAllowedException;
-use Oro\Bundle\ChannelBundle\Entity\Channel;
 use PH\PaymentHubBundle\Entity\Customer;
 use PH\PaymentHubBundle\Entity\CustomerInterface;
 use PH\PaymentHubBundle\Entity\Subscription;
 use PH\PaymentHubBundle\Entity\SubscriptionInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-/**
- * @Route("/subscriptions")
- */
 class CustomerDataController extends Controller
 {
     /**
-     * @Route("/customer", name="ph_customer_add_to_subscription")
+     * @Route("/subscriptions/customer", name="ph_customer_add_to_subscription")
      * @Method("POST|GET")
-     * @Template()
      */
-    public function editAction(Request $request)
+    public function editSubscriptionCustomerAction(Request $request)
     {
         if (null === $token = $request->get('token', null)) {
-            throw new NotFoundHttpException('Subscription not found', null, 404);
+            throw new NotFoundHttpException('Subscription not found');
         }
 
         /** @var EntityManagerInterface $entityManager */
         $entityManager = $this->getDoctrine()->getManager();
         $subscriptionRepository = $entityManager->getRepository(Subscription::class);
+        $customerService = $this->container->get('ph_payment_hub.service.customer');
         $action = CustomerInterface::CUSTOMER_UPDATED;
 
         /** @var SubscriptionInterface $subscription */
         if (null === ($subscription = $subscriptionRepository->findOneBy(['token' => $token]))) {
-            throw new NotFoundHttpException('Subscription not found', null, 404);
+            throw new NotFoundHttpException('Subscription not found');
         }
 
         if (null === $customer = $subscription->getCustomer()) {
-            $customer = $this->createNewCustomer($subscription, $entityManager);
+            $customer = $customerService->prepareCustomer(new Customer());
             $action = CustomerInterface::CUSTOMER_CREATED;
         }
 
@@ -56,22 +51,13 @@ class CustomerDataController extends Controller
                 return $this->renderForm($form, 400);
             }
 
-            if (!$this->updateAllowed($customer)) {
-                throw new ActionNotAllowedException();
-            }
-
-            if (CustomerInterface::CUSTOMER_CREATED === $action) {
-                $customerRepository = $entityManager->getRepository(Customer::class);
-                $existingCustomer = $customerRepository->findOneBy(['email' => $customer->getEmail()]);
-                if (null !== $existingCustomer) {
-                    $customer = $existingCustomer;
-                } else {
-                    $entityManager->persist($customer);
-                }
+            // check fo existing customer by email
+            $existingCustomer = $entityManager->getRepository(Customer::class)->findOneBy(['email' => $customer->getEmail()]);
+            if (null !== $existingCustomer) {
+                $customer = $existingCustomer;
             }
 
             $subscription->setCustomer($customer);
-            $customer->setUpdatedAt(new \DateTime());
             foreach ($customer->getAddresses() as $address) {
                 $address->setOwner($customer);
             }
@@ -81,28 +67,48 @@ class CustomerDataController extends Controller
 
             $this->get('event_dispatcher')->dispatch($action, new GenericEvent($customer));
 
-            return $this->renderForm($form, 201);
+            return new RedirectResponse($this->generateUrl('ph_customer_edit', array('token' => $customer->getCustomerUpdateToken())));
         }
 
         return $this->renderForm($form, 200);
     }
 
     /**
-     * @param $subscription
-     * @param $entityManager
-     *
-     * @return Customer
+     * @Route("/customer/edit", name="ph_customer_edit")
+     * @Method("POST|GET")
      */
-    private function createNewCustomer($subscription, $entityManager)
+    public function editCustomerAction(Request $request)
     {
-        $channelRepository = $entityManager->getRepository(Channel::class);
-        $customer = new Customer();
-        $customer->setDataChannel($channelRepository->findOneBy(['name' => 'Payment Hub Channel']));
-        $customer->addSubscription($subscription);
-        $customer->setCreatedAt(new \DateTime());
-        $customer->setUpdatedAt(new \DateTime());
+        if (null === $token = $request->get('token', null)) {
+            throw new NotFoundHttpException('Customer not found');
+        }
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $this->getDoctrine()->getManager();
+        $customerService = $this->container->get('ph_payment_hub.service.customer');
+        /** @var CustomerInterface $customer */
+        $customer = $entityManager->getRepository(Customer::class)->findOneBy(['customerUpdateToken' => $token]);
+        if (null === $customer) {
+            throw new NotFoundHttpException('Customer not found');
+        }
 
-        return $customer;
+        $form = $this->get('form.factory')->create('subscriptions_customer', $customer, ['method' => 'POST']);
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+            if (!$form->isValid()) {
+                return $this->renderForm($form, 400);
+            }
+
+            $customerService->reassignAddresses($customer);
+            $customerService->resetUpdateToken($customer);
+            $entityManager->persist($customer);
+            $entityManager->flush();
+
+            $this->get('event_dispatcher')->dispatch(CustomerInterface::CUSTOMER_UPDATED, new GenericEvent($customer));
+
+            return new RedirectResponse($this->generateUrl('ph_customer_edit', array('token' => $customer->getCustomerUpdateToken())));
+        }
+
+        return $this->renderForm($form, 200);
     }
 
     /**
@@ -116,22 +122,5 @@ class CustomerDataController extends Controller
         return $this->render('@PHPaymentHub/CustomerData/edit.html.twig', [
             'form' => $form->createView(),
         ], new Response('', $code));
-    }
-
-    /**
-     * @param Customer $customer
-     *
-     * @return bool
-     */
-    private function updateAllowed(Customer $customer)
-    {
-        $maxValidUpdateDate = $customer->getCreatedAt();
-        $maxValidUpdateDate->modify('+ 7 days');
-
-        if ($maxValidUpdateDate < new \DateTime('now')) {
-            return false;
-        }
-
-        return true;
     }
 }

@@ -10,6 +10,11 @@ services:
             - "@oro_email.email_renderer"
             - "@doctrine.orm.entity_manager"
             - "%from_email%"
+    ph_payment_hub.service.customer:
+        class: PH\PaymentHubBundle\Service\CustomerService
+        arguments:
+            - "@doctrine.orm.entity_manager"
+            - "@ph_payment_hub.generator.randomness"
 
     subscriptions.subscription_manager.api:
         class: Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
@@ -42,3 +47,6 @@ services:
             - "@translator"
         tags:
             - { name: kernel.event_subscriber }
+
+    ph_payment_hub.generator.randomness:
+        class: PH\PaymentHubBundle\Generator\RandomnessGenerator

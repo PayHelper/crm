@@ -130,6 +130,7 @@ class CustomerDataController extends Controller
         }
 
         $customer->setEmailVerificationToken(null);
+        $customer->setEmailVerifiedAt(new \DateTime());
         $entityManager->flush();
 
         return $this->render('@PHPaymentHub/CustomerData/verifyCustomerEmail.html.twig', ['customer' => $customer]);

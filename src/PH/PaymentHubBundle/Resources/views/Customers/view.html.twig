@@ -47,6 +47,7 @@
                     {{ UI.renderProperty('Name suffix'|trans, customer.gender) }}
                     {{ UI.renderProperty('Birthday'|trans, customer.birthday ? customer.birthday|date('Y-m-d'): '' ) }}
                     {{ UI.renderProperty('Email'|trans, customer.email) }}
+                    {{ UI.renderProperty('Email confirmed'|trans, customer.emailVerifiedAt ?  customer.emailVerifiedAt|date('Y-m-d H:i:s'): 'No') }}
                     {{ UI.renderProperty('Newsletter Allowed'|trans, customer.newsletterAllowed ? 'Yes'|trans : 'No'|trans) }}
                     {{ UI.renderProperty('Gift Allowed'|trans, customer.giftAllowed ? 'Yes'|trans : 'No'|trans) }}
                     {{ UI.renderHtmlProperty('Customer data edit link'| trans, UI.renderUrl(url('ph_customer_edit', {}, false)~'?token='~customer.customerUpdateToken)) }}

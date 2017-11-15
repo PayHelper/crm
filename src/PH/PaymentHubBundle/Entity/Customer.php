@@ -87,6 +87,11 @@ class Customer extends ExtendPerson implements ChannelAwareInterface, CustomerIn
     protected $processEmailVerification;
 
     /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    protected $emailVerifiedAt;
+
+    /**
      * Customer constructor.
      */
     public function __construct()
@@ -246,5 +251,21 @@ class Customer extends ExtendPerson implements ChannelAwareInterface, CustomerIn
     public function setProcessEmailVerification($processEmailVerification)
     {
         $this->processEmailVerification = $processEmailVerification;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getEmailVerifiedAt()
+    {
+        return $this->emailVerifiedAt;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setEmailVerifiedAt($emailVerifiedAt)
+    {
+        $this->emailVerifiedAt = $emailVerifiedAt;
     }
 }

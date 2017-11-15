@@ -179,4 +179,14 @@ interface CustomerInterface
      * @param mixed $processEmailVerification
      */
     public function setProcessEmailVerification($processEmailVerification);
+
+    /**
+     * @return mixed
+     */
+    public function getEmailVerifiedAt();
+
+    /**
+     * @param mixed $emailVerifiedAt
+     */
+    public function setEmailVerifiedAt($emailVerifiedAt);
 }

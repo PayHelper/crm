@@ -18,4 +18,10 @@ default user for tasks.
 1. Create default user (follow "Create default task user" instructions) or create new user for `unassigned` tasks.
 2. To to Main menu -> Activities -> Tasks.
 3. Click on Create Task button.
-4. Create new task and assing it to your Default Task User.
+4. Create new task and assign it to your Default Task User.
+
+
+## Setup custom cron jobs
+
+1. Run command `oro:cron:definitions:load` to setup all crons in scheduler
+2. In your crontab file you need to add `*/1 * * * * /path/to/php /path/to/app/console oro:cron --env=prod > /dev/null`

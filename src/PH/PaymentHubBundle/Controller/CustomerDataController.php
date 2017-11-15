@@ -19,7 +19,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class CustomerDataController extends Controller
 {
     /**
-     * @Route("/subscriptions/customer", name="ph_customer_add_to_subscription")
+     * @Route("/subscriptions/customer/", name="ph_customer_add_to_subscription")
      * @Method("POST|GET")
      */
     public function editSubscriptionCustomerAction(Request $request)
@@ -74,7 +74,7 @@ class CustomerDataController extends Controller
     }
 
     /**
-     * @Route("/customer/edit", name="ph_customer_edit")
+     * @Route("/customer/edit/", name="ph_customer_edit")
      * @Method("POST|GET")
      */
     public function editCustomerAction(Request $request)
@@ -109,6 +109,30 @@ class CustomerDataController extends Controller
         }
 
         return $this->renderForm($form, 200);
+    }
+
+    /**
+     * @Route("/customer/email/verify/", name="ph_customer_email_verify")
+     * @Method("GET")
+     */
+    public function verifyCustomerEmailAction(Request $request)
+    {
+        if (null === $token = $request->get('token', null)) {
+            throw new NotFoundHttpException('Customer was not found.');
+        }
+
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $this->getDoctrine()->getManager();
+        /** @var CustomerInterface $customer */
+        $customer = $entityManager->getRepository(Customer::class)->findOneBy(['emailVerificationToken' => $token]);
+        if (null === $customer) {
+            throw new NotFoundHttpException('Customer was not found, or email is already confirmed.');
+        }
+
+        $customer->setEmailVerificationToken(null);
+        $entityManager->flush();
+
+        return $this->render('@PHPaymentHub/CustomerData/verifyCustomerEmail.html.twig', ['customer' => $customer]);
     }
 
     /**

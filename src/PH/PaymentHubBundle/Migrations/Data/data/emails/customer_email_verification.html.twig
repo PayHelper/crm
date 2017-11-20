@@ -1,0 +1,16 @@
+@entityName = PH\PaymentHubBundle\Entity\Customer
+@subject = Email verification
+@isSystem = 0
+@isEditable = 1
+
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body leftmargin="0" rightmargin="0" topmargin="0" bottommargin="0" bgcolor="#ffffff">
+    <h1>Email verification</h1>
+    <p>Click here to verify your email address: <a href="{{ system.appURL }}/customer/email/verify?token={{ entity.emailVerificationToken }}">{{ system.appURL }}/customer/email/verify/?token={{ entity.emailVerificationToken }}</a></p>
+</body>
+</html>

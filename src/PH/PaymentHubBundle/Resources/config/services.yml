@@ -13,6 +13,9 @@ services:
     ph_payment_hub.service.customer:
         class: PH\PaymentHubBundle\Service\CustomerService
         arguments:
+            - "@oro_email.mailer.processor"
+            - "@oro_email.email_renderer"
+            - "%from_email%"
             - "@doctrine.orm.entity_manager"
             - "@ph_payment_hub.generator.randomness"
 
@@ -38,6 +41,14 @@ services:
             - "@translator"
         tags:
             - { name: kernel.event_listener, event: payment_hub.customer.created, method: onCreate }
+
+    ph_payment_hub.listener.customer_email_update:
+        class:  PH\PaymentHubBundle\EventListener\CustomerEmailChangeEventListener
+        arguments:
+            - "@ph_payment_hub.generator.randomness"
+        tags:
+            - { name: doctrine.event_listener, event: preUpdate }
+
 
     ph_payment_hub.listener.user_change_task:
         class: PH\PaymentHubBundle\EventSubscriber\CreateTaskForUserSubscriber

@@ -9,6 +9,7 @@ namespace PH\PaymentHubBundle\Entity;
 interface NotificationLogInterface
 {
     const TYPE_SUBSCRIPTION_ACTIVATION = 'activation';
+    const TYPE_CUSTOMER_EMAIL_VERIFICATION = 'customer_email_verification';
 
     /**
      * @return int

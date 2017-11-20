@@ -3,6 +3,7 @@
 namespace PH\PaymentHubBundle\Tests\Functional\Controller;
 
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
+use PH\PaymentHubBundle\Entity\Customer;
 
 class CustomerDataControllerTest extends WebTestCase
 {
@@ -59,5 +60,25 @@ class CustomerDataControllerTest extends WebTestCase
         self::assertEquals(302, $this->client->getResponse()->getStatusCode());
         $crawler = $this->client->followRedirect();
         $this->assertContains('Nicolas', $crawler->html());
+    }
+
+    public function testActivateCustomer()
+    {
+        $this->client->request('POST', $this->getUrl('ph_subscriptions_httppush_retrieve'), [], [], [], self::TEST_SUBSCRIPTION);
+        self::assertEquals(200, $this->client->getResponse()->getStatusCode());
+        self::assertEquals('{"status":"OK"}', $this->client->getResponse()->getContent());
+
+        $this->client->request('POST', $this->getUrl('ph_customer_add_to_subscription'), json_decode(self::TEST_CUSTOMER, true) + ['token' => 'nh7e7Eu5D6']);
+        self::assertEquals(302, $this->client->getResponse()->getStatusCode());
+
+        $customer = $this->getContainer()->get('doctrine')->getManager()->getRepository(Customer::class)->findOneBy(array('email' => 'john.doe@example.com'));
+
+        $this->client->request('GET', $this->getUrl('ph_customer_email_verify'), ['token' => $customer->getEmailVerificationToken()]);
+        self::assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $customer = $this->getContainer()->get('doctrine')->getManager()->getRepository(Customer::class)->findOneBy(array('email' => 'john.doe@example.com'));
+        self::assertNotNull($customer->getEmailVerifiedAt());
+
+        $this->client->request('GET', $this->getUrl('ph_customer_email_verify'), ['token' => $customer->getEmailVerificationToken()]);
+        self::assertEquals(404, $this->client->getResponse()->getStatusCode());
     }
 }

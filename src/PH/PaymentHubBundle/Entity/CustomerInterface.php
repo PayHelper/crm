@@ -48,6 +48,11 @@ interface CustomerInterface
     public function getAddresses();
 
     /**
+     * @return string
+     */
+    public function getEmail();
+
+    /**
      * @param AbstractAddress $address
      *
      * @return bool
@@ -154,4 +159,34 @@ interface CustomerInterface
      * @param mixed $customerUpdateToken
      */
     public function setCustomerUpdateToken($customerUpdateToken);
+
+    /**
+     * @return mixed
+     */
+    public function getEmailVerificationToken();
+
+    /**
+     * @param mixed $emailVerificationToken
+     */
+    public function setEmailVerificationToken($emailVerificationToken);
+
+    /**
+     * @return mixed
+     */
+    public function getProcessEmailVerification();
+
+    /**
+     * @param mixed $processEmailVerification
+     */
+    public function setProcessEmailVerification($processEmailVerification);
+
+    /**
+     * @return mixed
+     */
+    public function getEmailVerifiedAt();
+
+    /**
+     * @param mixed $emailVerifiedAt
+     */
+    public function setEmailVerifiedAt($emailVerifiedAt);
 }

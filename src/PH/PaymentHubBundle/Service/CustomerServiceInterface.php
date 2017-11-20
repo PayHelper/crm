@@ -13,6 +13,8 @@ use PH\PaymentHubBundle\Entity\CustomerInterface;
  */
 interface CustomerServiceInterface
 {
+    const EMAIL_VERIFICATION_TEMPLATE = 'customer_email_verification';
+
     /**
      * @param CustomerInterface $customer
      *
@@ -33,4 +35,11 @@ interface CustomerServiceInterface
      * @return mixed
      */
     public function resetUpdateToken(CustomerInterface $customer);
+
+    /**
+     * @param CustomerInterface $customer
+     *
+     * @return array
+     */
+    public function sendEmailVerificationEmail(CustomerInterface $customer);
 }

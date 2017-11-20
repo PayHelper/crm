@@ -4,7 +4,7 @@ namespace PH\PaymentHubBundle\Migrations\Data\ORM;
 
 use Oro\Bundle\EmailBundle\Migrations\Data\ORM\AbstractEmailFixture;
 
-class EmailTemplates extends AbstractEmailFixture
+class LoadEmailTemplates extends AbstractEmailFixture
 {
     /**
      * Return path to email templates.

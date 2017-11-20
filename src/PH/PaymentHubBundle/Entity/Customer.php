@@ -11,7 +11,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 /**
  * Class Customer.
  *
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="PH\PaymentHubBundle\Repository\CustomerRepository")
  * @ORM\Table(name="ph_customer")
  * @Config(
  *      defaultValues={
@@ -77,6 +77,21 @@ class Customer extends ExtendPerson implements ChannelAwareInterface, CustomerIn
     protected $customerUpdateToken;
 
     /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $emailVerificationToken;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    protected $processEmailVerification;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    protected $emailVerifiedAt;
+
+    /**
      * Customer constructor.
      */
     public function __construct()
@@ -87,7 +102,7 @@ class Customer extends ExtendPerson implements ChannelAwareInterface, CustomerIn
     }
 
     /**
-     * @return mixed
+     * {@inheritdoc}
      */
     public function getSubscriptions()
     {
@@ -95,7 +110,7 @@ class Customer extends ExtendPerson implements ChannelAwareInterface, CustomerIn
     }
 
     /**
-     * @param mixed $subscriptions
+     * {@inheritdoc}
      */
     public function setSubscriptions($subscriptions)
     {
@@ -103,7 +118,7 @@ class Customer extends ExtendPerson implements ChannelAwareInterface, CustomerIn
     }
 
     /**
-     * @param SubscriptionInterface $subscription
+     * {@inheritdoc}
      */
     public function addSubscription(SubscriptionInterface $subscription)
     {
@@ -111,7 +126,7 @@ class Customer extends ExtendPerson implements ChannelAwareInterface, CustomerIn
     }
 
     /**
-     * @return mixed
+     * {@inheritdoc}
      */
     public function getNewsletterAllowed()
     {
@@ -119,7 +134,7 @@ class Customer extends ExtendPerson implements ChannelAwareInterface, CustomerIn
     }
 
     /**
-     * @param mixed $newsletterAllowed
+     * {@inheritdoc}
      */
     public function setNewsletterAllowed($newsletterAllowed)
     {
@@ -127,7 +142,7 @@ class Customer extends ExtendPerson implements ChannelAwareInterface, CustomerIn
     }
 
     /**
-     * @return mixed
+     * {@inheritdoc}
      */
     public function getGiftAllowed()
     {
@@ -135,7 +150,7 @@ class Customer extends ExtendPerson implements ChannelAwareInterface, CustomerIn
     }
 
     /**
-     * @param mixed $giftAllowed
+     * {@inheritdoc}
      */
     public function setGiftAllowed($giftAllowed)
     {
@@ -143,7 +158,7 @@ class Customer extends ExtendPerson implements ChannelAwareInterface, CustomerIn
     }
 
     /**
-     * @return mixed
+     * {@inheritdoc}
      */
     public function getPhone()
     {
@@ -151,7 +166,7 @@ class Customer extends ExtendPerson implements ChannelAwareInterface, CustomerIn
     }
 
     /**
-     * @param mixed $phone
+     * {@inheritdoc}
      */
     public function setPhone($phone)
     {
@@ -159,7 +174,7 @@ class Customer extends ExtendPerson implements ChannelAwareInterface, CustomerIn
     }
 
     /**
-     * @return mixed
+     * {@inheritdoc}
      */
     public function getPublicComment()
     {
@@ -167,7 +182,7 @@ class Customer extends ExtendPerson implements ChannelAwareInterface, CustomerIn
     }
 
     /**
-     * @param mixed $publicComment
+     * {@inheritdoc}
      */
     public function setPublicComment($publicComment)
     {
@@ -175,7 +190,7 @@ class Customer extends ExtendPerson implements ChannelAwareInterface, CustomerIn
     }
 
     /**
-     * @return mixed
+     * {@inheritdoc}
      */
     public function getComment()
     {
@@ -183,7 +198,7 @@ class Customer extends ExtendPerson implements ChannelAwareInterface, CustomerIn
     }
 
     /**
-     * @param mixed $comment
+     * {@inheritdoc}
      */
     public function setComment($comment)
     {
@@ -191,7 +206,7 @@ class Customer extends ExtendPerson implements ChannelAwareInterface, CustomerIn
     }
 
     /**
-     * @return mixed
+     * {@inheritdoc}
      */
     public function getCustomerUpdateToken()
     {
@@ -199,10 +214,58 @@ class Customer extends ExtendPerson implements ChannelAwareInterface, CustomerIn
     }
 
     /**
-     * @param mixed $customerUpdateToken
+     * {@inheritdoc}
      */
     public function setCustomerUpdateToken($customerUpdateToken)
     {
         $this->customerUpdateToken = $customerUpdateToken;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getEmailVerificationToken()
+    {
+        return $this->emailVerificationToken;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setEmailVerificationToken($emailVerificationToken)
+    {
+        $this->emailVerificationToken = $emailVerificationToken;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getProcessEmailVerification()
+    {
+        return $this->processEmailVerification;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setProcessEmailVerification($processEmailVerification)
+    {
+        $this->processEmailVerification = $processEmailVerification;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getEmailVerifiedAt()
+    {
+        return $this->emailVerifiedAt;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setEmailVerifiedAt($emailVerifiedAt)
+    {
+        $this->emailVerifiedAt = $emailVerifiedAt;
     }
 }

@@ -11,7 +11,10 @@ security:
             pattern: ^/subscriptions/customer
             provider:  chain_provider
             anonymous: true
+        customer_actions:
+            pattern: ^/customer/(edit|email/verify)
+            provider:  chain_provider
+            anonymous: true
         dev:
             pattern:  ^/(_(profiler|wdt)|css|images|js)/
             security: false
-

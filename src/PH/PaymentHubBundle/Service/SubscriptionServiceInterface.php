@@ -6,6 +6,7 @@
 
 namespace PH\PaymentHubBundle\Service;
 
+use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
 use PH\PaymentHubBundle\Entity\SubscriptionInterface;
 
 /**
@@ -23,4 +24,9 @@ interface SubscriptionServiceInterface
      * @param SubscriptionInterface $subscription
      */
     public function sendTransactionCompletedEmail(SubscriptionInterface $subscription);
+
+    /**
+     * @return null|object|BusinessUnit
+     */
+    public function getBusinessUnit();
 }

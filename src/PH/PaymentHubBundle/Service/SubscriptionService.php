@@ -7,6 +7,7 @@ use Oro\Bundle\EmailBundle\Entity\EmailTemplate;
 use Oro\Bundle\EmailBundle\Form\Model\Email;
 use Oro\Bundle\EmailBundle\Mailer\Processor;
 use Oro\Bundle\EmailBundle\Provider\EmailRenderer;
+use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
 use PH\PaymentHubBundle\Entity\OrderItem;
 use PH\PaymentHubBundle\Entity\Payment;
 use PH\PaymentHubBundle\Entity\SubscriptionInterface;
@@ -16,6 +17,8 @@ use PH\PaymentHubBundle\Entity\SubscriptionInterface;
  */
 class SubscriptionService implements SubscriptionServiceInterface
 {
+    const MAIN_BUSINESS_UNIT = 'Main';
+
     /**
      * @var Processor
      */
@@ -42,7 +45,7 @@ class SubscriptionService implements SubscriptionServiceInterface
      * @param Processor              $emailProcessor
      * @param EmailRenderer          $emailRenderer
      * @param EntityManagerInterface $entityManager
-     * @param                        $fromEmail
+     * @param string                 $fromEmail
      */
     public function __construct(Processor $emailProcessor, EmailRenderer $emailRenderer, EntityManagerInterface $entityManager, $fromEmail)
     {
@@ -99,6 +102,16 @@ class SubscriptionService implements SubscriptionServiceInterface
             'body' => $templateRendered,
             'subject' => $subjectRendered,
         ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBusinessUnit()
+    {
+        $businessUnitRepository = $this->entityManager->getRepository(BusinessUnit::class);
+
+        return $businessUnitRepository->findOneBy(['name' => self::MAIN_BUSINESS_UNIT]);
     }
 
     /**

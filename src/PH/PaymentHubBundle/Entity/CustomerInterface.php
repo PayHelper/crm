@@ -189,4 +189,24 @@ interface CustomerInterface
      * @param mixed $emailVerifiedAt
      */
     public function setEmailVerifiedAt($emailVerifiedAt);
+
+    /**
+     * @return mixed
+     */
+    public function getOwner();
+
+    /**
+     * @param mixed $owner
+     */
+    public function setOwner($owner);
+
+    /**
+     * @return mixed
+     */
+    public function getOrganization();
+
+    /**
+     * @param mixed $organization
+     */
+    public function setOrganization($organization);
 }

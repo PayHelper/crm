@@ -2,6 +2,7 @@
 
 namespace PH\PaymentHubBundle\Controller;
 
+use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
 use PH\PaymentHubBundle\Entity\Subscription;
 use PH\PaymentHubBundle\Entity\SubscriptionInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -30,6 +31,10 @@ class ContentPushController extends Controller
         if (null === $subscription) {
             $subscription = new Subscription();
             $subscription->setCreatedAt(new \DateTime());
+            /** @var BusinessUnit $businessUnit */
+            $businessUnit = $subscriptionService->getBusinessUnit();
+            $subscription->setOwner($businessUnit);
+            $subscription->setOrganization($businessUnit->getOrganization());
             $manager->persist($subscription);
         } else {
             $subscription->setUpdatedAt(new \DateTime());

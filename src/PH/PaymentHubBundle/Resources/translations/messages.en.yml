@@ -5,3 +5,56 @@ ph.paymenthub.customer.gift_allowed.label: Gift allowed
 ph.paymenthub.customer.phone.label: Phone number
 ph.paymenthub.customer.comment.label: Comment
 ph.paymenthub.customer.public_comment.label: Public comment
+ph.paymenthub.customer.addresses.label: Addresses
+ph.paymenthub.customer.birthday.label: Birthday
+ph.paymenthub.customer.customer_update_token.label: Customer update token
+ph.paymenthub.customer.data_channel.label: Data channel
+ph.paymenthub.customer.email.label: Email
+ph.paymenthub.customer.email_verification_token.label: Email verification token
+ph.paymenthub.customer.email_verified_at.label: Email verified at
+ph.paymenthub.customer.first_name.label: First Name
+ph.paymenthub.customer.gender.label: Gender
+ph.paymenthub.customer.name_prefix.label: Name prefix
+ph.paymenthub.customer.name_suffix.label: Name suffix
+ph.paymenthub.customer.process_email_verification.label: Process email verification
+ph.paymenthub.customer.subscriptions.label: Subscriptions
+ph.paymenthub.customer.owner.label: Owner
+
+ph.paymenthub.subscription.activation_email_send.label: Activation email send
+ph.paymenthub.subscription.checkout_completed_at.label: Checkout completed at
+ph.paymenthub.subscription.checkout_state.label: Checkout state
+ph.paymenthub.subscription.created_at.label: Created At
+ph.paymenthub.subscription.customer.label: Customer
+ph.paymenthub.subscription.interval.label: Interval
+ph.paymenthub.subscription.items.label: Item
+ph.paymenthub.subscription.notes.label: Notes
+ph.paymenthub.subscription.notifications.label: Notifications
+ph.paymenthub.subscription.number.label: Number
+ph.paymenthub.subscription.order_id.label: Order id
+ph.paymenthub.subscription.order_state.label: Order state
+ph.paymenthub.subscription.organization.label: Organization
+ph.paymenthub.subscription.owner.label: Owne
+ph.paymenthub.subscription.payment_state.label: Payment state
+ph.paymenthub.subscription.payments.label: Payments
+ph.paymenthub.subscription.provider_type.label: Provider type
+ph.paymenthub.subscription.purchase_state.label: Purchase state
+ph.paymenthub.subscription.start_date.label: Start date
+ph.paymenthub.subscription.state.label: State
+ph.paymenthub.subscription.token.label: Token
+ph.paymenthub.subscription.total.label: Total
+ph.paymenthub.subscription.type.label: Type
+ph.paymenthub.subscription.updated_at.label: Updated at
+
+
+ph.paymenthub.subscription.entity_label: PaymentHub Subscription
+ph.paymenthub.subscription.entity_plural_label: PaymentHub Subscriptions
+ph.paymenthub.customer.entity_label: PaymentHub Customer
+ph.paymenthub.customer.entity_plural_label: PaymentHub Customers
+ph.paymenthub.address.entity_label: PaymentHub Address
+ph.paymenthub.address.entity_plural_label: PaymentHub Addresses
+ph.paymenthub.orderitem.entity_label: PaymentHub Order Item
+ph.paymenthub.orderitem.entity_plural_label: PaymentHub Order Items
+ph.paymenthub.payment.entity_label: PaymentHub Payment
+ph.paymenthub.payment.entity_plural_label: PaymentHub Payments
+ph.paymenthub.notificationlog.entity_label: PaymentHub Notification Log
+ph.paymenthub.notificationlog.entity_plural_label: PaymentHub Notification Logs

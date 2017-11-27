@@ -11,11 +11,29 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation\Timestampable;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 /**
  * @ORM\Entity(repositoryClass="PH\PaymentHubBundle\Repository\SubscriptionRepository")
  * @ORM\Table(name="ph_subscription")
- * @Config
+ *
+ * @Config(
+ *      defaultValues={
+ *          "ownership"={
+ *              "owner_type"="BUSINESS_UNIT",
+ *              "owner_field_name"="owner",
+ *              "owner_column_name"="business_unit_owner_id",
+ *              "organization_field_name"="organization",
+ *              "organization_column_name"="organization_id"
+ *          },
+ *          "security"={
+ *              "type"="ACL",
+ *              "group_name"="",
+ *              "category"="subscription_management",
+ *              "field_acl_supported"="true"
+ *          },
+ *     }
+ * )
  */
 class Subscription implements SubscriptionInterface
 {
@@ -23,6 +41,7 @@ class Subscription implements SubscriptionInterface
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer")
+     *
      * @ConfigField(
      *      defaultValues={
      *          "importexport"={
@@ -34,6 +53,22 @@ class Subscription implements SubscriptionInterface
      * @var int
      */
     private $id;
+
+    /**
+     * @var \Oro\Bundle\OrganizationBundle\Entity\BusinessUnit
+     *
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\BusinessUnit", cascade={"persist"})
+     * @ORM\JoinColumn(name="business_unit_owner_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    protected $owner;
+
+    /**
+     * @var Organization
+     *
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
+     * @ORM\JoinColumn(name="organization_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    protected $organization;
 
     /**
      * @ORM\Column(type="string", nullable=true)
@@ -51,7 +86,8 @@ class Subscription implements SubscriptionInterface
 
     /**
      * @ORM\Column(type="string")
-     * @ConfigField
+     *
+     * @ConfigField()
      *
      * @var string
      */
@@ -59,7 +95,6 @@ class Subscription implements SubscriptionInterface
 
     /**
      * @ORM\Column(type="string")
-     * @ConfigField
      *
      * @var string
      */
@@ -67,7 +102,6 @@ class Subscription implements SubscriptionInterface
 
     /**
      * @ORM\Column(type="string")
-     * @ConfigField
      *
      * @var string
      */
@@ -75,7 +109,6 @@ class Subscription implements SubscriptionInterface
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
-     * @ConfigField
      *
      * @var \DateTime
      */
@@ -83,7 +116,6 @@ class Subscription implements SubscriptionInterface
 
     /**
      * @ORM\Column(type="float")
-     * @ConfigField
      *
      * @var int
      */
@@ -98,7 +130,6 @@ class Subscription implements SubscriptionInterface
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     * @ConfigField
      *
      * @var string
      */
@@ -106,7 +137,6 @@ class Subscription implements SubscriptionInterface
 
     /**
      * @ORM\Column(type="float")
-     * @ConfigField
      *
      * @var float
      */
@@ -114,6 +144,7 @@ class Subscription implements SubscriptionInterface
 
     /**
      * @ORM\Column(type="datetime")
+     *
      * @Timestampable(on="create")
      *
      * @var \DateTime
@@ -122,6 +153,7 @@ class Subscription implements SubscriptionInterface
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     *
      * @Timestampable(on="update")
      *
      * @var \DateTime
@@ -170,6 +202,14 @@ class Subscription implements SubscriptionInterface
     /**
      * @ORM\ManyToOne(targetEntity="PH\PaymentHubBundle\Entity\Customer", inversedBy="subscriptions", fetch="EAGER")
      * @ORM\JoinColumn(name="customer_id", referencedColumnName="id")
+     *
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "full"=true
+     *          }
+     *      }
+     * )
      */
     protected $customer;
 
@@ -536,5 +576,37 @@ class Subscription implements SubscriptionInterface
     public function setActivationEmailSend($activationEmailSend)
     {
         $this->activationEmailSend = $activationEmailSend;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOwner()
+    {
+        return $this->owner;
+    }
+
+    /**
+     *{@inheritdoc}
+     */
+    public function setOwner($owner)
+    {
+        $this->owner = $owner;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOrganization()
+    {
+        return $this->organization;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setOrganization($organization)
+    {
+        $this->organization = $organization;
     }
 }

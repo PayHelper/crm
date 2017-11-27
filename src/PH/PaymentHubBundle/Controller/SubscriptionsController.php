@@ -18,7 +18,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 
 /**
  * @Route("/subscriptions/list")
@@ -62,43 +61,11 @@ class SubscriptionsController extends Controller
      */
     public function changeAction(Subscription $subscription, Request $request)
     {
-        if (SubscriptionInterface::TYPE_NONRECURRING === $subscription->getType()) {
-            throw new BadCredentialsException();
+        if (SubscriptionInterface::TYPE_RECURRING !== $subscription->getType()) {
+            $this->redirect('subscriptions.subscription_view');
         }
 
         $form = $this->get('form.factory')->create(ChangeBankAccountSubscriptionType::class, new SubscriptionBankAccount());
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-            //$request->headers->remove('x-oro-hash-navigation');
-            $guzzleClientFactory = $this->get('oro_integration.transport.rest.client_factory');
-            //$client = $guzzleClientFactory->createRestClient('http://127.0.0.1:8001/app_dev.php', []);
-            //$client->delete(sprintf('/api/v1/subscriptions/%s/payments/%s/cancel', $subscription->getOrderId(), $subscription->getPayments()->first()->getPaymentId()), ['Authorization' => 'Bearer eyJhbGciOiJSUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX0FETUlOIl0sInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE1MTEyNzI1MjMsImV4cCI6MTUxMTI3NjEyM30.TDs5XmUJkMFGTXv3jbPRnouhwn4GvXIdig0tKPUzNq1OEJDdrsnfyfKQhyQh7BxX6wOK70Q6VcI7XJdROsVCX0rp-nyNZ-9G5qMkQq_SVY0HVU7uw6m0chwWKZSHxG0vMM_TZ5Q29ItqiNJrgIj1uTIV7tXFIJ7LHvbw5dCcjsA7Xw5e9j8A7Fllehk2rWVo6_RwKDHGtr4il21i3kDBuMV2PbTalB4EoZQrjkkmZJjaG_aex0efL6teVO7rAIWa7_zZrUZrExin-TepW6lWupUzCPd0uKTOW0JYuP-37YvAG4jiQ_-vjE0Pl2pjYq3ZC_QUbatI3qCDDO7YIHv9RXwaZaDyap_kXbLHWuy-dQpA2aiWNRt37-3lU4gjck3uwC5AYmxKCsSnNb0K_VvHWNhn3SRIy4UD1Fy52tQZkt7pfm9eTmf6KEs5jJ4kuQzTwBlyto2y82slsc-zTgo8pRPKy19-iLI1HMzZQ1yrO7KtPqVFiLV9hsm_ZK2tZU-3Jahn7c23m-zelcFmTG-eBb4B4Nda0Sp7hCQWQoYMN3B5zcczWAyUCOqWI1ooJjT4J91lZKo7_WIq_1lrZ5RPh_5MICu2aprUU6QB8HEZDyHZI0y2dUA-p5N9QZAUigtXirOAXwHwQNs6y0Jtb7Iy8AaRGGyzVTy5xdUQVOYdpXk']);
-
-            $date = $data->getStartDate();
-//
-//            $result = $client->post('/public-api/v1/subscriptions/', [
-//                'amount' => $data->getAmount() * 100,
-//                'interval' => $data->getInterval(),
-//                'start_date' => $date->format('Y-m-d'),
-//                'currency_code' => 'EUR',
-//                'type' => SubscriptionInterface::TYPE_RECURRING,
-//                'method' => $subscription->getProviderType(),
-//                'metadata' => [
-//                    'subscriptionId' => $subscription->getId(),
-//                ]
-//            ]);
-//
-//            $response = json_decode($result->getBodyAsString(), true);
-
-            return new JsonResponse(['redirectUrl' => sprintf('http://www.hub.s-lab.sourcefabric.org/app_dev.php/public-api/v1/subscriptions/%s/pay/', /*$response['token_value']*/'PCuLIh3Ini')], Response::HTTP_OK);
-            $request->attributes->set('_fullRedirect', true);
-            $request->query->set('input_action', json_encode(['redirectUrl' => sprintf('http://www.hub.s-lab.sourcefabric.org/app_dev.php/public-api/v1/subscriptions/%s/pay/', /*$response['token_value']*/'PCuLIh3Ini')]));
-
-            //return $this->redirect(sprintf('http://www.hub.s-lab.sourcefabric.org/app_dev.php/public-api/v1/subscriptions/%s/pay/', /*$response['token_value']*/'PCuLIh3Ini'));
-
-            return $this->get('oro_ui.router')->redirect($subscription);
-        }
 
         return array(
             'entity' => $subscription,

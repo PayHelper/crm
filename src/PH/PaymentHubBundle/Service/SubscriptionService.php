@@ -10,6 +10,7 @@ use Oro\Bundle\EmailBundle\Provider\EmailRenderer;
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
 use PH\PaymentHubBundle\Entity\OrderItem;
 use PH\PaymentHubBundle\Entity\Payment;
+use PH\PaymentHubBundle\Entity\PaymentInterface;
 use PH\PaymentHubBundle\Entity\SubscriptionInterface;
 
 /**
@@ -158,7 +159,7 @@ class SubscriptionService implements SubscriptionServiceInterface
         // set existing payments status to cancelled
         $existingPayments = $subscription->getPayments();
         foreach ($existingPayments as $existingPayment) {
-            $existingPayment->setState('canceled');
+            $existingPayment->setState(PaymentInterface::STATE_CANCELLED);
         }
 
         $paymentRepository = $this->entityManager->getRepository(Payment::class);

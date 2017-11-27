@@ -23,3 +23,8 @@ default user for tasks.
 
 1. Run command `oro:cron:definitions:load` to setup all crons in scheduler
 2. In your crontab file you need to add `*/1 * * * * /path/to/php /path/to/app/console oro:cron --env=prod > /dev/null`
+
+## Default Organization and BusinessUnit.
+
+Custom entities created by calls from payment hub (or customer form) need to get assigned to organization and business unit 
+manually. To do this - there must be business unit in oro called "Main". Organization is fetched from business unit.

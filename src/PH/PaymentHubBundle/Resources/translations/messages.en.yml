@@ -33,7 +33,7 @@ ph.paymenthub.subscription.number.label: Number
 ph.paymenthub.subscription.order_id.label: Order id
 ph.paymenthub.subscription.order_state.label: Order state
 ph.paymenthub.subscription.organization.label: Organization
-ph.paymenthub.subscription.owner.label: Owne
+ph.paymenthub.subscription.owner.label: Owner
 ph.paymenthub.subscription.payment_state.label: Payment state
 ph.paymenthub.subscription.payments.label: Payments
 ph.paymenthub.subscription.provider_type.label: Provider type

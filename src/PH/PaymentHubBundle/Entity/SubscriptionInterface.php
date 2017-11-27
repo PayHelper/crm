@@ -223,4 +223,24 @@ interface SubscriptionInterface
      * @param mixed $notifications
      */
     public function setNotifications($notifications);
+
+    /**
+     * @return mixed
+     */
+    public function getOwner();
+
+    /**
+     * @param mixed $owner
+     */
+    public function setOwner($owner);
+
+    /**
+     * @return mixed
+     */
+    public function getOrganization();
+
+    /**
+     * @param mixed $organization
+     */
+    public function setOrganization($organization);
 }

@@ -8,6 +8,7 @@ use Oro\Bundle\EmailBundle\Form\Model\Email;
 use Oro\Bundle\EmailBundle\Mailer\Processor;
 use Oro\Bundle\EmailBundle\Provider\EmailRenderer;
 use Doctrine\ORM\EntityManagerInterface;
+use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
 use PH\PaymentHubBundle\Entity\CustomerInterface;
 use PH\PaymentHubBundle\Generator\RandomnessGeneratorInterface;
 
@@ -16,6 +17,8 @@ use PH\PaymentHubBundle\Generator\RandomnessGeneratorInterface;
  */
 class CustomerService implements CustomerServiceInterface
 {
+    const MAIN_BUSINESS_UNIT = 'Main';
+
     /**
      * @var EntityManagerInterface
      */
@@ -65,6 +68,11 @@ class CustomerService implements CustomerServiceInterface
     public function prepareCustomer(CustomerInterface $customer)
     {
         $channelRepository = $this->entityManager->getRepository(Channel::class);
+        $businessUnitRepository = $this->entityManager->getRepository(BusinessUnit::class);
+        $businessUnit = $businessUnitRepository->findOneBy(['name' => self::MAIN_BUSINESS_UNIT]);
+
+        $customer->setOwner($businessUnit);
+        $customer->setOrganization($businessUnit->getOrganization());
         $customer->setDataChannel($channelRepository->findOneBy(['name' => 'Payment Hub Channel']));
         $customer->setCreatedAt(new \DateTime());
         $customer->setUpdatedAt(new \DateTime());

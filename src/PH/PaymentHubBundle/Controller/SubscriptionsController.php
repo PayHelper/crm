@@ -27,7 +27,9 @@ class SubscriptionsController extends Controller
 {
     /**
      * @Route("/", name="subscriptions.subscription_index")
+     *
      * @Template()
+     *
      * @Acl(
      *     id="subscriptions.subscription_view",
      *     type="entity",

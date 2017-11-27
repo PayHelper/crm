@@ -105,75 +105,7 @@ class SubscriptionsController extends Controller
             'form' => $form->createView(),
         );
     }
-
-    /**
-     * @Route("/change/ajax/{id}", name="subscriptions.subscription_ajax_change", requirements={"id"="\d+"})
-     * @AclAncestor("subscriptions.subscription_change")
-     */
-    public function ajaxChangeAction(Subscription $subscription, Request $request)
-    {
-        if (SubscriptionInterface::TYPE_RECURRING !== $subscription->getType()) {
-            return new JsonResponse(null, Response::HTTP_BAD_REQUEST);
-        }
-
-        $form = $this->get('form.factory')->create(ChangeBankAccountSubscriptionType::class, new SubscriptionBankAccount());
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-            $guzzleClientFactory = $this->get('oro_integration.transport.rest.client_factory');
-            $client = $guzzleClientFactory->createRestClient($this->container->getParameter('payments_hub.host'), []);
-            $result = $client->post('/api/v1/login_check', [
-                'username' => $this->container->getParameter('payments_hub.username'),
-                'password' => $this->container->getParameter('payments_hub.password'),
-            ]);
-
-            $response = json_decode($result->getBodyAsString(), true);
-
-            try {
-                $client->delete(sprintf('/api/v1/subscriptions/%s/payments/%s/cancel',
-                    $subscription->getOrderId(),
-                    $subscription->getPayments()->first()->getPaymentId()
-                ), ['Authorization' => sprintf('Bearer %s', $response['token'])]);
-            } catch (GuzzleRestException $e) {
-                $result = $e->getResponse()->getBodyAsString();
-
-                return new JsonResponse(json_decode($result, true), Response::HTTP_BAD_REQUEST);
-            }
-
-            $date = $data->getStartDate();
-
-            try {
-                $result = $client->post('/public-api/v1/subscriptions/', [
-                    'amount' => $data->getAmount() * 100,
-                    'interval' => $data->getInterval(),
-                    'start_date' => $date->format('Y-m-d'),
-                    'currency_code' => 'EUR',
-                    'type' => SubscriptionInterface::TYPE_RECURRING,
-                    'method' => $subscription->getProviderType(),
-                    'metadata' => [
-                        'subscriptionId' => $subscription->getOrderId(),
-                    ],
-                ]);
-            } catch (GuzzleRestException $e) {
-                $result = $e->getResponse()->getBodyAsString();
-
-                return new JsonResponse(json_decode($result, true), Response::HTTP_BAD_REQUEST);
-            }
-
-            $response = json_decode($result->getBodyAsString(), true);
-
-            return new JsonResponse([
-                'redirectUrl' => sprintf(
-                    $this->container->getParameter('payments_hub.host').'/public-api/v1/subscriptions/%s/pay/?redirect=%s',
-                    $response['token_value'],
-                    $this->generateUrl('subscriptions.subscription_view', ['id' => $subscription->getId()])
-                ),
-            ], Response::HTTP_OK);
-        }
-
-        return new JsonResponse(null, Response::HTTP_BAD_REQUEST);
-    }
-
+    
     /**
      * @Route("/create", name="subscriptions.subscription_create")
      * @Template("PHPaymentHubBundle:Subscriptions:update.html.twig")

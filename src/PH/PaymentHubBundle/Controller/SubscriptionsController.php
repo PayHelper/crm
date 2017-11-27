@@ -118,7 +118,6 @@ class SubscriptionsController extends Controller
 
         $form = $this->get('form.factory')->create(ChangeBankAccountSubscriptionType::class, new SubscriptionBankAccount());
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             $guzzleClientFactory = $this->get('oro_integration.transport.rest.client_factory');

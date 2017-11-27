@@ -23,3 +23,7 @@ default user for tasks.
 
 1. Run command `oro:cron:definitions:load` to setup all crons in scheduler
 2. In your crontab file you need to add `*/1 * * * * /path/to/php /path/to/app/console oro:cron --env=prod > /dev/null`
+
+## Synchronize extended and custom entities metadata
+
+1. Run command `oro:entity-extend:update-schema` to synchronize extended and custom entities metadata with a database schema

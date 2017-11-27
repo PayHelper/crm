@@ -5,3 +5,7 @@ ph.paymenthub.customer.gift_allowed.label: Gift allowed
 ph.paymenthub.customer.phone.label: Phone number
 ph.paymenthub.customer.comment.label: Comment
 ph.paymenthub.customer.public_comment.label: Public comment
+ph.paymenthub.subscriptions.bank_account.label: Change bank account details
+ph.paymenthub.subscriptions.bank_account_success.label: The bank account details were changed susccessfully.
+ph.paymenthub.subscriptions.bank_account_error.label: Error occured.
+ph.paymenthub.subscriptions.bank_account_go_back.label: Go back

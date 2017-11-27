@@ -142,6 +142,12 @@ class SubscriptionService implements SubscriptionServiceInterface
     protected function handlePayments(SubscriptionInterface $subscription, $data)
     {
         $payments = [];
+        // set existing payments status to cancelled
+        $existingPayments = $subscription->getPayments();
+        foreach ($existingPayments as $existingPayment) {
+            $existingPayment->setState('canceled');
+        }
+
         $paymentRepository = $this->entityManager->getRepository(Payment::class);
         foreach ($data['payments'] as $singlePayment) {
             $payment = $paymentRepository->findOneBy(['paymentId' => $singlePayment['id']]);

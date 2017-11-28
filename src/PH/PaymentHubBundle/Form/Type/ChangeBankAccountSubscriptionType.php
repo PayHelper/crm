@@ -3,7 +3,7 @@
 namespace PH\PaymentHubBundle\Form\Type;
 
 use Oro\Bundle\FormBundle\Form\Type\OroDateType;
-use PH\PaymentHubBundle\Entity\SubscriptionBankAccount;
+use PH\PaymentHubBundle\Entity\Subscription;
 use PH\PaymentHubBundle\Entity\SubscriptionInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -15,7 +15,7 @@ class ChangeBankAccountSubscriptionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('amount')
+            ->add('total')
             ->add('interval', ChoiceType::class, [
                 'placeholder' => ' ',
                 'choices' => [
@@ -25,7 +25,7 @@ class ChangeBankAccountSubscriptionType extends AbstractType
                 ],
             ])
             ->add('startDate', OroDateType::class, [
-                'required' => false,
+                'required' => true,
             ])
         ;
     }
@@ -33,7 +33,7 @@ class ChangeBankAccountSubscriptionType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => SubscriptionBankAccount::class,
+            'data_class' => Subscription::class,
         ));
     }
 

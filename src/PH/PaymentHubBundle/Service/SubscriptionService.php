@@ -2,6 +2,8 @@
 
 namespace PH\PaymentHubBundle\Service;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
 use Oro\Bundle\EmailBundle\Entity\EmailTemplate;
 use Oro\Bundle\EmailBundle\Form\Model\Email;
@@ -162,9 +164,8 @@ class SubscriptionService implements SubscriptionServiceInterface
             $existingPayment->setState(PaymentInterface::STATE_CANCELLED);
         }
 
-        $paymentRepository = $this->entityManager->getRepository(Payment::class);
         foreach ($data['payments'] as $singlePayment) {
-            $payment = $paymentRepository->findOneBy(['paymentId' => $singlePayment['id']]);
+            $payment = $this->getPayment($existingPayments, $singlePayment['id']);
             if (null === $payment) {
                 $payment = new Payment();
                 $payment->setPaymentId($singlePayment['id']);
@@ -184,5 +185,12 @@ class SubscriptionService implements SubscriptionServiceInterface
         }
 
         return $payments;
+    }
+
+    private function getPayment(ArrayCollection $payments, $id)
+    {
+        $criteria = Criteria::create()->where(Criteria::expr()->eq('paymentId', $id));
+
+        return $payments->matching($criteria);
     }
 }

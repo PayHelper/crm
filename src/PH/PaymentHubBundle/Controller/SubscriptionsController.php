@@ -9,7 +9,6 @@ use PH\PaymentHubBundle\Entity\OrderCheckoutInterface;
 use PH\PaymentHubBundle\Entity\OrderItemInterface;
 use PH\PaymentHubBundle\Entity\PaymentInterface;
 use PH\PaymentHubBundle\Entity\Subscription;
-use PH\PaymentHubBundle\Entity\SubscriptionBankAccount;
 use PH\PaymentHubBundle\Entity\SubscriptionInterface;
 use PH\PaymentHubBundle\Form\Type\ChangeBankAccountSubscriptionType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -59,13 +58,13 @@ class SubscriptionsController extends Controller
      * @Template()
      * @AclAncestor("subscriptions.subscription_change")
      */
-    public function changeAction(Subscription $subscription, Request $request)
+    public function changeAction(Subscription $subscription)
     {
         if (SubscriptionInterface::TYPE_RECURRING !== $subscription->getType()) {
             $this->redirect('subscriptions.subscription_view');
         }
 
-        $form = $this->get('form.factory')->create(ChangeBankAccountSubscriptionType::class, new SubscriptionBankAccount());
+        $form = $this->get('form.factory')->create(ChangeBankAccountSubscriptionType::class, $subscription);
 
         return array(
             'entity' => $subscription,
@@ -83,7 +82,7 @@ class SubscriptionsController extends Controller
             return new JsonResponse(null, Response::HTTP_BAD_REQUEST);
         }
 
-        $form = $this->get('form.factory')->create(ChangeBankAccountSubscriptionType::class, new SubscriptionBankAccount());
+        $form = $this->get('form.factory')->create(ChangeBankAccountSubscriptionType::class, $subscription);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -112,7 +111,7 @@ class SubscriptionsController extends Controller
 
             try {
                 $result = $client->post('/public-api/v1/subscriptions/', [
-                    'amount' => $data->getAmount() * 100,
+                    'amount' => $data->getTotal() * 100,
                     'interval' => $data->getInterval(),
                     'start_date' => $date->format('Y-m-d'),
                     'currency_code' => 'EUR',
@@ -134,7 +133,7 @@ class SubscriptionsController extends Controller
                 'redirectUrl' => sprintf(
                     $this->container->getParameter('payments_hub.host').'/public-api/v1/subscriptions/%s/pay/?redirect=%s',
                     $response['token_value'],
-                    $this->generateUrl('subscriptions.subscription_view', ['id' => $subscription->getId()])
+                    $this->generateUrl('subscriptions.subscription_view', ['id' => $subscription->getId()], true)
                 ),
             ], Response::HTTP_OK);
         }

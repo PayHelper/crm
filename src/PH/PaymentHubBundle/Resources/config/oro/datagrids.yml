@@ -177,6 +177,11 @@ datagrids:
                 route: subscriptions_api_delete_subscription
                 params:
                     - id
+            change_link:
+                type: url
+                route: subscriptions.subscription_change
+                params:
+                    - id
         sorters:
             columns:
                 state:
@@ -217,6 +222,12 @@ datagrids:
                 link:          delete_link
                 icon:          trash
                 acl_resource:  subscriptions.subscription_delete
+            change:
+                type:          navigate
+                label:         Change bank details
+                link:          change_link
+                icon:          university
+                acl_resource:  subscriptions.subscription_change
 
     ph-customer-subscriptions-grid:
         source:

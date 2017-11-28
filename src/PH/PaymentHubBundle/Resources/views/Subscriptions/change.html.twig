@@ -1,0 +1,80 @@
+{% extends 'OroUIBundle:actions:update.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% form_theme form with 'OroFormBundle:Form:fields.html.twig' %}
+
+{% block navButtons %}
+    {{ UI.cancelButton(path('subscriptions.subscription_index'), 'ph.paymenthub.subscriptions.bank_account_go_back.label'|trans) }}
+    {{ UI.saveAndStayButton({
+        'route': 'subscriptions.subscription_change',
+        'params': {'id': '$id'}
+    }) }}
+{% endblock navButtons %}
+{% block pageHeader %}
+    {% if entity.id %}
+        {% set breadcrumbs = {
+        'entity':      entity,
+        'indexPath':   path('subscriptions.subscription_index'),
+        'indexLabel': 'Subscriptions'|trans,
+        'entityTitle': 'Subscription #'~entity.orderId
+        } %}
+        {{ parent() }}
+    {% else %}
+        {% set title = 'oro.ui.create_entity'|trans({'%entityName%': 'Subscription'|trans}) %}
+        {% include 'OroUIBundle::page_title_block.html.twig' with { title: title } %}
+    {% endif %}
+{% endblock pageHeader %}
+
+{% block content_data %}
+    {% set id = 'subscription-change' %}
+
+    {% set dataBlocks = [
+       {
+        'title': 'ph.paymenthub.subscriptions.bank_account.label'|trans,
+        'class': 'active',
+        'subblocks': [{
+            'title': '',
+            'class': 'bank-details',
+            'data': [
+                form_row(form.total),
+                form_row(form.interval),
+                form_row(form.startDate),
+            ]
+        }]}
+    ]
+    %}
+    {% set data = {
+    'formErrors': form_errors(form)? form_errors(form) : null,
+    'dataBlocks': dataBlocks,
+    } %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        require(['jquery', 'oroui/js/mediator', 'oroui/js/messenger', 'orotranslation/js/translator'],
+            function ($, mediator, messenger, __) {
+                $("form[name='subscriptions_change_bank_account']").submit(function(event) {
+                    event.preventDefault();
+
+                    var url = '{{ path('subscriptions.subscription_ajax_change', {id: entity.id}) }}';
+                    var options = {
+                        successMessage: '{{ 'ph.paymenthub.subscriptions.bank_account_success.label'|trans }}',
+                        errorMessage: '{{ 'ph.paymenthub.subscriptions.bank_account_error.label'|trans }}'
+                    };
+
+                    mediator.execute('showLoading');
+                    $.post({
+                        url: url,
+                        data: $(this).serialize()
+                    }).done(function(res, status, jqXHR) {
+                        mediator.once('page:afterChange', function(){
+                            messenger.notificationFlashMessage('success', __(options.successMessage));
+                        });
+                        window.location.href = res.redirectUrl;
+                    }).always(function () {
+                        mediator.execute('hideLoading');
+                    });
+
+                    return false;
+                });
+            });
+    </script>
+{% endblock content_data %}

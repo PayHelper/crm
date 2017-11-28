@@ -1,0 +1,8 @@
+PH\PaymentHubBundle\Entity\Subscription:
+    properties:
+        interval:
+            - NotBlank: ~
+        total:
+            - NotBlank: ~
+        startDate:
+            - NotBlank: ~

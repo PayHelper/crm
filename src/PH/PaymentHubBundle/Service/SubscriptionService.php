@@ -2,7 +2,7 @@
 
 namespace PH\PaymentHubBundle\Service;
 
-use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
 use Oro\Bundle\EmailBundle\Entity\EmailTemplate;
@@ -160,12 +160,15 @@ class SubscriptionService implements SubscriptionServiceInterface
         $payments = [];
         // set existing payments status to cancelled
         $existingPayments = $subscription->getPayments();
+
         foreach ($existingPayments as $existingPayment) {
             $existingPayment->setState(PaymentInterface::STATE_CANCELLED);
         }
 
         foreach ($data['payments'] as $singlePayment) {
-            $payment = $this->getPayment($existingPayments, $singlePayment['id']);
+            $paymentsCollection = $this->getPayment($existingPayments, (string) $singlePayment['id']);
+            $payment = $paymentsCollection[0];
+
             if (null === $payment) {
                 $payment = new Payment();
                 $payment->setPaymentId($singlePayment['id']);
@@ -187,7 +190,7 @@ class SubscriptionService implements SubscriptionServiceInterface
         return $payments;
     }
 
-    private function getPayment(ArrayCollection $payments, $id)
+    private function getPayment(Collection $payments, $id)
     {
         $criteria = Criteria::create()->where(Criteria::expr()->eq('paymentId', $id));
 

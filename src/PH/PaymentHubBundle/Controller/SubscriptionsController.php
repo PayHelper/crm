@@ -87,20 +87,9 @@ class SubscriptionsController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-            $guzzleClientFactory = $this->get('oro_integration.transport.rest.client_factory');
-            $client = $guzzleClientFactory->createRestClient($this->container->getParameter('payments_hub.host'), []);
-            $result = $client->post('/api/v1/login_check', [
-                'username' => $this->container->getParameter('payments_hub.username'),
-                'password' => $this->container->getParameter('payments_hub.password'),
-            ]);
-
-            $response = json_decode($result->getBodyAsString(), true);
 
             try {
-                $client->delete(sprintf('/api/v1/subscriptions/%s/payments/%s/cancel',
-                    $subscription->getOrderId(),
-                    $subscription->getPayments()->first()->getPaymentId()
-                ), ['Authorization' => sprintf('Bearer %s', $response['token'])]);
+                $this->cancelSubscription($subscription);
             } catch (GuzzleRestException $e) {
                 $result = $e->getResponse()->getBodyAsString();
 
@@ -110,6 +99,8 @@ class SubscriptionsController extends Controller
             $date = $data->getStartDate();
 
             try {
+                $guzzleClientFactory = $this->get('oro_integration.transport.rest.client_factory');
+                $client = $guzzleClientFactory->createRestClient($this->container->getParameter('payments_hub.host'), []);
                 $result = $client->post('/public-api/v1/subscriptions/', [
                     'amount' => $data->getTotal() * 100,
                     'interval' => $data->getInterval(),
@@ -139,6 +130,46 @@ class SubscriptionsController extends Controller
         }
 
         return new JsonResponse(null, Response::HTTP_BAD_REQUEST);
+    }
+
+    /**
+     * @Route("/cancel/{id}", name="subscriptions.subscription_cancel", requirements={"id":"\d+"}, defaults={"id":0})
+     * @Template()
+     * @Acl(
+     *     id="subscriptions.subscription_cancel",
+     *     type="entity",
+     *     class="PHPaymentHubBundle:Subscription",
+     *     permission="EDIT"
+     * )
+     */
+    public function cancelAction(Subscription $subscription)
+    {
+        try {
+            $this->cancelSubscription($subscription);
+        } catch (GuzzleRestException $e) {
+            $result = $e->getResponse()->getBodyAsString();
+
+            return new JsonResponse(json_decode($result, true), Response::HTTP_BAD_REQUEST);
+        }
+
+        return new JsonResponse(null, Response::HTTP_NO_CONTENT);
+    }
+
+    private function cancelSubscription(SubscriptionInterface $subscription)
+    {
+        $guzzleClientFactory = $this->get('oro_integration.transport.rest.client_factory');
+        $client = $guzzleClientFactory->createRestClient($this->container->getParameter('payments_hub.host'), []);
+        $result = $client->post('/api/v1/login_check', [
+            'username' => $this->container->getParameter('payments_hub.username'),
+            'password' => $this->container->getParameter('payments_hub.password'),
+        ]);
+
+        $response = json_decode($result->getBodyAsString(), true);
+
+        $client->delete(sprintf('/api/v1/subscriptions/%s/payments/%s/cancel',
+            $subscription->getOrderId(),
+            $subscription->getPayments()->first()->getPaymentId()
+        ), ['Authorization' => sprintf('Bearer %s', $response['token'])]);
     }
 
     /**

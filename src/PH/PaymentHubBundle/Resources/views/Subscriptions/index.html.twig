@@ -17,9 +17,9 @@
     {% include 'OroImportExportBundle:ImportExport:buttons.html.twig' with {
         entity_class: 'PH\\PaymentHubBundle\\Entity\\Subscription',
         exportProcessor: 'ph_subscription',
-        exportTitle: 'Export',
+        exportTitle: 'Export'|trans,
         importProcessor: 'ph_subscription',
-        importTitle: 'Import',
+        importTitle: 'Import'|trans,
         datagridName: gridName
     } %}
 {% endblock %}

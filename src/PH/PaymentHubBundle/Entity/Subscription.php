@@ -17,7 +17,7 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
  * @ORM\Entity(repositoryClass="PH\PaymentHubBundle\Repository\SubscriptionRepository")
  * @ORM\Table(name="ph_subscription")
  *
- * @Config(
+ * @Config
  *      defaultValues={
  *          "ownership"={
  *              "owner_type"="BUSINESS_UNIT",
@@ -43,11 +43,11 @@ class Subscription implements SubscriptionInterface
      * @ORM\Column(type="integer")
      *
      * @ConfigField(
-     *      defaultValues={
-     *          "importexport"={
-     *              "identity"=true
-     *          }
-     *      }
+     *     defaultValues={
+     *         "importexport"={
+     *             "identity"=true
+     *         }
+     *     }
      * )
      *
      * @var int
@@ -57,6 +57,14 @@ class Subscription implements SubscriptionInterface
     /**
      * @var \Oro\Bundle\OrganizationBundle\Entity\BusinessUnit
      *
+     * @ConfigField(
+     *     defaultValues={
+     *         "importexport"={
+     *             "full"=false
+     *         }
+     *     }
+     * )
+     *
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\BusinessUnit", cascade={"persist"})
      * @ORM\JoinColumn(name="business_unit_owner_id", referencedColumnName="id", onDelete="SET NULL")
      */
@@ -64,6 +72,14 @@ class Subscription implements SubscriptionInterface
 
     /**
      * @var Organization
+     *
+     * @ConfigField(
+     *     defaultValues={
+     *         "importexport"={
+     *             "full"=false
+     *         }
+     *     }
+     * )
      *
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
      * @ORM\JoinColumn(name="organization_id", referencedColumnName="id", onDelete="SET NULL")
@@ -86,8 +102,6 @@ class Subscription implements SubscriptionInterface
 
     /**
      * @ORM\Column(type="string")
-     *
-     * @ConfigField()
      *
      * @var string
      */
@@ -164,11 +178,11 @@ class Subscription implements SubscriptionInterface
      * @ORM\OneToMany(targetEntity="PH\PaymentHubBundle\Entity\OrderItem", mappedBy="subscription", cascade={"remove", "persist"})
      *
      * @ConfigField(
-     *      defaultValues={
-     *          "importexport"={
-     *              "full"=true
-     *          }
-     *      }
+     *     defaultValues={
+     *         "importexport"={
+     *             "full"=false
+     *         }
+     *     }
      * )
      */
     protected $items;
@@ -177,11 +191,11 @@ class Subscription implements SubscriptionInterface
      * @ORM\OneToMany(targetEntity="PH\PaymentHubBundle\Entity\Payment", mappedBy="subscription", cascade={"remove", "persist"})
      *
      * @ConfigField(
-     *      defaultValues={
-     *          "importexport"={
-     *              "full"=true
-     *          }
-     *      }
+     *     defaultValues={
+     *         "importexport"={
+     *             "full"=false
+     *         }
+     *     }
      * )
      */
     protected $payments;
@@ -190,11 +204,11 @@ class Subscription implements SubscriptionInterface
      * @ORM\OneToMany(targetEntity="PH\PaymentHubBundle\Entity\NotificationLog", mappedBy="subscription", cascade={"remove", "persist"})
      *
      * @ConfigField(
-     *      defaultValues={
-     *          "importexport"={
-     *              "full"=true
-     *          }
-     *      }
+     *     defaultValues={
+     *         "importexport"={
+     *             "excluded"=true
+     *         }
+     *     }
      * )
      */
     protected $notifications;
@@ -204,11 +218,11 @@ class Subscription implements SubscriptionInterface
      * @ORM\JoinColumn(name="customer_id", referencedColumnName="id")
      *
      * @ConfigField(
-     *      defaultValues={
-     *          "importexport"={
-     *              "full"=true
-     *          }
-     *      }
+     *     defaultValues={
+     *         "importexport"={
+     *             "full"=false
+     *         }
+     *     }
      * )
      */
     protected $customer;

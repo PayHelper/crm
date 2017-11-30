@@ -243,4 +243,24 @@ interface SubscriptionInterface
      * @param mixed $organization
      */
     public function setOrganization($organization);
+
+    /**
+     * @return string
+     */
+    public function getIntention();
+
+    /**
+     * @param string $intention
+     */
+    public function setIntention($intention);
+
+    /**
+     * @return string
+     */
+    public function getSource();
+
+    /**
+     * @param string $source
+     */
+    public function setSource($source);
 }

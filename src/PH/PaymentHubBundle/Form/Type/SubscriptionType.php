@@ -84,6 +84,8 @@ class SubscriptionType extends AbstractType
             ->add('startDate', OroDateType::class, [
                 'required' => false,
             ])
+            ->add('intention')
+            ->add('source')
         ;
     }
 

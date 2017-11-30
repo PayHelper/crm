@@ -243,6 +243,20 @@ class Subscription implements SubscriptionInterface
     protected $activationEmailSend;
 
     /**
+     * @ORM\Column(type="string", nullable=true)
+     *
+     * @var string
+     */
+    protected $intention;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     *
+     * @var string
+     */
+    protected $source;
+
+    /**
      * Subscription constructor.
      */
     public function __construct()
@@ -609,5 +623,37 @@ class Subscription implements SubscriptionInterface
     public function setOrganization($organization)
     {
         $this->organization = $organization;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getIntention()
+    {
+        return $this->intention;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setIntention($intention)
+    {
+        $this->intention = $intention;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSource()
+    {
+        return $this->source;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setSource($source)
+    {
+        $this->source = $source;
     }
 }

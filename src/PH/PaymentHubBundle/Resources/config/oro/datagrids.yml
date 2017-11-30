@@ -123,6 +123,8 @@ datagrids:
                     - subscription.total
                     - subscription.providerType
                     - GROUP_CONCAT(customer.firstName, ' ', customer.lastName) AS customerFullNames
+                    - subscription.source
+                    - subscription.intention
                 from:
                     - { table: PHPaymentHubBundle:Subscription, alias: subscription }
                 join:
@@ -133,7 +135,7 @@ datagrids:
                 label: 'Order Id'
                 frontend_type: string
             total:
-                label: 'Total ammount'
+                label: 'Total amount'
                 frontend_type: string
             state:
                 label: 'Subscription state'
@@ -149,6 +151,12 @@ datagrids:
                 frontend_type: datetime
             providerType:
                 label: 'Provider'
+                fontend_type: string
+            source:
+                label: 'Source'
+                fontend_type: string
+            intention:
+                label: 'Intention'
                 fontend_type: string
             customerFullNames:
                 label: 'Customer'
@@ -245,6 +253,8 @@ datagrids:
                     - subscription.checkoutCompletedAt
                     - subscription.total
                     - subscription.providerType
+                    - subscription.source
+                    - subscription.intention
                 from:
                     - { table: PHPaymentHubBundle:Subscription, alias: subscription }
                 where:
@@ -279,6 +289,12 @@ datagrids:
                 frontend_type: datetime
             providerType:
                 label: 'Provider'
+                fontend_type: string
+            source:
+                label: 'Source'
+                fontend_type: string
+            intention:
+                label: 'Intention'
                 fontend_type: string
             createdAt:
                 label: 'Created'

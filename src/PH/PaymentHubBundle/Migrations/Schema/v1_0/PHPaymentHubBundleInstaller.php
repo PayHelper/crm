@@ -60,11 +60,16 @@ class PHPaymentHubBundleInstaller implements Installation, ContainerAwareInterfa
         $this->addPhContactAddressForeignKeys($schema);
         $this->addPhNotificationLogForeignKeys($schema);
 
-        $queries->addQuery('CREATE TABLE ph_contact_adr_to_adr_type (contact_address_id INT NOT NULL, type_name VARCHAR(16) NOT NULL, PRIMARY KEY(contact_address_id, type_name));');
-        $queries->addQuery('CREATE INDEX IDX_E6FB3400320EF6E2 ON ph_contact_adr_to_adr_type (contact_address_id);');
-        $queries->addQuery('CREATE INDEX IDX_E6FB3400892CBB0E ON ph_contact_adr_to_adr_type (type_name);');
-        $queries->addQuery('ALTER TABLE ph_contact_adr_to_adr_type ADD CONSTRAINT FK_E6FB3400320EF6E2 FOREIGN KEY (contact_address_id) REFERENCES ph_contact_address (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;');
-        $queries->addQuery('ALTER TABLE ph_contact_adr_to_adr_type ADD CONSTRAINT FK_E6FB3400892CBB0E FOREIGN KEY (type_name) REFERENCES oro_address_type (name) NOT DEFERRABLE INITIALLY IMMEDIATE;');
+        $table = $schema->createTable('ph_contact_adr_to_adr_type');
+        $table->addColumn('contact_address_id', 'integer');
+        $table->addColumn('type_name', 'string', ['length' => 16]);
+        $table->setPrimaryKey(['contact_address_id', 'type_name']);
+        $table->addIndex(['contact_address_id'], 'IDX_E6FB3400320EF6E2', []);
+        $table->addIndex(['type_name'], 'IDX_E6FB3400892CBB0E', []);
+
+        $table = $schema->getTable('ph_contact_adr_to_adr_type');
+        $table->addForeignKeyConstraint($schema->getTable('ph_contact_address'), ['contact_address_id'], ['id'], ['onUpdate' => null, 'onDelete' => null]);
+        $table->addForeignKeyConstraint($schema->getTable('oro_address_type'), ['type_name'], ['name'], ['onUpdate' => null, 'onDelete' => null]);
         $queries->addQuery('ALTER TABLE ph_contact_address ADD is_primary BOOLEAN DEFAULT NULL;');
 
         $this->addActivityAssociations($schema, $this->activityExtension);

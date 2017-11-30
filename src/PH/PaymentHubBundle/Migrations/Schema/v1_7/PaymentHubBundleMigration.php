@@ -13,7 +13,6 @@ class PaymentHubBundleMigration implements Migration
      */
     public function up(Schema $schema, QueryBag $queries)
     {
-        $queries->addQuery('ALTER TABLE ph_customer ADD emailVerifiedAt TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL;');
-        $queries->addQuery('COMMENT ON COLUMN ph_customer.emailVerifiedAt IS \'(DC2Type:datetime)\';');
+        $schema->getTable('ph_customer')->addColumn('emailVerifiedAt', 'datetime', array('comment' => '(DC2Type:datetime)'));
     }
 }

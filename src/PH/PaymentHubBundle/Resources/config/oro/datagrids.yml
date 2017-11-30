@@ -105,6 +105,9 @@ datagrids:
                 link:          delete_link
                 icon:          trash
                 acl_resource:  ph_customers_api_delete_customer
+        options:
+            entityHint: subscriptions
+            export: true
 
     ph-subscriptions-grid:
         source:
@@ -117,10 +120,9 @@ datagrids:
                     - subscription.state
                     - subscription.createdAt
                     - subscription.updatedAt
-                    - subscription.purchaseState
                     - subscription.paymentState
-                    - subscription.checkoutCompletedAt
                     - subscription.total
+                    - subscription.type
                     - subscription.providerType
                     - GROUP_CONCAT(customer.firstName, ' ', customer.lastName) AS customerFullNames
                     - subscription.source
@@ -140,27 +142,24 @@ datagrids:
             state:
                 label: 'Subscription state'
                 frontend_type: string
-            purchaseState:
-                label: 'Purchase State'
-                frontend_type: string
             paymentState:
                 label: 'Payment state'
                 frontend_type: string
-            checkoutCompletedAt:
-                label: 'Purchase Completed'
-                frontend_type: datetime
             providerType:
-                label: 'Provider'
-                fontend_type: string
+                label: 'Payment Method'
+                frontend_type: string
             source:
                 label: 'Source'
-                fontend_type: string
+                frontend_type: string
             intention:
                 label: 'Intention'
-                fontend_type: string
+                frontend_type: string
+            type:
+                label: 'Type'
+                frontend_type: string
             customerFullNames:
                 label: 'Customer'
-                fontend_type: string
+                frontend_type: string
             createdAt:
                 label: 'Created'
                 frontend_type: datetime
@@ -204,6 +203,9 @@ datagrids:
                 state: ASC
         filters:
             columns:
+                orderId:
+                    type: string
+                    data_name: subscription.orderId
                 state:
                     type: string
                     data_name: subscription.state
@@ -236,6 +238,9 @@ datagrids:
                 link:          change_link
                 icon:          university
                 acl_resource:  subscriptions.subscription_change
+        options:
+            entityHint: subscriptions
+            export: true
 
     ph-customer-subscriptions-grid:
         source:
@@ -252,6 +257,7 @@ datagrids:
                     - subscription.paymentState
                     - subscription.checkoutCompletedAt
                     - subscription.total
+                    - subscription.type
                     - subscription.providerType
                     - subscription.source
                     - subscription.intention
@@ -278,24 +284,21 @@ datagrids:
             state:
                 label: 'Order state'
                 frontend_type: string
-            purchaseState:
-                label: 'Purchase State'
-                frontend_type: string
             paymentState:
                 label: 'Payment state'
                 frontend_type: string
-            checkoutCompletedAt:
-                label: 'Purchase Completed'
-                frontend_type: datetime
             providerType:
-                label: 'Provider'
-                fontend_type: string
+                label: 'Payment Method'
+                frontend_type: string
             source:
                 label: 'Source'
-                fontend_type: string
+                frontend_type: string
             intention:
                 label: 'Intention'
-                fontend_type: string
+                frontend_type: string
+            type:
+                label: 'Type'
+                frontend_type: string
             createdAt:
                 label: 'Created'
                 frontend_type: datetime

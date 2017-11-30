@@ -44,6 +44,10 @@ ph.paymenthub.subscription.token.label: Token
 ph.paymenthub.subscription.total.label: Total
 ph.paymenthub.subscription.type.label: Type
 ph.paymenthub.subscription.updated_at.label: Updated at
+ph.paymenthub.subscriptions.bank_account.label: Change bank account details
+ph.paymenthub.subscriptions.bank_account_success.label: The bank account details were changed susccessfully.
+ph.paymenthub.subscriptions.bank_account_error.label: Error occured.
+ph.paymenthub.subscriptions.bank_account_go_back.label: Go back
 
 
 ph.paymenthub.subscription.entity_label: PaymentHub Subscription

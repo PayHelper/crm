@@ -2,6 +2,8 @@
 
 namespace PH\PaymentHubBundle\Service;
 
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
 use Oro\Bundle\EmailBundle\Entity\EmailTemplate;
 use Oro\Bundle\EmailBundle\Form\Model\Email;
@@ -10,6 +12,7 @@ use Oro\Bundle\EmailBundle\Provider\EmailRenderer;
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
 use PH\PaymentHubBundle\Entity\OrderItem;
 use PH\PaymentHubBundle\Entity\Payment;
+use PH\PaymentHubBundle\Entity\PaymentInterface;
 use PH\PaymentHubBundle\Entity\SubscriptionInterface;
 
 /**
@@ -155,9 +158,17 @@ class SubscriptionService implements SubscriptionServiceInterface
     protected function handlePayments(SubscriptionInterface $subscription, $data)
     {
         $payments = [];
-        $paymentRepository = $this->entityManager->getRepository(Payment::class);
+        // set existing payments status to cancelled
+        $existingPayments = $subscription->getPayments();
+
+        foreach ($existingPayments as $existingPayment) {
+            $existingPayment->setState(PaymentInterface::STATE_CANCELLED);
+        }
+
         foreach ($data['payments'] as $singlePayment) {
-            $payment = $paymentRepository->findOneBy(['paymentId' => $singlePayment['id']]);
+            $paymentsCollection = $this->getPayment($existingPayments, (string) $singlePayment['id']);
+            $payment = $paymentsCollection[0];
+
             if (null === $payment) {
                 $payment = new Payment();
                 $payment->setPaymentId($singlePayment['id']);
@@ -177,5 +188,12 @@ class SubscriptionService implements SubscriptionServiceInterface
         }
 
         return $payments;
+    }
+
+    private function getPayment(Collection $payments, $id)
+    {
+        $criteria = Criteria::create()->where(Criteria::expr()->eq('paymentId', $id));
+
+        return $payments->matching($criteria);
     }
 }

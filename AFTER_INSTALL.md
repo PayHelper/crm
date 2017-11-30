@@ -28,3 +28,7 @@ default user for tasks.
 
 Custom entities created by calls from payment hub (or customer form) need to get assigned to organization and business unit 
 manually. To do this - there must be business unit in oro called "Main". Organization is fetched from business unit.
+
+## Synchronize extended and custom entities metadata
+
+1. Run command `oro:entity-extend:update-schema` to synchronize extended and custom entities metadata with a database schema

@@ -17,7 +17,7 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
  * @ORM\Entity(repositoryClass="PH\PaymentHubBundle\Repository\SubscriptionRepository")
  * @ORM\Table(name="ph_subscription")
  *
- * @Config
+ * @Config(
  *      defaultValues={
  *          "ownership"={
  *              "owner_type"="BUSINESS_UNIT",

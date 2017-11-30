@@ -39,3 +39,7 @@ parameters:
     message_queue_transport: 'dbal'
     message_queue_transport_config: ~
     from_email: contact@example.com
+
+    payments_hub.host: http://hub.s-lab.sourcefabric.org/app_dev.php
+    payments_hub.username: admin
+    payments_hub.password: admin

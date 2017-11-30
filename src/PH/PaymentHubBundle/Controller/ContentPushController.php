@@ -25,6 +25,22 @@ class ContentPushController extends Controller
         $subscriptionRepository = $manager->getRepository(Subscription::class);
         $subscriptionService = $this->container->get('ph_payment_hub.service.subscription');
 
+        if (isset($data['metadata']['subscriptionId'])) {
+            $subscription = $subscriptionRepository->findOneBy(['orderId' => $data['metadata']['subscriptionId']]);
+
+            if (null !== $subscription) {
+                // update existing subscription data
+                $subscription->setUpdatedAt(new \DateTime());
+                $subscriptionService->processIncomingData($subscription, $data);
+                $manager->flush();
+
+                return new JsonResponse(['status' => 'UPDATED']);
+            }
+
+            // subscription doesnt exist
+            return new JsonResponse(['status' => 'FAILED']);
+        }
+
         /** @var SubscriptionInterface $subscription */
         $subscription = $subscriptionRepository->findOneBy(['token' => $data['token_value']]);
 

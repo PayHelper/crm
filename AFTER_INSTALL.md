@@ -31,4 +31,5 @@ manually. To do this - there must be business unit in oro called "Main". Organiz
 
 ## Synchronize extended and custom entities metadata
 
-1. Run command `oro:entity-extend:update-schema` to synchronize extended and custom entities metadata with a database schema
+1. Run command `oro:entity-extend:update-config` to update extended entities config
+2. Run command `oro:entity-extend:update-schema` to synchronize extended and custom entities metadata with a database schema

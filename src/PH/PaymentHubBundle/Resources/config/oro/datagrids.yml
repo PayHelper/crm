@@ -13,9 +13,12 @@ datagrids:
                     - c.middleName
                     - c.lastName
                     - c.nameSuffix
-                    - c.gender
-                    - c.birthday
+                    - c.newsletterAllowed
                     - c.email
+                    - COUNT(s.id) AS customerSubscriptions
+                join:
+                    left:
+                        - { join: PHPaymentHubBundle:Subscription, alias: s, conditionType: WITH, condition: "c.id = s.customer" }
                 from:
                     - { table: PHPaymentHubBundle:Customer, alias: c }
         columns:
@@ -28,15 +31,15 @@ datagrids:
             lastName:
                 label: 'Last name'
                 frontend_type: string
-            gender:
-                label: 'Gender'
-                frontend_type: string
             email:
                 label: 'Email'
                 frontend_type: string
-            birthday:
-                label: 'Birthday'
-                frontend_type: datetime
+            customerSubscriptions:
+                label: 'Subscriptions number'
+                frontend_type: integer
+            newsletterAllowed:
+                label: 'Newsletter allowed'
+                frontend_type: boolean
             createdAt:
                 label: 'Created'
                 frontend_type: datetime
@@ -63,8 +66,6 @@ datagrids:
                     - id
         sorters:
             columns:
-                birthday:
-                    data_name: c.birthday
                 createdAt:
                     data_name: c.createdAt
                 updatedAt:

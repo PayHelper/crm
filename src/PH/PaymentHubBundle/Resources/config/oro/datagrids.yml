@@ -126,6 +126,8 @@ datagrids:
                     - subscription.type
                     - subscription.providerType
                     - GROUP_CONCAT(customer.firstName, ' ', customer.lastName) AS customerFullNames
+                    - subscription.source
+                    - subscription.intention
                 from:
                     - { table: PHPaymentHubBundle:Subscription, alias: subscription }
                 join:
@@ -136,7 +138,7 @@ datagrids:
                 label: 'Order Id'
                 frontend_type: string
             total:
-                label: 'Total ammount'
+                label: 'Total amount'
                 frontend_type: string
             state:
                 label: 'Subscription state'
@@ -146,6 +148,12 @@ datagrids:
                 frontend_type: string
             providerType:
                 label: 'Payment Method'
+                frontend_type: string
+            source:
+                label: 'Source'
+                frontend_type: string
+            intention:
+                label: 'Intention'
                 frontend_type: string
             type:
                 label: 'Type'
@@ -252,6 +260,8 @@ datagrids:
                     - subscription.total
                     - subscription.type
                     - subscription.providerType
+                    - subscription.source
+                    - subscription.intention
                 from:
                     - { table: PHPaymentHubBundle:Subscription, alias: subscription }
                 where:
@@ -280,7 +290,13 @@ datagrids:
                 frontend_type: string
             providerType:
                 label: 'Payment Method'
-                fontend_type: string
+                frontend_type: string
+            source:
+                label: 'Source'
+                frontend_type: string
+            intention:
+                label: 'Intention'
+                frontend_type: string
             type:
                 label: 'Type'
                 frontend_type: string

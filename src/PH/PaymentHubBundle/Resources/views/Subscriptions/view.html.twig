@@ -58,6 +58,8 @@
                     {{ UI.renderProperty('Purchase completed'|trans, subscription.checkoutCompletedAt?  subscription.checkoutCompletedAt|date('Y-m-d H:i:s'): '') }}
                     {{ UI.renderProperty('Type'|trans, subscription.type) }}
                     {{ UI.renderProperty('Interval'|trans, subscription.interval) }}
+                    {{ UI.renderProperty('Source'|trans, subscription.source) }}
+                    {{ UI.renderProperty('Intention'|trans, subscription.intention) }}
                     {{ UI.renderProperty('Start date'|trans, subscription.startDate | date('Y-m-d')) }}
                     {{ UI.renderHtmlProperty('Customer'|trans, subscription.customer?  UI.renderUrl(path('subscriptions.customer_view', {'id': subscription.customer.id}), subscription.customer.firstName ~' '~subscription.customer.lastName)) }}
                 </div>

@@ -77,6 +77,16 @@ class SubscriptionService implements SubscriptionServiceInterface
 
         $subscription->setItems($this->handleOrderItems($subscription, $data));
         $subscription->setPayments($this->handlePayments($subscription, $data));
+
+        if (isset($data['metadata'])) {
+            if (isset($data['metadata']['intention'])) {
+                $subscription->setIntention($data['metadata']['intention']);
+            }
+
+            if (isset($data['metadata']['source'])) {
+                $subscription->setSource($data['metadata']['source']);
+            }
+        }
     }
 
     /**

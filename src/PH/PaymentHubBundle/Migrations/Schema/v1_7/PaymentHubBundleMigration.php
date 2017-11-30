@@ -13,6 +13,6 @@ class PaymentHubBundleMigration implements Migration
      */
     public function up(Schema $schema, QueryBag $queries)
     {
-        $schema->getTable('ph_customer')->addColumn('emailVerifiedAt', 'datetime', array('comment' => '(DC2Type:datetime)'));
+        $schema->getTable('ph_customer')->addColumn('emailVerifiedAt', 'datetime', array('comment' => '(DC2Type:datetime)', 'notnull' => false));
     }
 }

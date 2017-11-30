@@ -214,7 +214,7 @@ class Subscription implements SubscriptionInterface
     protected $customer;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(type="string", nullable=true, name="`interval`")
      *
      * @var string
      */
@@ -228,7 +228,7 @@ class Subscription implements SubscriptionInterface
     protected $startDate;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", name="`type`")
      *
      * @var string
      */

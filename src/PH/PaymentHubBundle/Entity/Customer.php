@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\ChannelBundle\Model\ChannelAwareInterface;
 use Oro\Bundle\ChannelBundle\Model\ChannelEntityTrait;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 /**
@@ -52,12 +53,35 @@ class Customer extends ExtendPerson implements ChannelAwareInterface, CustomerIn
     use ChannelEntityTrait;
 
     /**
+     * @ORM\Id
+     * @ORM\Column(type="integer", name="id")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @ConfigField(
+     *     defaultValues={
+     *         "importexport"={
+     *             "identity"=true
+     *         }
+     *     }
+     * )
+     */
+    protected $id;
+
+    /**
      * @ORM\OneToMany(targetEntity="PH\PaymentHubBundle\Entity\Subscription", mappedBy="customer")
      */
     protected $subscriptions;
 
     /**
      * @ORM\OneToMany(targetEntity="PH\PaymentHubBundle\Entity\Address", mappedBy="owner", cascade={"all"}, orphanRemoval=true, fetch="EAGER")
+     *
+     * * @ConfigField(
+     *     defaultValues={
+     *         "importexport"={
+     *             "full"=true
+     *         }
+     *     }
+     * )
      */
     protected $addresses;
 

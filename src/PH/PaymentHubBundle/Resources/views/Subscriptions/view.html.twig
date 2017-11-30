@@ -64,22 +64,6 @@
             </div>
         </div>
     {% endset %}
-    {% set items %}
-        <div class="widget-content" style="border-bottom: 1px solid #ccc;">
-            {% for item in subscription.items %}
-            <div class="row-fluid form-horizontal">
-                <div class="responsive-block">
-                    {{ UI.renderProperty('Order item id'|trans, item.orderItemId) }}
-                    {{ UI.renderProperty('Order item total ammount'|trans, item.total) }}
-                    {{ UI.renderProperty('Quantity'|trans, item.quantity) }}
-                    {{ UI.renderProperty('Unit price'|trans, item.unitPrice) }}
-                    {{ UI.renderProperty('Created date'|trans, item.createdAt | date('Y-m-d H:i:s')) }}
-                    {{ UI.renderProperty('Updated date'|trans, item.updatedAt ?  item.updatedAt|date('Y-m-d H:i:s'): '') }}
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-    {% endset %}
     {% set payments %}
         <div class="widget-content" style="border-bottom: 1px solid #ccc;">
             {% for payment in subscription.payments %}
@@ -103,13 +87,6 @@
             'class': 'active',
             'subblocks': [
                 { 'data' : [data] },
-            ]
-        },
-        {
-            'title': 'Subscription items'|trans,
-            'class': 'inactive',
-            'subblocks': [
-                { 'data' : [items] },
             ]
         },
         {

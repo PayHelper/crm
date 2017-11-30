@@ -20,6 +20,15 @@
             'entity_label': 'Subscription'|trans,
         }) }}
     {% endif %}
+    {% if resource_granted('CANCEL', subscription) and entity.state != 'cancelled' %}
+        {{ UI.button({
+            'path' : path('subscriptions.subscription_cancel', {id: entity.id}),
+            'aCss': 'cancel-btn btn-danger',
+            'iCss': 'fa-ban',
+            'label': 'ph.paymenthub.subscriptions.cancel_button.label'|trans,
+            'title': 'ph.paymenthub.subscriptions.cancel_button.label'|trans
+        }) }}
+    {% endif %}
 {% endblock navButtons %}
 
 {% block pageHeader %}
@@ -55,22 +64,6 @@
             </div>
         </div>
     {% endset %}
-    {% set items %}
-        <div class="widget-content" style="border-bottom: 1px solid #ccc;">
-            {% for item in subscription.items %}
-            <div class="row-fluid form-horizontal">
-                <div class="responsive-block">
-                    {{ UI.renderProperty('Order item id'|trans, item.orderItemId) }}
-                    {{ UI.renderProperty('Order item total ammount'|trans, item.total) }}
-                    {{ UI.renderProperty('Quantity'|trans, item.quantity) }}
-                    {{ UI.renderProperty('Unit price'|trans, item.unitPrice) }}
-                    {{ UI.renderProperty('Created date'|trans, item.createdAt | date('Y-m-d H:i:s')) }}
-                    {{ UI.renderProperty('Updated date'|trans, item.updatedAt ?  item.updatedAt|date('Y-m-d H:i:s'): '') }}
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-    {% endset %}
     {% set payments %}
         <div class="widget-content" style="border-bottom: 1px solid #ccc;">
             {% for payment in subscription.payments %}
@@ -97,13 +90,6 @@
             ]
         },
         {
-            'title': 'Subscription items'|trans,
-            'class': 'inactive',
-            'subblocks': [
-                { 'data' : [items] },
-            ]
-        },
-        {
             'title': 'Subscription payments'|trans,
             'class': 'inactive',
             'subblocks': [
@@ -115,4 +101,38 @@
     {% set id = 'subscriptionView' %}
     {% set data = { 'dataBlocks': dataBlocks } %}
     {{ parent() }}
+
+    <script type="text/javascript">
+        require(['jquery', 'oroui/js/standart-confirmation', 'oroui/js/mediator', 'oroui/js/messenger'],
+            function ($, confirmation, mediator, messenger) {
+                $(document).ready(function () {
+                    $('.cancel-btn').on('click', function () {
+                        var confirm = new confirmation({
+                            content: '{{ 'ph.paymenthub.subscriptions.cancel.confirm.label'|trans }}',
+                            okText: '{{ 'Yes'|trans }}',
+                            cancelText: '{{ 'No'|trans }}'
+                        });
+                        confirm.on('ok', _.bind(function () {
+                            mediator.execute('showLoading');
+                            $.ajax({
+                                url: '{{ path('subscriptions.subscription_cancel', {'id': entity.id}) }}',
+                                type: 'DELETE',
+                            }).done(function() {
+                                mediator.once('page:afterChange', function(){
+                                    messenger.notificationFlashMessage('success', '{{ 'ph.paymenthub.subscriptions.cancel.cancelled.label'|trans }}');
+                                });
+                                mediator.execute('redirectTo', {url: '{{ app.request.uri }}'}, {redirect: true});
+                            }).always(function () {
+                                mediator.execute('hideLoading');
+                            });
+
+                        }, this));
+
+                        confirm.open();
+
+                        return false;
+                    });
+                });
+            });
+    </script>
 {% endblock content_data %}

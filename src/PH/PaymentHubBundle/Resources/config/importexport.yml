@@ -1,12 +1,19 @@
 parameters:
     ph_payment_hub.entity.subscription.class: PH\PaymentHubBundle\Entity\Subscription
+    ph_payment_hub.entity.customer.class: PH\PaymentHubBundle\Entity\Customer
 
 services:
     ph_payment_hub.importexport.data_converter.subscription:
         parent: oro_importexport.data_converter.configurable
 
     ph_payment_hub.importexport.strategy.subscription:
-            parent: oro_importexport.strategy.configurable_add_or_replace
+        parent: oro_importexport.strategy.configurable_add_or_replace
+
+    ph_payment_hub.importexport.data_converter.customer:
+        parent: oro_importexport.data_converter.configurable
+
+    ph_payment_hub.importexport.strategy.customer:
+        parent: oro_importexport.strategy.configurable_add_or_replace
 
     ph_payment_hub.importexport.processor.export.subscription:
         parent: oro_importexport.processor.export_abstract
@@ -15,6 +22,16 @@ services:
         tags:
             - name: oro_importexport.processor
               type: export
+              entity: %ph_payment_hub.entity.subscription.class%
+              alias: ph_subscription
+
+    ph_payment_hub.importexport.processor.export_template.subscription:
+        parent: oro_importexport.processor.export_abstract
+        calls:
+            - [setDataConverter, ["@ph_payment_hub.importexport.data_converter.subscription"]]
+        tags:
+            - name: oro_importexport.processor
+              type: export_template
               entity: %ph_payment_hub.entity.subscription.class%
               alias: ph_subscription
 
@@ -28,3 +45,34 @@ services:
               type: import
               entity: %ph_payment_hub.entity.subscription.class%
               alias: ph_subscription
+
+    ph_payment_hub.importexport.processor.export.customer:
+        parent: oro_importexport.processor.export_abstract
+        calls:
+            - [setDataConverter, ['@ph_payment_hub.importexport.data_converter.customer']]
+        tags:
+            - name: oro_importexport.processor
+              type: export
+              entity: %ph_payment_hub.entity.customer.class%
+              alias: ph_customer
+
+    ph_payment_hub.importexport.processor.export_template.customer:
+        parent: oro_importexport.processor.export_abstract
+        calls:
+            - [setDataConverter, ["@ph_payment_hub.importexport.data_converter.customer"]]
+        tags:
+            - name: oro_importexport.processor
+              type: export_template
+              entity: %ph_payment_hub.entity.customer.class%
+              alias: ph_customer
+
+    ph_payment_hub.importexport.processor.import.customer:
+        parent: oro_importexport.processor.import_abstract
+        calls:
+            - [setDataConverter, ['@ph_payment_hub.importexport.data_converter.customer']]
+            - [setStrategy, ['@ph_payment_hub.importexport.strategy.customer']]
+        tags:
+            - name: oro_importexport.processor
+              type: import
+              entity: %ph_payment_hub.entity.customer.class%
+              alias: ph_customer

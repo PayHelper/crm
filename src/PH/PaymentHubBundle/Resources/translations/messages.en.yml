@@ -48,6 +48,9 @@ ph.paymenthub.subscriptions.bank_account.label: Change bank account details
 ph.paymenthub.subscriptions.bank_account_success.label: The bank account details were changed susccessfully.
 ph.paymenthub.subscriptions.bank_account_error.label: Error occured.
 ph.paymenthub.subscriptions.bank_account_go_back.label: Go back
+ph.paymenthub.subscriptions.cancel_button.label: Cancel
+ph.paymenthub.subscriptions.cancel.confirm.label: Are you sure you want to cancel this subscription?
+ph.paymenthub.subscriptions.cancel.cancelled.label: Subscription has been cancelled successfully!
 
 
 ph.paymenthub.subscription.entity_label: PaymentHub Subscription

@@ -259,8 +259,8 @@ class SubscriptionsController extends Controller
             if (null === $item->getOrderItemId()) {
                 $item->setOrderItemId('internal_item'.$dateCode);
             }
-            $item->setTotal(floatval($item->getUnitPrice()) * floatval($item->getQuantity()));
-            $subscription->setTotal(floatval($subscription->getTotal()) + floatval($item->getTotal()));
+            $item->setTotal((float) $item->getUnitPrice() * (float) $item->getQuantity());
+            $subscription->setTotal((float) $subscription->getTotal() + (float) $item->getTotal());
             $item->setSubscription($subscription);
         }
 

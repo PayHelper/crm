@@ -31,7 +31,5 @@ final class SubscriptionCanceller implements SubscriptionCancellerInterface
             $subscription->getOrderId(),
             $subscription->getPayments()->first()->getPaymentId()
         ), ['Authorization' => sprintf('Bearer %s', $response['token'])]);
-
-        $subscription->setState(SubscriptionInterface::STATE_EXPIRED);
     }
 }

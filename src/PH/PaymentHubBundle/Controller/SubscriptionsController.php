@@ -88,8 +88,10 @@ class SubscriptionsController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
 
+            $subscriptionCanceller = $this->get('ph_payment_hub.service.subscription_canceller');
+
             try {
-                $this->cancelSubscription($subscription);
+                $subscriptionCanceller->cancel($subscription);
             } catch (GuzzleRestException $e) {
                 $result = $e->getResponse()->getBodyAsString();
 
@@ -144,8 +146,10 @@ class SubscriptionsController extends Controller
      */
     public function cancelAction(Subscription $subscription)
     {
+        $subscriptionCanceller = $this->get('ph_payment_hub.service.subscription_canceller');
+
         try {
-            $this->cancelSubscription($subscription);
+            $subscriptionCanceller->cancel($subscription);
         } catch (GuzzleRestException $e) {
             $result = $e->getResponse()->getBodyAsString();
 
@@ -153,23 +157,6 @@ class SubscriptionsController extends Controller
         }
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
-    }
-
-    private function cancelSubscription(SubscriptionInterface $subscription)
-    {
-        $guzzleClientFactory = $this->get('oro_integration.transport.rest.client_factory');
-        $client = $guzzleClientFactory->createRestClient($this->container->getParameter('payments_hub.host'), []);
-        $result = $client->post('/api/v1/login_check', [
-            'username' => $this->container->getParameter('payments_hub.username'),
-            'password' => $this->container->getParameter('payments_hub.password'),
-        ]);
-
-        $response = json_decode($result->getBodyAsString(), true);
-
-        $client->delete(sprintf('/api/v1/subscriptions/%s/payments/%s/cancel',
-            $subscription->getOrderId(),
-            $subscription->getPayments()->first()->getPaymentId()
-        ), ['Authorization' => sprintf('Bearer %s', $response['token'])]);
     }
 
     /**
@@ -256,6 +243,7 @@ class SubscriptionsController extends Controller
         if (SubscriptionInterface::TYPE_NONRECURRING === $subscription->getType()) {
             $subscription->setInterval(null);
             $subscription->setStartDate(null);
+            $subscription->setEndDate(null);
         }
 
         /** @var OrderItemInterface $item */
@@ -263,6 +251,7 @@ class SubscriptionsController extends Controller
             if (null === $item->getOrderItemId()) {
                 $item->setOrderItemId('internal_item'.$dateCode);
             }
+
             $item->setTotal((int) $item->getUnitPrice() * (int) $item->getQuantity());
             $subscription->setTotal((int) $subscription->getTotal() + (int) $item->getTotal());
             $item->setSubscription($subscription);

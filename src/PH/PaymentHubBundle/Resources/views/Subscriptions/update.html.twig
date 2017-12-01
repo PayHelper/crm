@@ -57,7 +57,7 @@
                 form_row(form.type),
                 form_row(form.interval),
                 form_row(form.startDate),
-                form_row(form.endDate),
+                entity.type == 'recurring' ? form_row(form.endDate) : null,
                 form_row(form.customer),
             ]
             }, {

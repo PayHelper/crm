@@ -9,6 +9,7 @@ namespace PH\PaymentHubBundle\Command;
 use Oro\Bundle\CronBundle\Command\CronCommandInterface;
 use Oro\Bundle\IntegrationBundle\Provider\Rest\Client\Guzzle\GuzzleRestException;
 use PH\PaymentHubBundle\Entity\Subscription;
+use PH\PaymentHubBundle\Entity\SubscriptionInterface;
 use PH\PaymentHubBundle\Repository\SubscriptionRepository;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -72,6 +73,8 @@ class CancelEndedSubscriptionsCommand extends ContainerAwareCommand implements C
 
                 continue;
             }
+
+            $endedSubscription->setState(SubscriptionInterface::STATE_EXPIRED);
 
             $output->writeln('<info>Subscription has been processed!</info>');
         }

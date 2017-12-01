@@ -285,7 +285,7 @@ datagrids:
                 label: 'Order Id'
                 frontend_type: string
             total:
-                label: 'Total ammount'
+                label: 'Total amount'
                 frontend_type: string
             state:
                 label: 'Order state'

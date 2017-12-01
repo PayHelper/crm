@@ -61,6 +61,7 @@
                     {{ UI.renderProperty('Source'|trans, subscription.source) }}
                     {{ UI.renderProperty('Intention'|trans, subscription.intention) }}
                     {{ UI.renderProperty('Start date'|trans, subscription.startDate | date('Y-m-d')) }}
+                    {{ UI.renderProperty('End date'|trans, subscription.endDate | date('Y-m-d')) }}
                     {{ UI.renderHtmlProperty('Customer'|trans, subscription.customer?  UI.renderUrl(path('subscriptions.customer_view', {'id': subscription.customer.id}), subscription.customer.firstName ~' '~subscription.customer.lastName)) }}
                 </div>
             </div>

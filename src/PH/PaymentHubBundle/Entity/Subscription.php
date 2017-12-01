@@ -271,6 +271,13 @@ class Subscription implements SubscriptionInterface
     protected $source;
 
     /**
+     * @ORM\Column(type="datetime", nullable=true)
+     *
+     * @var \DateTime
+     */
+    protected $endDate;
+
+    /**
      * Subscription constructor.
      */
     public function __construct()
@@ -669,5 +676,21 @@ class Subscription implements SubscriptionInterface
     public function setSource($source)
     {
         $this->source = $source;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getEndDate()
+    {
+        return $this->endDate;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setEndDate(\DateTimeInterface $endDate)
+    {
+        $this->endDate = $endDate;
     }
 }

@@ -243,7 +243,11 @@ class SubscriptionsController extends Controller
         $orderItems = $subscription->getItems();
         $payments = $subscription->getPayments();
         $subscription->setTotal(0);
-        $subscription->setToken($this->getToken());
+
+        if (null === $subscription->getToken()) {
+            $subscription->setToken($this->getToken());
+        }
+
         $dateCode = date('ymdhis');
         if (null === $subscription->getOrderId()) {
             $subscription->setOrderId('internal_'.$dateCode);
@@ -259,8 +263,8 @@ class SubscriptionsController extends Controller
             if (null === $item->getOrderItemId()) {
                 $item->setOrderItemId('internal_item'.$dateCode);
             }
-            $item->setTotal((float) $item->getUnitPrice() * (float) $item->getQuantity());
-            $subscription->setTotal((float) $subscription->getTotal() + (float) $item->getTotal());
+            $item->setTotal((int) $item->getUnitPrice() * (int) $item->getQuantity());
+            $subscription->setTotal((int) $subscription->getTotal() + (int) $item->getTotal());
             $item->setSubscription($subscription);
         }
 

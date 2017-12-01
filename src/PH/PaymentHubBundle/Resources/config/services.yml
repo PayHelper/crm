@@ -61,3 +61,11 @@ services:
 
     ph_payment_hub.generator.randomness:
         class: PH\PaymentHubBundle\Generator\RandomnessGenerator
+
+    ph_payment_hub.service.subscription_canceller:
+        class: PH\PaymentHubBundle\Service\SubscriptionCanceller
+        arguments:
+            - "@oro_integration.transport.rest.client_factory"
+            - "%payments_hub.host%"
+            - "%payments_hub.username%"
+            - "%payments_hub.password%"

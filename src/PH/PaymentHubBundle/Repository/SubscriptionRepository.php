@@ -33,4 +33,26 @@ class SubscriptionRepository extends EntityRepository
 
         return $qb;
     }
+
+    /**
+     * @return \Doctrine\ORM\Query
+     */
+    public function getEndedSubscriptions()
+    {
+        $qb = $this->createQueryBuilder('s')
+            ->select('s')
+            ->where('s.endDate IS NOT NULL')
+            ->andWhere('s.state IN (:states)')
+            ->andWhere('s.endDate <= :currentDate')
+            ->setParameters([
+                'states' => [
+                    SubscriptionInterface::STATE_FULFILLED,
+                    SubscriptionInterface::STATE_NEW,
+                ],
+                'currentDate' => new \DateTime(),
+            ])
+            ->getQuery();
+
+        return $qb;
+    }
 }

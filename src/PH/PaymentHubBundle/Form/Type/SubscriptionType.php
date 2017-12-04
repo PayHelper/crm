@@ -24,7 +24,7 @@ class SubscriptionType extends AbstractType
                 'choices' => [
                     SubscriptionInterface::STATE_NEW => 'New',
                     SubscriptionInterface::STATE_FULFILLED => 'Fulfilled',
-                    SubscriptionInterface::STATE_CANCELED => 'Canceled',
+                    SubscriptionInterface::STATE_CANCELED => 'Cancelled',
                     SubscriptionInterface::STATE_REFUNDED => 'Refunded',
                 ],
             ])
@@ -86,6 +86,9 @@ class SubscriptionType extends AbstractType
             ])
             ->add('intention')
             ->add('source')
+            ->add('endDate', OroDateType::class, [
+                'required' => false,
+            ])
         ;
     }
 

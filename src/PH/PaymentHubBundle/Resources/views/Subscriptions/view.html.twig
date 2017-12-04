@@ -48,7 +48,7 @@
                 <div class="responsive-block">
                     {{ UI.renderProperty('Id'|trans, subscription.orderId) }}
                     {{ UI.renderProperty('Token'|trans, subscription.token) }}
-                    {{ UI.renderProperty('Total ammount'|trans, subscription.total|number_format(2, '.', ',')) }}
+                    {{ UI.renderProperty('Total amount'|trans, subscription.total|number_format(2, '.', ',')) }}
                     {{ UI.renderProperty('Provider Typer'|trans, subscription.providerType) }}
                     {{ UI.renderProperty('State'|trans, subscription.state) }}
                     {{ UI.renderProperty('Payment state'|trans, subscription.paymentState) }}
@@ -61,6 +61,7 @@
                     {{ UI.renderProperty('Source'|trans, subscription.source) }}
                     {{ UI.renderProperty('Intention'|trans, subscription.intention) }}
                     {{ UI.renderProperty('Start date'|trans, subscription.startDate | date('Y-m-d')) }}
+                    {% if subscription.type == 'recurring' %}{{ UI.renderProperty('End date'|trans, subscription.endDate ? subscription.endDate | date('Y-m-d') : null) }}{% endif %}
                     {{ UI.renderHtmlProperty('Customer'|trans, subscription.customer?  UI.renderUrl(path('subscriptions.customer_view', {'id': subscription.customer.id}), subscription.customer.firstName ~' '~subscription.customer.lastName)) }}
                 </div>
             </div>
@@ -73,7 +74,7 @@
                     <div class="responsive-block">
                         {{ UI.renderProperty('Payment id'|trans, payment.paymentId) }}
                         {{ UI.renderProperty('Method code'|trans, payment.methodCode) }}
-                        {{ UI.renderProperty('Ammount'|trans, payment.amount) }}
+                        {{ UI.renderProperty('Amount'|trans, payment.amount) }}
                         {{ UI.renderProperty('Currency code'|trans, payment.currencyCode) }}
                         {{ UI.renderProperty('State'|trans, payment.state) }}
                         {{ UI.renderProperty('Created date'|trans, payment.createdAt | date('Y-m-d H:i:s')) }}

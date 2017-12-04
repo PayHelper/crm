@@ -8,9 +8,10 @@ namespace PH\PaymentHubBundle\Entity;
 interface SubscriptionInterface
 {
     const STATE_NEW = 'new';
-    const STATE_CANCELED = 'canceled';
+    const STATE_CANCELED = 'cancelled';
     const STATE_REFUNDED = 'refunded';
     const STATE_FULFILLED = 'fulfilled';
+    const STATE_EXPIRED = 'expired';
 
     const INTERVAL_MONTH = '1 month';
     const INTERVAL_YEAR = '1 year';
@@ -263,4 +264,14 @@ interface SubscriptionInterface
      * @param string $source
      */
     public function setSource($source);
+
+    /**
+     * @return \DateTimeInterface
+     */
+    public function getEndDate();
+
+    /**
+     * @param \DateTimeInterface $endDate
+     */
+    public function setEndDate(\DateTimeInterface $endDate);
 }

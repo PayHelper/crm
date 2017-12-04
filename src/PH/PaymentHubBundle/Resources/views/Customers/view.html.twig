@@ -34,7 +34,7 @@
 {% endblock pageHeader %}
 
 {% block content_data %}
-    {% set data %}
+    {% set mainData %}
         <div class="widget-content">
             <div class="row-fluid form-horizontal">
                 <div class="responsive-block">
@@ -47,12 +47,22 @@
                     {{ UI.renderProperty('Name suffix'|trans, customer.gender) }}
                     {{ UI.renderProperty('Birthday'|trans, customer.birthday ? customer.birthday|date('Y-m-d'): '' ) }}
                     {{ UI.renderProperty('Email'|trans, customer.email) }}
+                </div>
+            </div>
+        </div>
+    {% endset %}
+    {% set otherData %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+
                     {{ UI.renderProperty('Email confirmed'|trans, customer.emailVerifiedAt ?  customer.emailVerifiedAt|date('Y-m-d H:i:s'): 'No') }}
                     {{ UI.renderProperty('Newsletter Allowed'|trans, customer.newsletterAllowed ? 'Yes'|trans : 'No'|trans) }}
                     {{ UI.renderProperty('Gift Allowed'|trans, customer.giftAllowed ? 'Yes'|trans : 'No'|trans) }}
                     {{ UI.renderHtmlProperty('Customer data edit link'| trans, UI.renderUrl(url('ph_customer_edit', {}, false)~'?token='~customer.customerUpdateToken)) }}
                     {{ UI.renderProperty('Created date'|trans, customer.createdAt | date('Y-m-d H:i:s')) }}
                     {{ UI.renderProperty('Updated date'|trans, customer.updatedAt ?  customer.updatedAt|date('Y-m-d H:i:s'): '') }}
+                    {{ UI.renderProperty('User comment'|trans, customer.comment) }}
                 </div>
             </div>
         </div>
@@ -111,7 +121,8 @@
             'title': 'Customer data'|trans,
             'class': 'active',
             'subblocks': [
-                { 'data' : [data] },
+                { 'data' : [mainData] },
+                { 'data' : [otherData] },
             ]
         },
         {

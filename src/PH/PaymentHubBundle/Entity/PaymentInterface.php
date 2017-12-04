@@ -99,4 +99,16 @@ interface PaymentInterface
      * @param \DateTime $updatedAt
      */
     public function setUpdatedAt($updatedAt);
+
+    /**
+     * @return mixed
+     */
+    public function getHolderName();
+
+    /**
+     * @param $holderName
+     *
+     * @return mixed
+     */
+    public function setHolderName($holderName);
 }

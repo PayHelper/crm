@@ -99,6 +99,13 @@ class Payment implements PaymentInterface
     protected $holderName;
 
     /**
+     * @ORM\Column(type="json_array")
+     *
+     * @var array
+     */
+    protected $errors = [];
+
+    /**
      * {@inheritdoc}
      */
     public function getId()
@@ -248,5 +255,21 @@ class Payment implements PaymentInterface
     public function setHolderName($holderName)
     {
         $this->holderName = $holderName;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getErrors()
+    {
+        return $this->errors;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setErrors(array $errors)
+    {
+        $this->errors = $errors;
     }
 }

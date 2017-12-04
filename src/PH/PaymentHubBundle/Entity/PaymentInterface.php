@@ -14,6 +14,7 @@ interface PaymentInterface
     const STATE_PAID = 'paid';
     const STATE_PARTIALLY_REFUNDED = 'partially_refunded';
     const STATE_REFUNDED = 'refunded';
+    const STATE_FAILED = 'failed';
 
     /**
      * @return int
@@ -111,4 +112,14 @@ interface PaymentInterface
      * @return mixed
      */
     public function setHolderName($holderName);
+
+    /**
+     * @return array
+     */
+    public function getErrors();
+
+    /**
+     * @param array $errors
+     */
+    public function setErrors(array $errors);
 }

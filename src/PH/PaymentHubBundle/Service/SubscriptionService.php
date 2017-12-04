@@ -194,11 +194,14 @@ class SubscriptionService implements SubscriptionServiceInterface
             $payment->setCurrencyCode($singlePayment['currency_code']);
             $payment->setAmount($singlePayment['amount'] / 100);
 
-            if ($subscription->getType() === SubscriptionInterface::TYPE_RECURRING) {
+            if (isset($singlePayment['details']) && PaymentInterface::STATE_FAILED === $singlePayment['state']) {
+                $payment->setErrors($singlePayment['details']);
+            }
+
+            if (SubscriptionInterface::TYPE_RECURRING === $subscription->getType()) {
                 if (isset($singlePayment['details']) && isset($singlePayment['details']['mandate'])) {
                     $payment->setHolderName($singlePayment['details']['mandate']['details']['consumerName']);
                 }
-
             }
 
             $payment->setSubscription($subscription);

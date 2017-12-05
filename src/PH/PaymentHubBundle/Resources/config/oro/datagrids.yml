@@ -66,6 +66,16 @@ datagrids:
                     - id
         sorters:
             columns:
+                id:
+                    data_name: c.id
+                firstName:
+                    data_name: c.firstName
+                lastName:
+                    data_name: c.lastName
+                email:
+                    data_name: c.email
+                newsletterAllowed:
+                    data_name: c.newsletterAllowed
                 createdAt:
                     data_name: c.createdAt
                 updatedAt:
@@ -74,6 +84,9 @@ datagrids:
                 createdAt: DESC
         filters:
             columns:
+                id:
+                    type: string
+                    data_name: c.id
                 firstName:
                     type: string
                     data_name: c.firstName
@@ -83,7 +96,13 @@ datagrids:
                 email:
                     type: string
                     data_name: c.email
+                newsletterAllowed:
+                    type: boolean
+                    data_name: c.newsletterAllowed
                 createdAt:
+                    type: datetime
+                    data_name: c.createdAt
+                updatedAt:
                     type: datetime
                     data_name: c.createdAt
         actions:
@@ -196,14 +215,26 @@ datagrids:
                     - id
         sorters:
             columns:
+                orderId:
+                    data_name: subscription.orderId
+                total:
+                    data_name: subscription.total
                 state:
                     data_name: subscription.state
+                paymentState:
+                    data_name: subscription.paymentState
+                providerType:
+                    data_name: subscription.providerType
+                source:
+                    data_name: subscription.source
+                intention:
+                    data_name: subscription.intention
+                type:
+                    data_name: subscription.type
                 createdAt:
                     data_name: subscription.createdAt
                 updatedAt:
                     data_name: subscription.createdAt
-                providerType:
-                    data_name: subscription.providerType
             default:
                 state: ASC
         filters:
@@ -211,12 +242,33 @@ datagrids:
                 orderId:
                     type: string
                     data_name: subscription.orderId
+                total:
+                    type: string
+                    data_name: subscription.total
+                paymentState:
+                    type: string
+                    data_name: subscription.paymentState
+                providerType:
+                    type: string
+                    data_name: subscription.providerType
+                source:
+                    type: string
+                    data_name: subscription.source
+                intention:
+                    type: string
+                    data_name: subscription.intention
+                type:
+                    type: string
+                    data_name: subscription.type
                 state:
                     type: string
                     data_name: subscription.state
                 createdAt:
                     type: datetime
                     data_name: subscription.createdAt
+                updatedAt:
+                    type: datetime
+                    data_name: subscription.updatedAt
         actions:
             view:
                 type:          navigate

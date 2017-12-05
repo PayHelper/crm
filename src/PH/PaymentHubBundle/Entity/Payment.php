@@ -92,6 +92,20 @@ class Payment implements PaymentInterface
     protected $updatedAt;
 
     /**
+     * @ORM\Column(type="string")
+     *
+     * @var string
+     */
+    protected $holderName;
+
+    /**
+     * @ORM\Column(type="json_array")
+     *
+     * @var array
+     */
+    protected $errors = [];
+
+    /**
      * {@inheritdoc}
      */
     public function getId()
@@ -225,5 +239,37 @@ class Payment implements PaymentInterface
     public function setUpdatedAt($updatedAt)
     {
         $this->updatedAt = $updatedAt;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getHolderName()
+    {
+        return $this->holderName;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setHolderName($holderName)
+    {
+        $this->holderName = $holderName;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getErrors()
+    {
+        return $this->errors;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setErrors(array $errors)
+    {
+        $this->errors = $errors;
     }
 }

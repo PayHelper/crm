@@ -20,7 +20,7 @@
             'entity_label': 'Subscription'|trans,
         }) }}
     {% endif %}
-    {% if resource_granted('CANCEL', subscription) and entity.state != 'cancelled' %}
+    {% if resource_granted('CANCEL', subscription) and entity.state not in ['cancelled', 'failed'] and entity.type == 'recurring' %}
         {{ UI.button({
             'path' : path('subscriptions.subscription_cancel', {id: entity.id}),
             'aCss': 'cancel-btn btn-danger',
@@ -77,8 +77,10 @@
                         {{ UI.renderProperty('Amount'|trans, payment.amount) }}
                         {{ UI.renderProperty('Currency code'|trans, payment.currencyCode) }}
                         {{ UI.renderProperty('State'|trans, payment.state) }}
+                        {% if subscription.type == 'recurring' %}{{ UI.renderProperty('Holder name'|trans, payment.holderName) }}{% endif %}
                         {{ UI.renderProperty('Created date'|trans, payment.createdAt | date('Y-m-d H:i:s')) }}
                         {{ UI.renderProperty('Updated date'|trans, payment.updatedAt ?  payment.updatedAt|date('Y-m-d H:i:s'): '') }}
+                        {% if payment.errors is not empty %}{{ UI.renderProperty('Errors'|trans, payment.errors|json_encode()) }} {% endif %}
                     </div>
                 </div>
             {% endfor %}

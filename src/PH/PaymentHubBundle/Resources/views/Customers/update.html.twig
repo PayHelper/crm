@@ -52,17 +52,18 @@
         'subblocks': [{
             'title': '',
             'data': [
-                form_row(form.firstName, { 'label': 'First Name' }),
-                form_row(form.middleName, { 'label': 'Midle name' }),
-                form_row(form.lastName, { 'label': 'Last name' }),
-                form_row(form.gender, { 'label': 'Gender' }),
-                form_row(form.birthday, { 'label': 'Birthday' }),
-                form_row(form.email, { 'label': 'Email' }),
-                form_row(form.phone, { 'label': 'Phone' }),
-                form_row(form.newsletterAllowed, { 'label': 'Newsletter Allowed' }),
-                form_row(form.giftAllowed, { 'label': 'Gift Allowed' }),
-                form_row(form.comment, { 'label': 'Comment' }),
-                form_row(form.publicComment, { 'label': 'Public Comment' })
+                form_row(form.firstName, { 'label': 'First Name'|trans }),
+                form_row(form.middleName, { 'label': 'Midle name'|trans }),
+                form_row(form.lastName, { 'label': 'Last name'|trans }),
+                form_row(form.gender, { 'label': 'Gender'|trans }),
+                form_row(form.birthday, { 'label': 'Birthday'|trans }),
+                form_row(form.email, { 'label': 'Email'|trans }),
+                form_row(form.phone, { 'label': 'Phone'|trans }),
+                form_row(form.newsletterAllowed, { 'label': 'Newsletter Allowed'|trans }),
+                form_row(form.giftAllowed, { 'label': 'Gift Allowed'|trans }),
+                form_row(form.comment, { 'label': 'Comment'|trans }),
+                form_row(form.publicComment, { 'label': 'Public Comment'|trans }),
+                form_row(form.contactForbidden, { 'label': 'Contact is forbidden'|trans })
             ]
         }]
     },

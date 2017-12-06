@@ -44,6 +44,7 @@ class CustomerType extends AbstractType
             ->add('giftAllowed')
             ->add('comment')
             ->add('publicComment')
+            ->add('contactForbidden')
         ;
     }
 

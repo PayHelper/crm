@@ -14,6 +14,7 @@ datagrids:
                     - c.lastName
                     - c.nameSuffix
                     - c.newsletterAllowed
+                    - c.contactForbidden
                     - c.email
                     - COUNT(s.id) AS customerSubscriptions
                 join:
@@ -39,6 +40,9 @@ datagrids:
                 frontend_type: integer
             newsletterAllowed:
                 label: 'Newsletter allowed'
+                frontend_type: boolean
+            contactForbidden:
+                label: 'Contact is forbidden'
                 frontend_type: boolean
             createdAt:
                 label: 'Created'
@@ -76,6 +80,8 @@ datagrids:
                     data_name: c.email
                 newsletterAllowed:
                     data_name: c.newsletterAllowed
+                contactForbidden:
+                    data_name: c.contactForbidden
                 createdAt:
                     data_name: c.createdAt
                 updatedAt:
@@ -99,6 +105,9 @@ datagrids:
                 newsletterAllowed:
                     type: boolean
                     data_name: c.newsletterAllowed
+                contactForbidden:
+                    type: boolean
+                    data_name: c.contactForbidden
                 createdAt:
                     type: datetime
                     data_name: c.createdAt

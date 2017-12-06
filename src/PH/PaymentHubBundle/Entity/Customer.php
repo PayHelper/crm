@@ -98,6 +98,11 @@ class Customer extends ExtendPerson implements ChannelAwareInterface, CustomerIn
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
+    protected $contactForbidden;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
     protected $publicComment;
 
     /**
@@ -325,7 +330,7 @@ class Customer extends ExtendPerson implements ChannelAwareInterface, CustomerIn
     }
 
     /**
-     * @return mixed
+     * {@inheritdoc}
      */
     public function getOwner()
     {
@@ -333,7 +338,7 @@ class Customer extends ExtendPerson implements ChannelAwareInterface, CustomerIn
     }
 
     /**
-     * @param mixed $owner
+     * {@inheritdoc}
      */
     public function setOwner($owner)
     {
@@ -341,7 +346,7 @@ class Customer extends ExtendPerson implements ChannelAwareInterface, CustomerIn
     }
 
     /**
-     * @return mixed
+     * {@inheritdoc}
      */
     public function getOrganization()
     {
@@ -349,10 +354,26 @@ class Customer extends ExtendPerson implements ChannelAwareInterface, CustomerIn
     }
 
     /**
-     * @param mixed $organization
+     * {@inheritdoc}
      */
     public function setOrganization($organization)
     {
         $this->organization = $organization;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getContactForbidden()
+    {
+        return $this->contactForbidden;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setContactForbidden($contactForbidden)
+    {
+        $this->contactForbidden = $contactForbidden;
     }
 }

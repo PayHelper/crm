@@ -1,6 +1,6 @@
 <?php
 
-namespace PH\PaymentHubBundle\Migrations\Schema\v1_13;
+namespace PH\PaymentHubBundle\Migrations\Schema\v1_14;
 
 use Doctrine\DBAL\Schema\Schema;
 use Oro\Bundle\MigrationBundle\Migration\Migration;
@@ -13,6 +13,6 @@ class PaymentHubBundleMigration implements Migration
      */
     public function up(Schema $schema, QueryBag $queries)
     {
-        $schema->getTable('ph_payment')->addColumn('errors', 'text', array('comment' => '(DC2Type:json_array)', 'notnull' => false));
+        $schema->getTable('ph_customer')->addColumn('contactForbidden', 'boolean', array('notnull' => false));
     }
 }

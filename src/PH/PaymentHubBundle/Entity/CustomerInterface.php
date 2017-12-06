@@ -209,4 +209,14 @@ interface CustomerInterface
      * @param mixed $organization
      */
     public function setOrganization($organization);
+
+    /**
+     * @return mixed
+     */
+    public function getContactForbidden();
+
+    /**
+     * @param mixed $contactForbidden
+     */
+    public function setContactForbidden($contactForbidden);
 }

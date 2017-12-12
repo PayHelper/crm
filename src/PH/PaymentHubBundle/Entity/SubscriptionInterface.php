@@ -266,12 +266,12 @@ interface SubscriptionInterface
     public function setSource($source);
 
     /**
-     * @return \DateTimeInterface
+     * @return null|\DateTimeInterface
      */
     public function getEndDate();
 
     /**
-     * @param \DateTimeInterface $endDate
+     * @param null|\DateTimeInterface $endDate
      */
-    public function setEndDate(\DateTimeInterface $endDate);
+    public function setEndDate(\DateTimeInterface $endDate = null);
 }

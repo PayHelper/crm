@@ -689,7 +689,7 @@ class Subscription implements SubscriptionInterface
     /**
      * {@inheritdoc}
      */
-    public function setEndDate(\DateTimeInterface $endDate)
+    public function setEndDate(\DateTimeInterface $endDate = null)
     {
         $this->endDate = $endDate;
     }

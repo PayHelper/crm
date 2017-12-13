@@ -20,7 +20,7 @@
             'entity_label': 'Subscription'|trans,
         }) }}
     {% endif %}
-    {% if resource_granted('CANCEL', subscription) and entity.state not in ['cancelled', 'failed'] and entity.type == 'recurring' %}
+    {% if resource_granted('CANCEL', subscription) and entity.state not in ['cancelled', 'failed'] and entity.type == 'recurring' and entity.token != 0 %}
         {{ UI.button({
             'path' : path('subscriptions.subscription_cancel', {id: entity.id}),
             'aCss': 'cancel-btn btn-danger',

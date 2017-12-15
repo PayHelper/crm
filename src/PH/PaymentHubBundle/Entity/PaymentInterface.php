@@ -122,4 +122,9 @@ interface PaymentInterface
      * @param array $errors
      */
     public function setErrors(array $errors);
+
+    /**
+     * @return bool
+     */
+    public function hasErrors();
 }

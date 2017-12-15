@@ -190,14 +190,6 @@ class Subscription implements SubscriptionInterface
     /**
      * @ORM\OneToMany(targetEntity="PH\PaymentHubBundle\Entity\Payment", mappedBy="subscription", cascade={"remove", "persist"})
      * @ORM\OrderBy({"paymentId" = "DESC"})
-     *
-     * @ConfigField(
-     *     defaultValues={
-     *         "importexport"={
-     *             "full"=false
-     *         }
-     *     }
-     * )
      */
     protected $payments;
 

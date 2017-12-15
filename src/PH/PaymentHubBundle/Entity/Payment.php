@@ -101,6 +101,14 @@ class Payment implements PaymentInterface
     /**
      * @ORM\Column(type="json_array")
      *
+     * @ConfigField(
+     *     defaultValues={
+     *         "importexport"={
+     *             "excluded"=true
+     *         }
+     *     }
+     * )
+     *
      * @var array
      */
     protected $errors = [];
@@ -262,7 +270,7 @@ class Payment implements PaymentInterface
      */
     public function getErrors()
     {
-        return $this->errors;
+        return json_encode($this->errors);
     }
 
     /**
@@ -271,5 +279,13 @@ class Payment implements PaymentInterface
     public function setErrors(array $errors)
     {
         $this->errors = $errors;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasErrors()
+    {
+        return !empty($this->errors);
     }
 }

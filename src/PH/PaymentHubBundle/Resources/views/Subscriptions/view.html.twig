@@ -80,7 +80,7 @@
                         {% if subscription.type == 'recurring' %}{{ UI.renderProperty('Holder name'|trans, payment.holderName) }}{% endif %}
                         {{ UI.renderProperty('Created date'|trans, payment.createdAt | date('Y-m-d H:i:s')) }}
                         {{ UI.renderProperty('Updated date'|trans, payment.updatedAt ?  payment.updatedAt|date('Y-m-d H:i:s'): '') }}
-                        {% if payment.errors is not empty %}{{ UI.renderProperty('Errors'|trans, payment.errors|json_encode()) }} {% endif %}
+                        {% if payment.hasErrors() %}{{ UI.renderProperty('Errors'|trans, payment.errors) }} {% endif %}
                     </div>
                 </div>
             {% endfor %}

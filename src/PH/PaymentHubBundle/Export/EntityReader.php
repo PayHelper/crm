@@ -4,6 +4,7 @@ namespace PH\PaymentHubBundle\Export;
 
 use Doctrine\ORM\EntityManager;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use PH\PaymentHubBundle\Entity\CustomerInterface;
 use PH\PaymentHubBundle\Entity\SubscriptionInterface;
 
 class EntityReader extends \Oro\Bundle\ImportExportBundle\Reader\EntityReader
@@ -16,13 +17,18 @@ class EntityReader extends \Oro\Bundle\ImportExportBundle\Reader\EntityReader
 
         $qb = $entityManager
             ->getRepository($entityName)
-            ->createQueryBuilder('o')
-            ->where('o.customer IS NULL');
+            ->createQueryBuilder('o');
 
         if (is_subclass_of($entityName, SubscriptionInterface::class)) {
             $qb->leftJoin('o.customer', 'c')
                 ->addSelect('c')
+                ->where('o.customer IS NULL')
                 ->orWhere('c.contactForbidden = :contactForbidden')
+                ->setParameter('contactForbidden', false);
+        }
+
+        if (is_subclass_of($entityName, CustomerInterface::class)) {
+            $qb->where('o.contactForbidden = :contactForbidden')
                 ->setParameter('contactForbidden', false);
         }
 

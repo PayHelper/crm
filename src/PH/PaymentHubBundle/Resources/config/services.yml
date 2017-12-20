@@ -69,3 +69,15 @@ services:
             - "%payments_hub.host%"
             - "%payments_hub.username%"
             - "%payments_hub.password%"
+
+    oro_importexport.reader.entity:
+        class: PH\PaymentHubBundle\Export\EntityReader
+        arguments:
+            - '@oro_importexport.context_registry'
+            - '@doctrine'
+            - '@oro_security.owner.ownership_metadata_provider'
+        calls:
+            - [setDispatcher, ['@event_dispatcher']]
+            - [setAclHelper, ['@oro_security.acl_helper']]
+        tags:
+            - { name: oro_importexport.reader, alias: entity }

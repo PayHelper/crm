@@ -45,6 +45,10 @@ services:
               type: import
               entity: %ph_payment_hub.entity.subscription.class%
               alias: ph_subscription
+            - name: oro_importexport.processor
+              type: import_validation
+              entity: %ph_payment_hub.entity.subscription.class%
+              alias: ph_subscription
 
     ph_payment_hub.importexport.processor.export.customer:
         parent: oro_importexport.processor.export_abstract
@@ -74,5 +78,9 @@ services:
         tags:
             - name: oro_importexport.processor
               type: import
+              entity: %ph_payment_hub.entity.customer.class%
+              alias: ph_customer
+            - name: oro_importexport.processor
+              type: import_validation
               entity: %ph_payment_hub.entity.customer.class%
               alias: ph_customer

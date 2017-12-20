@@ -51,7 +51,30 @@ ph.paymenthub.subscriptions.bank_account_go_back.label: Go back
 ph.paymenthub.subscriptions.cancel_button.label: Cancel
 ph.paymenthub.subscriptions.cancel.confirm.label: Are you sure you want to cancel this subscription?
 ph.paymenthub.subscriptions.cancel.cancelled.label: Subscription has been cancelled successfully!
+ph.paymenthub.subscriptions.label.id: Id
+ph.paymenthub.subscriptions.label.token: Token
+ph.paymenthub.subscriptions.label.amount: Total amount
+ph.paymenthub.subscriptions.label.method: Payment Method
+ph.paymenthub.subscriptions.label.state: State
+ph.paymenthub.subscriptions.label.payment_state: Payment stat
+ph.paymenthub.subscriptions.label.purchase_state: Purchase state
+ph.paymenthub.subscriptions.label.created_at: Created at
+ph.paymenthub.subscriptions.label.updated_at: Updated at
+ph.paymenthub.subscriptions.label.purchase_completed_at: Purchase completed at
+ph.paymenthub.subscriptions.label.type: Type
+ph.paymenthub.subscriptions.label.interval: Interval
+ph.paymenthub.subscriptions.label.source: Source
+ph.paymenthub.subscriptions.label.intention: Intention
+ph.paymenthub.subscriptions.label.start_date: Start Date
+ph.paymenthub.subscriptions.label.end_date: End Date
+ph.paymenthub.subscriptions.label.customer: Customer
 
+ph.paymenthub.payments.label.id: Payment Id
+ph.paymenthub.payments.label.method_code: Method code
+ph.paymenthub.payments.label.amount: Amount
+ph.paymenthub.payments.label.currency: Currency
+ph.paymenthub.payments.label.holder_name: Holder name
+ph.paymenthub.payments.label.errors: Errors
 
 ph.paymenthub.subscription.entity_label: PaymentHub Subscription
 ph.paymenthub.subscription.entity_plural_label: PaymentHub Subscriptions

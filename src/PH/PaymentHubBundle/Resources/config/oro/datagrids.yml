@@ -165,40 +165,41 @@ datagrids:
                         - { join: subscription.customer, alias: customer }
         columns:
             orderId:
-                label: 'Order Id'
+                label: 'ph.paymenthub.subscriptions.label.id'
                 frontend_type: string
             decimalTotal:
                 label: 'Total amount'
+                label: 'ph.paymenthub.subscriptions.label.amount'
                 frontend_type: string
             state:
-                label: 'Subscription state'
+                label: 'ph.paymenthub.subscriptions.label.state'
                 frontend_type: string
             paymentState:
-                label: 'Payment state'
+                label: 'ph.paymenthub.subscriptions.label.payment_state'
                 frontend_type: string
             providerType:
-                label: 'Payment Method'
+                label: 'ph.paymenthub.subscriptions.label.method'
                 frontend_type: string
             source:
-                label: 'Source'
+                label: 'ph.paymenthub.subscriptions.label.source'
                 frontend_type: string
             intention:
-                label: 'Intention'
+                label: 'ph.paymenthub.subscriptions.label.intention'
                 frontend_type: string
             type:
-                label: 'Type'
+                label: 'ph.paymenthub.subscriptions.label.type'
                 frontend_type: string
             customerFullNames:
-                label: 'Customer'
+                label: 'ph.paymenthub.subscriptions.label.customer'
                 frontend_type: string
             endDate:
-                label: 'End Date'
+                label: 'ph.paymenthub.subscriptions.label.end_date'
                 frontend_type: date
             createdAt:
-                label: 'Created'
+                label: 'ph.paymenthub.subscriptions.label.created_at'
                 frontend_type: datetime
             updatedAt:
-                label: 'Updated'
+                label: 'ph.paymenthub.subscriptions.label.updated_at'
                 frontend_type: datetime
 
         properties:
@@ -344,37 +345,37 @@ datagrids:
                     type: integer
         columns:
             orderId:
-                label: 'Order Id'
+                label: 'ph.paymenthub.subscriptions.label.id'
                 frontend_type: string
             total:
-                label: 'Total amount'
+                label: 'ph.paymenthub.subscriptions.label.amount'
                 frontend_type: string
             state:
-                label: 'Order state'
+                label: 'ph.paymenthub.subscriptions.label.state'
                 frontend_type: string
             paymentState:
-                label: 'Payment state'
+                label: 'ph.paymenthub.subscriptions.label.payment_state'
                 frontend_type: string
             providerType:
-                label: 'Payment Method'
+                label: 'ph.paymenthub.subscriptions.label.method'
                 frontend_type: string
             source:
-                label: 'Source'
+                label: 'ph.paymenthub.subscriptions.label.source'
                 frontend_type: string
             intention:
-                label: 'Intention'
+                label: 'ph.paymenthub.subscriptions.label.intention'
                 frontend_type: string
             type:
-                label: 'Type'
+                label: 'ph.paymenthub.subscriptions.label.type'
                 frontend_type: string
             endDate:
-                label: 'End Date'
+                label: 'ph.paymenthub.subscriptions.label.end_date'
                 frontend_type: date
             createdAt:
-                label: 'Created'
+                label: 'ph.paymenthub.subscriptions.label.created_at'
                 frontend_type: datetime
             updatedAt:
-                label: 'Updated'
+                label: 'ph.paymenthub.subscriptions.label.updated_at'
                 frontend_type: datetime
 
         properties:

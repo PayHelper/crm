@@ -20,7 +20,7 @@
             'entity_label': 'Subscription'|trans,
         }) }}
     {% endif %}
-    {% if resource_granted('CANCEL', subscription) and entity.state not in ['cancelled', 'failed'] and entity.type == 'recurring' %}
+    {% if resource_granted('CANCEL', subscription) and entity.state not in ['cancelled', 'failed'] and entity.type == 'recurring' and entity.token != 0 %}
         {{ UI.button({
             'path' : path('subscriptions.subscription_cancel', {id: entity.id}),
             'aCss': 'cancel-btn btn-danger',
@@ -46,23 +46,23 @@
         <div class="widget-content">
             <div class="row-fluid form-horizontal">
                 <div class="responsive-block">
-                    {{ UI.renderProperty('Id'|trans, subscription.orderId) }}
-                    {{ UI.renderProperty('Token'|trans, subscription.token) }}
-                    {{ UI.renderProperty('Total amount'|trans, (subscription.total/100)|number_format(2, '.', ',')) }}
-                    {{ UI.renderProperty('Provider Typer'|trans, subscription.providerType) }}
-                    {{ UI.renderProperty('State'|trans, subscription.state) }}
-                    {{ UI.renderProperty('Payment state'|trans, subscription.paymentState) }}
-                    {{ UI.renderProperty('Purchase state'|trans, subscription.purchaseState) }}
-                    {{ UI.renderProperty('Created date'|trans, subscription.createdAt | date('Y-m-d H:i:s')) }}
-                    {{ UI.renderProperty('Updated date'|trans, subscription.updatedAt ?  subscription.updatedAt|date('Y-m-d H:i:s'): '') }}
-                    {{ UI.renderProperty('Purchase completed'|trans, subscription.checkoutCompletedAt?  subscription.checkoutCompletedAt|date('Y-m-d H:i:s'): '') }}
-                    {{ UI.renderProperty('Type'|trans, subscription.type) }}
-                    {{ UI.renderProperty('Interval'|trans, subscription.interval) }}
-                    {{ UI.renderProperty('Source'|trans, subscription.source) }}
-                    {{ UI.renderProperty('Intention'|trans, subscription.intention) }}
-                    {{ UI.renderProperty('Start date'|trans, subscription.startDate | date('Y-m-d')) }}
-                    {% if subscription.type == 'recurring' %}{{ UI.renderProperty('End date'|trans, subscription.endDate ? subscription.endDate | date('Y-m-d') : null) }}{% endif %}
-                    {{ UI.renderHtmlProperty('Customer'|trans, subscription.customer?  UI.renderUrl(path('subscriptions.customer_view', {'id': subscription.customer.id}), subscription.customer.firstName ~' '~subscription.customer.lastName)) }}
+                    {{ UI.renderProperty('ph.paymenthub.subscriptions.label.id'|trans, subscription.orderId) }}
+                    {{ UI.renderProperty('ph.paymenthub.subscriptions.label.token'|trans, subscription.token) }}
+                    {{ UI.renderProperty('ph.paymenthub.subscriptions.label.amount'|trans, (subscription.total/100)|number_format(2, '.', ',')) }}
+                    {{ UI.renderProperty('ph.paymenthub.subscriptions.label.method'|trans, subscription.providerType) }}
+                    {{ UI.renderProperty('ph.paymenthub.subscriptions.label.state'|trans, subscription.state) }}
+                    {{ UI.renderProperty('ph.paymenthub.subscriptions.label.payment_state'|trans, subscription.paymentState) }}
+                    {{ UI.renderProperty('ph.paymenthub.subscriptions.label.purchase_state'|trans, subscription.purchaseState) }}
+                    {{ UI.renderProperty('ph.paymenthub.subscriptions.label.created_at'|trans, subscription.createdAt | date('Y-m-d H:i:s')) }}
+                    {{ UI.renderProperty('ph.paymenthub.subscriptions.label.updated_at'|trans, subscription.updatedAt ?  subscription.updatedAt|date('Y-m-d H:i:s'): '') }}
+                    {{ UI.renderProperty('ph.paymenthub.subscriptions.label.purchase_completed_at'|trans, subscription.checkoutCompletedAt?  subscription.checkoutCompletedAt|date('Y-m-d H:i:s'): '') }}
+                    {{ UI.renderProperty('ph.paymenthub.subscriptions.label.type'|trans, subscription.type) }}
+                    {{ UI.renderProperty('ph.paymenthub.subscriptions.label.interval'|trans, subscription.interval) }}
+                    {{ UI.renderProperty('ph.paymenthub.subscriptions.label.source'|trans, subscription.source) }}
+                    {{ UI.renderProperty('ph.paymenthub.subscriptions.label.intention'|trans, subscription.intention) }}
+                    {{ UI.renderProperty('ph.paymenthub.subscriptions.label.start_date'|trans, subscription.startDate | date('Y-m-d')) }}
+                    {% if subscription.type == 'recurring' %}{{ UI.renderProperty('ph.paymenthub.subscriptions.label.end_date'|trans, subscription.endDate ? subscription.endDate | date('Y-m-d') : null) }}{% endif %}
+                    {{ UI.renderHtmlProperty('ph.paymenthub.subscriptions.label.customer'|trans, subscription.customer?  UI.renderUrl(path('subscriptions.customer_view', {'id': subscription.customer.id}), subscription.customer.firstName ~' '~subscription.customer.lastName)) }}
                 </div>
             </div>
         </div>
@@ -72,15 +72,15 @@
             {% for payment in subscription.payments %}
                 <div class="row-fluid form-horizontal" style="border-bottom: 1px solid #ccc;">
                     <div class="responsive-block">
-                        {{ UI.renderProperty('Payment id'|trans, payment.paymentId) }}
-                        {{ UI.renderProperty('Method code'|trans, payment.methodCode) }}
-                        {{ UI.renderProperty('Amount'|trans, (payment.amount/100)|number_format(2, '.', ',')) }}
-                        {{ UI.renderProperty('Currency code'|trans, payment.currencyCode) }}
-                        {{ UI.renderProperty('State'|trans, payment.state) }}
+                        {{ UI.renderProperty('ph.paymenthub.payments.label.id'|trans, payment.paymentId) }}
+                        {{ UI.renderProperty('ph.paymenthub.payments.label.method_code'|trans, payment.methodCode) }}
+                        {{ UI.renderProperty('ph.paymenthub.payments.label.amount'|trans, (payment.amount/100)|number_format(2, '.', ','))) }}
+                        {{ UI.renderProperty('ph.paymenthub.payments.label.currency'|trans, payment.currencyCode) }}
+                        {{ UI.renderProperty('ph.paymenthub.subscriptions.label.state'|trans, payment.state) }}
                         {% if subscription.type == 'recurring' %}{{ UI.renderProperty('Holder name'|trans, payment.holderName) }}{% endif %}
-                        {{ UI.renderProperty('Created date'|trans, payment.createdAt | date('Y-m-d H:i:s')) }}
-                        {{ UI.renderProperty('Updated date'|trans, payment.updatedAt ?  payment.updatedAt|date('Y-m-d H:i:s'): '') }}
-                        {% if payment.errors is not empty %}{{ UI.renderProperty('Errors'|trans, payment.errors|json_encode()) }} {% endif %}
+                        {{ UI.renderProperty('ph.paymenthub.subscriptions.label.created_at'|trans, payment.createdAt | date('Y-m-d H:i:s')) }}
+                        {{ UI.renderProperty('ph.paymenthub.subscriptions.label.updated_at'|trans, payment.updatedAt ?  payment.updatedAt|date('Y-m-d H:i:s'): '') }}
+                        {% if payment.hasErrors() %}{{ UI.renderProperty('ph.paymenthub.payments.label.errors'|trans, payment.errors) }} {% endif %}
                     </div>
                 </div>
             {% endfor %}

@@ -190,14 +190,6 @@ class Subscription implements SubscriptionInterface
     /**
      * @ORM\OneToMany(targetEntity="PH\PaymentHubBundle\Entity\Payment", mappedBy="subscription", cascade={"remove", "persist"})
      * @ORM\OrderBy({"paymentId" = "DESC"})
-     *
-     * @ConfigField(
-     *     defaultValues={
-     *         "importexport"={
-     *             "full"=false
-     *         }
-     *     }
-     * )
      */
     protected $payments;
 
@@ -689,7 +681,7 @@ class Subscription implements SubscriptionInterface
     /**
      * {@inheritdoc}
      */
-    public function setEndDate(\DateTimeInterface $endDate)
+    public function setEndDate(\DateTimeInterface $endDate = null)
     {
         $this->endDate = $endDate;
     }

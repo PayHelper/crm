@@ -48,7 +48,7 @@
                 <div class="responsive-block">
                     {{ UI.renderProperty('Id'|trans, subscription.orderId) }}
                     {{ UI.renderProperty('Token'|trans, subscription.token) }}
-                    {{ UI.renderProperty('Total amount'|trans, subscription.total|number_format(2, '.', ',')) }}
+                    {{ UI.renderProperty('Total amount'|trans, (subscription.total/100)|number_format(2, '.', ',')) }}
                     {{ UI.renderProperty('Provider Typer'|trans, subscription.providerType) }}
                     {{ UI.renderProperty('State'|trans, subscription.state) }}
                     {{ UI.renderProperty('Payment state'|trans, subscription.paymentState) }}
@@ -74,7 +74,7 @@
                     <div class="responsive-block">
                         {{ UI.renderProperty('Payment id'|trans, payment.paymentId) }}
                         {{ UI.renderProperty('Method code'|trans, payment.methodCode) }}
-                        {{ UI.renderProperty('Amount'|trans, payment.amount) }}
+                        {{ UI.renderProperty('Amount'|trans, (payment.amount/100)|number_format(2, '.', ',')) }}
                         {{ UI.renderProperty('Currency code'|trans, payment.currencyCode) }}
                         {{ UI.renderProperty('State'|trans, payment.state) }}
                         {% if subscription.type == 'recurring' %}{{ UI.renderProperty('Holder name'|trans, payment.holderName) }}{% endif %}

@@ -35,28 +35,28 @@ class Payment implements PaymentInterface
     protected $id;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(type="string", nullable=true, name="payment_id")
      *
      * @var int
      */
     protected $paymentId;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(type="string", nullable=true, name="method_code")
      *
      * @var string
      */
     protected $methodCode;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", name="currency_code")
      *
      * @var string
      */
     protected $currencyCode;
 
     /**
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="integer")
      *
      * @var string
      */
@@ -76,7 +76,8 @@ class Payment implements PaymentInterface
     protected $subscription;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", name="created_at")
+     *
      * @Gedmo\Timestampable(on="create")
      *
      * @var \DateTime
@@ -84,7 +85,8 @@ class Payment implements PaymentInterface
     protected $createdAt;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="datetime", nullable=true, name="updated_at")
+     *
      * @Gedmo\Timestampable(on="update")
      *
      * @var \DateTime
@@ -92,14 +94,14 @@ class Payment implements PaymentInterface
     protected $updatedAt;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", name="holder_name", nullable=true)
      *
      * @var string
      */
     protected $holderName;
 
     /**
-     * @ORM\Column(type="json_array")
+     * @ORM\Column(type="json_array", nullable=true)
      *
      * @var array
      */

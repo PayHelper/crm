@@ -34,7 +34,7 @@ class OrderItem implements OrderItemInterface
     protected $id;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(type="string", nullable=true, name="order_item_id")
      *
      * @var int
      */
@@ -48,14 +48,14 @@ class OrderItem implements OrderItemInterface
     protected $quantity;
 
     /**
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="integer", name="unit_price")
      *
      * @var float
      */
     protected $unitPrice;
 
     /**
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="integer")
      *
      * @var float
      */
@@ -77,7 +77,8 @@ class OrderItem implements OrderItemInterface
     private $subscription;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", name="created_at")
+     *
      * @Gedmo\Timestampable(on="create")
      *
      * @var \DateTime
@@ -85,7 +86,8 @@ class OrderItem implements OrderItemInterface
     protected $createdAt;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="datetime", nullable=true, name="updated_at")
+     *
      * @Gedmo\Timestampable(on="update")
      *
      * @var \DateTime

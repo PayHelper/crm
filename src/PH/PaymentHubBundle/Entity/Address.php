@@ -20,6 +20,7 @@ class Address extends ExtendContactAddress
      * @var CustomerInterface
      *
      * @ORM\ManyToOne(targetEntity="PH\PaymentHubBundle\Entity\Customer", inversedBy="addresses")
+     *
      * @ORM\JoinColumn(name="owner_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $owner;
@@ -28,11 +29,13 @@ class Address extends ExtendContactAddress
      * @var Collection
      *
      * @ORM\ManyToMany(targetEntity="Oro\Bundle\AddressBundle\Entity\AddressType", cascade={"persist"})
+     *
      * @ORM\JoinTable(
      *     name="ph_contact_adr_to_adr_type",
      *     joinColumns={@ORM\JoinColumn(name="contact_address_id", referencedColumnName="id", onDelete="CASCADE")},
      *     inverseJoinColumns={@ORM\JoinColumn(name="type_name", referencedColumnName="name")}
      * )
+     *
      * @ConfigField(
      *      defaultValues={
      *          "importexport"={
@@ -41,7 +44,7 @@ class Address extends ExtendContactAddress
      *          }
      *      }
      * )
-     **/
+     */
     protected $types;
 
     /**

@@ -54,15 +54,20 @@ class NotificationLog implements NotificationLogInterface
     protected $type;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
+     * @ORM\Column(type="text", nullable=true, name="email_content")
      */
     protected $emailContent;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", name="send_at")
      */
     protected $sendAt;
 
+    /**
+     * NotificationLog constructor.
+     *
+     * @param string $type
+     */
     public function __construct($type)
     {
         $this->setType($type);

@@ -74,7 +74,7 @@
                     <div class="responsive-block">
                         {{ UI.renderProperty('ph.paymenthub.payments.label.id'|trans, payment.paymentId) }}
                         {{ UI.renderProperty('ph.paymenthub.payments.label.method_code'|trans, payment.methodCode) }}
-                        {{ UI.renderProperty('ph.paymenthub.payments.label.amount'|trans, (payment.amount/100)|number_format(2, '.', ','))) }}
+                        {{ UI.renderProperty('ph.paymenthub.payments.label.amount'|trans, (payment.amount/100)|number_format(2, '.', ',')) }}
                         {{ UI.renderProperty('ph.paymenthub.payments.label.currency'|trans, payment.currencyCode) }}
                         {{ UI.renderProperty('ph.paymenthub.subscriptions.label.state'|trans, payment.state) }}
                         {% if subscription.type == 'recurring' %}{{ UI.renderProperty('Holder name'|trans, payment.holderName) }}{% endif %}

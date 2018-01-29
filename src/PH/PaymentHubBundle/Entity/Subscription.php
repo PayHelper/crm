@@ -87,28 +87,28 @@ class Subscription implements SubscriptionInterface
     protected $organization;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(type="string", nullable=true, name="order_id")
      *
      * @var int
      */
     protected $orderId;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(type="string", nullable=true, name="provider_type")
      *
      * @var string
      */
     protected $providerType;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", name="purchase_state")
      *
      * @var string
      */
     protected $purchaseState = OrderCheckoutInterface::STATE_NEW;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", name="payment_state")
      *
      * @var string
      */
@@ -122,7 +122,7 @@ class Subscription implements SubscriptionInterface
     protected $state = SubscriptionInterface::STATE_NEW;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="datetime", nullable=true, name="checkout_completed_at")
      *
      * @var \DateTime
      */
@@ -150,14 +150,14 @@ class Subscription implements SubscriptionInterface
     protected $notes;
 
     /**
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="integer")
      *
      * @var float
      */
     protected $total = 0;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", name="created_at")
      *
      * @Timestampable(on="create")
      *
@@ -166,7 +166,7 @@ class Subscription implements SubscriptionInterface
     protected $createdAt;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="datetime", nullable=true, name="updated_at")
      *
      * @Timestampable(on="update")
      *
@@ -228,7 +228,7 @@ class Subscription implements SubscriptionInterface
     protected $interval;
 
     /**
-     * @ORM\Column(type="date", nullable=true)
+     * @ORM\Column(type="date", nullable=true, name="start_date")
      *
      * @var |Date
      */
@@ -242,7 +242,7 @@ class Subscription implements SubscriptionInterface
     protected $type;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="datetime", nullable=true, name="activation_email_send")
      *
      * @var \DateTime
      */
@@ -263,7 +263,7 @@ class Subscription implements SubscriptionInterface
     protected $source;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="datetime", nullable=true, name="end_date")
      *
      * @var \DateTime
      */

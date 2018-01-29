@@ -86,22 +86,22 @@ class Customer extends ExtendPerson implements ChannelAwareInterface, CustomerIn
     protected $addresses;
 
     /**
-     * @ORM\Column(type="boolean", nullable=true)
+     * @ORM\Column(type="boolean", nullable=true, name="newsletter_allowed")
      */
     protected $newsletterAllowed;
 
     /**
-     * @ORM\Column(type="boolean", nullable=true)
+     * @ORM\Column(type="boolean", nullable=true, name="gift_allowed")
      */
     protected $giftAllowed;
 
     /**
-     * @ORM\Column(type="boolean", nullable=true)
+     * @ORM\Column(type="boolean", nullable=true, name="contact_forbidden")
      */
     protected $contactForbidden;
 
     /**
-     * @ORM\Column(type="boolean", nullable=true)
+     * @ORM\Column(type="boolean", nullable=true, name="public_comment")
      */
     protected $publicComment;
 
@@ -116,22 +116,22 @@ class Customer extends ExtendPerson implements ChannelAwareInterface, CustomerIn
     protected $comment;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(type="string", nullable=true, name="customer_update_token")
      */
     protected $customerUpdateToken;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(type="string", nullable=true, name="email_verification_token")
      */
     protected $emailVerificationToken;
 
     /**
-     * @ORM\Column(type="boolean", nullable=true)
+     * @ORM\Column(type="boolean", nullable=true, name="process_email_verification")
      */
     protected $processEmailVerification;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="datetime", nullable=true, name="email_verified_at")
      */
     protected $emailVerifiedAt;
 

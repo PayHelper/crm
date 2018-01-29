@@ -64,12 +64,12 @@ class SubscriptionService implements SubscriptionServiceInterface
     public function processIncomingData(SubscriptionInterface $subscription, $data)
     {
         $subscription->setState($data['state']);
-        $subscription->setTotal($data['total'] / 100);
+        $subscription->setTotal($data['total']);
         $subscription->setOrderId($data['id']);
         $subscription->setPurchaseState($data['purchase_state']); //purchase_state
 
         $subscription->setPaymentState($data['payment_state']);
-        $subscription->setCheckoutCompletedAt(new \DateTime($data['purchase_completed_at'])); //purchase_completed_at
+        $subscription->setCheckoutCompletedAt(new \DateTime($data['purchase_completed_at']));
         $subscription->setToken($data['token_value']);
         $subscription->setType($data['type']);
         $subscription->setInterval($data['interval']);
@@ -150,7 +150,7 @@ class SubscriptionService implements SubscriptionServiceInterface
 
             $orderItem->setQuantity($item['quantity']);
             $orderItem->setUnitPrice($item['unit_price']);
-            $orderItem->setTotal($item['total'] / 100);
+            $orderItem->setTotal($item['total']);
             $orderItem->setName('default order item name');
             $orderItem->setSubscription($subscription);
             $orderItems[] = $orderItem;
@@ -192,7 +192,7 @@ class SubscriptionService implements SubscriptionServiceInterface
             $payment->setMethodCode($singlePayment['method']['code']);
             $subscription->setProviderType($singlePayment['method']['code']);
             $payment->setCurrencyCode($singlePayment['currency_code']);
-            $payment->setAmount($singlePayment['amount'] / 100);
+            $payment->setAmount($singlePayment['amount']);
 
             if (isset($singlePayment['details']) && PaymentInterface::STATE_FAILED === $singlePayment['state']) {
                 $payment->setErrors($singlePayment['details']);
@@ -211,6 +211,12 @@ class SubscriptionService implements SubscriptionServiceInterface
         return $payments;
     }
 
+    /**
+     * @param Collection $payments
+     * @param            $id
+     *
+     * @return mixed
+     */
     private function getPayment(Collection $payments, $id)
     {
         $criteria = Criteria::create()->where(Criteria::expr()->eq('paymentId', $id));

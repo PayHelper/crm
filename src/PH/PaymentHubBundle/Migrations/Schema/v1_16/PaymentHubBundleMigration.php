@@ -13,13 +13,9 @@ class PaymentHubBundleMigration implements Migration
      */
     public function up(Schema $schema, QueryBag $queries)
     {
-        $queries->addQuery('ALTER TABLE ph_subscription ALTER total TYPE INT;');
-        $queries->addQuery('ALTER TABLE ph_subscription ALTER total DROP DEFAULT;');
-        $queries->addQuery('ALTER TABLE ph_order_item ALTER unit_price TYPE INT;');
-        $queries->addQuery('ALTER TABLE ph_order_item ALTER unit_price DROP DEFAULT;');
-        $queries->addQuery('ALTER TABLE ph_order_item ALTER total TYPE INT;');
-        $queries->addQuery('ALTER TABLE ph_order_item ALTER total DROP DEFAULT;');
-        $queries->addQuery('ALTER TABLE ph_payment ALTER amount TYPE INT;');
-        $queries->addQuery('ALTER TABLE ph_payment ALTER amount DROP DEFAULT;');
+        $queries->addQuery('ALTER TABLE ph_subscription MODIFY total INT NOT NULL;');
+        $queries->addQuery('ALTER TABLE ph_order_item MODIFY unit_price INT NOT NULL;');
+        $queries->addQuery('ALTER TABLE ph_order_item MODIFY total INT NOT NULL;');
+        $queries->addQuery('ALTER TABLE ph_payment MODIFY amount INT NOT NULL;');
     }
 }

@@ -64,6 +64,7 @@
                     {{ UI.renderProperty('Created date'|trans, customer.createdAt | date('Y-m-d H:i:s')) }}
                     {{ UI.renderProperty('Updated date'|trans, customer.updatedAt ?  customer.updatedAt|date('Y-m-d H:i:s'): '') }}
                     {{ UI.renderProperty('User comment'|trans, customer.comment) }}
+                    {{ UI.renderProperty('Ticket'|trans, customer.identificationToken) }}
                 </div>
             </div>
         </div>

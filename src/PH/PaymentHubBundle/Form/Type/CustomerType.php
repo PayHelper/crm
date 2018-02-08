@@ -45,6 +45,7 @@ class CustomerType extends AbstractType
             ->add('comment')
             ->add('publicComment')
             ->add('contactForbidden')
+            ->add('identificationToken')
         ;
     }
 

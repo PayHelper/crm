@@ -219,4 +219,15 @@ interface CustomerInterface
      * @param mixed $contactForbidden
      */
     public function setContactForbidden($contactForbidden);
+
+    /**
+     * @return string
+     */
+    public function getIdentificationToken();
+
+    /**
+     * @param string $identificationToken
+     */
+    public function setIdentificationToken($identificationToken);
+
 }

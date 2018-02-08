@@ -136,6 +136,12 @@ class Customer extends ExtendPerson implements ChannelAwareInterface, CustomerIn
     protected $emailVerifiedAt;
 
     /**
+     * @ORM\Column(type="string", nullable=true, name="identification_token")
+     */
+    protected $identificationToken;
+
+
+    /**
      * @var \Oro\Bundle\OrganizationBundle\Entity\BusinessUnit
      *
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\BusinessUnit", cascade={"persist"})
@@ -376,4 +382,22 @@ class Customer extends ExtendPerson implements ChannelAwareInterface, CustomerIn
     {
         $this->contactForbidden = $contactForbidden;
     }
+
+    /**
+     * @return string
+     */
+    public function getIdentificationToken()
+    {
+        return $this->identificationToken;
+    }
+
+    /**
+     * @param string $identificationToken
+     */
+    public function setIdentificationToken($identificationToken)
+    {
+        $this->identificationToken = $identificationToken;
+    }
+
+
 }

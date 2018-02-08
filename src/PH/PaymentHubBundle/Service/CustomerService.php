@@ -106,6 +106,17 @@ class CustomerService implements CustomerServiceInterface
     /**
      * {@inheritdoc}
      */
+    public function setIdentificationToken(CustomerInterface $customer)
+    {
+        if (!$customer->getIdentificationToken()) {
+            $customer->setIdentificationToken($this->randomnessGenerator->generateUriSafeString(20));
+        }
+    }
+
+
+    /**
+     * {@inheritdoc}
+     */
     public function sendEmailVerificationEmail(CustomerInterface $customer)
     {
         $emailTemplate = $this->entityManager->getRepository(EmailTemplate::class)->findByName(CustomerServiceInterface::EMAIL_VERIFICATION_TEMPLATE);

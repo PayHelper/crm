@@ -57,7 +57,10 @@ class CustomersController extends Controller
      */
     public function createAction(Request $request)
     {
-        return $this->update(new Customer(), $request, CustomerInterface::CUSTOMER_CREATED);
+        $customerService = $this->container->get('ph_payment_hub.service.customer');
+        $customer = new Customer();
+        $customerService->setIdentificationToken($customer);
+        return $this->update($customer, $request, CustomerInterface::CUSTOMER_CREATED);
     }
 
     /**

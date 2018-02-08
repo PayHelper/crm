@@ -38,6 +38,11 @@ interface CustomerServiceInterface
 
     /**
      * @param CustomerInterface $customer
+     **/
+    public function setIdentificationToken(CustomerInterface $customer);
+
+    /**
+     * @param CustomerInterface $customer
      *
      * @return array
      */

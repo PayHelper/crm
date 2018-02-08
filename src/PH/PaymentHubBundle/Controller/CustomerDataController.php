@@ -62,12 +62,14 @@ class CustomerDataController extends Controller
                 $address->setOwner($customer);
             }
 
+            $customerService->setIdentificationToken($customer);
+
             $entityManager->persist($customer);
             $entityManager->flush();
 
             $this->get('event_dispatcher')->dispatch($action, new GenericEvent($customer));
 
-            return new RedirectResponse($this->generateUrl('ph_customer_edit', array('token' => $customer->getCustomerUpdateToken())));
+            return new RedirectResponse($this->generateUrl('ph_customer_edit', array('token' => $customer->getCustomerUpdateToken(), 'ticket'=>$customer->getIdentificationToken())));
         }
 
         return $this->renderForm($form, 200);

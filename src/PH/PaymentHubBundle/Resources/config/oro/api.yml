@@ -1,0 +1,24 @@
+api:
+    entities:
+        PH\PaymentHubBundle\Entity\Customer:
+            actions:
+                get:
+                    acl_resource: ~
+                get_list:
+                    acl_resource: ~
+                delete: false
+                delete_list: false
+                create: false
+                update: false
+                get_relationship: false
+                update_relationship: false
+                add_relationship: false
+                delete_relationship: false
+            filters:
+                fields:
+                    ticket:
+                        data_type: string
+                        property_path: identificationToken
+                        description: 'Filter by ticket'
+
+        PH\PaymentHubBundle\Entity\Subscription: ~

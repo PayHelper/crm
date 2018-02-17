@@ -2,6 +2,7 @@
 
 namespace PH\PaymentHubBundle\EventListener;
 
+use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use PH\PaymentHubBundle\Entity\CustomerInterface;
 use PH\PaymentHubBundle\Generator\RandomnessGeneratorInterface;
@@ -38,4 +39,21 @@ class CustomerEmailChangeEventListener
             }
         }
     }
+
+    /**
+     * Pre persist event listener
+     *
+     * @param LifecycleEventArgs $args
+     * @throws \LogicException
+     */
+    public function prePersist(LifecycleEventArgs $args)
+    {
+        $entity = $args->getEntity();
+
+        if ($entity instanceof CustomerInterface) {
+            $entity->setProcessEmailVerification(true);
+            $entity->setEmailVerificationToken($this->randomnessGenerator->generateUriSafeString(10));
+        }
+    }
+
 }

@@ -48,6 +48,7 @@ services:
             - "@ph_payment_hub.generator.randomness"
         tags:
             - { name: doctrine.event_listener, event: preUpdate }
+            - { name: doctrine.event_listener, event: prePersist }
 
 
     ph_payment_hub.listener.user_change_task:

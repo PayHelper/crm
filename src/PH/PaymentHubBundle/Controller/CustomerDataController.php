@@ -9,6 +9,7 @@ use PH\PaymentHubBundle\Entity\Subscription;
 use PH\PaymentHubBundle\Entity\SubscriptionInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -114,8 +115,9 @@ class CustomerDataController extends Controller
     }
 
     /**
-     * @Route("/customer/email/verify/", name="ph_customer_email_verify")
+     * @Route("/customer/email/verify.{_format}", defaults={"_format":"html"}, name="ph_customer_email_verify")
      * @Method("GET")
+     * @Template()
      */
     public function verifyCustomerEmailAction(Request $request)
     {
@@ -135,7 +137,8 @@ class CustomerDataController extends Controller
         $customer->setEmailVerifiedAt(new \DateTime());
         $entityManager->flush();
 
-        return $this->render('@PHPaymentHub/CustomerData/verifyCustomerEmail.html.twig', ['customer' => $customer]);
+        return ['customer' => $customer];
+        #return $this->render('@PHPaymentHub/CustomerData/verifyCustomerEmail.html.twig', ['customer' => $customer]);
     }
 
     /**

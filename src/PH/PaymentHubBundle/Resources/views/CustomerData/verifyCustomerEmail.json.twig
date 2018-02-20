@@ -1,0 +1,18 @@
+{% set subscription = null %}
+{% for s in customer.subscriptions if s.purchaseState == 'completed' and s.type == 'recurring' and (s.endDate is null or s.endDate < date()) %}
+{% set subscription = s %}
+{% endfor %}
+{
+    "email": "{{ customer.email }}",
+    "ticket": "{{ customer.identificationToken }}",
+    "crm_id": {{ 1*customer.id }},
+    "name": "{{ customer.firstName }}"
+    {% if subscription %}
+        ,
+        "subscription": {
+            "total": {{ 1*subscription.total }},
+            "start": "{{ subscription.startDate ? subscription.startDate|date("Y-m-d\\TH:i:sP") : ''}}",
+            "interval": "{{ subscription.interval }}"
+        }
+    {% endif %}
+}

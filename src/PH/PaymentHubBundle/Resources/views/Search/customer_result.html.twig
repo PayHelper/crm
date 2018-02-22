@@ -1,0 +1,19 @@
+{#
+    Available variables:
+    * entity       - user entity Oro\Bundle\CalendarBundle\Entity\CalendarEvent or null
+    * indexer_item - indexer item Oro\Bundle\SearchBundle\Query\Result\Item
+#}
+{% extends 'OroSearchBundle:Search:searchResultItem.html.twig' %}
+
+{% set showImage = false %}
+
+{% set recordUrl = indexer_item.recordUrl %}
+{% set title = indexer_item.recordTitle %}
+
+{% set entityType = 'ph.paymenthub.subscriptions.label.customer'|trans %}
+
+{% set entityInfo = [
+    {'title': 'Email'|trans, 'value': entity.email ? entity.email : 'N/A'},
+    {'title': 'Email verified at'|trans, 'value': entity.emailVerifiedAt ? entity.emailVerifiedAt|date('Y-m-d H:i:s'): 'No'},
+    {'title': 'Contact is forbidden'|trans, 'value': entity.contactForbidden ? 'Yes'|trans : 'No'|trans}
+] %}

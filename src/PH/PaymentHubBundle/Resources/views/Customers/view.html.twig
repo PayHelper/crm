@@ -56,7 +56,7 @@
             <div class="row-fluid form-horizontal">
                 <div class="responsive-block">
 
-                    {{ UI.renderProperty('Email confirmed'|trans, customer.emailVerifiedAt ?  customer.emailVerifiedAt|date('Y-m-d H:i:s'): 'No') }}
+                    {{ UI.renderProperty('Email verified at'|trans, customer.emailVerifiedAt ?  customer.emailVerifiedAt|date('Y-m-d H:i:s'): 'No') }}
                     {{ UI.renderProperty('Newsletter Allowed'|trans, customer.newsletterAllowed ? 'Yes'|trans : 'No'|trans) }}
                     {{ UI.renderProperty('Gift Allowed'|trans, customer.giftAllowed ? 'Yes'|trans : 'No'|trans) }}
                     {{ UI.renderProperty('Contact is forbidden'|trans, customer.contactForbidden ? 'Yes'|trans : 'No'|trans) }}

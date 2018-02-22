@@ -1,0 +1,22 @@
+{#
+    Available variables:
+    * entity       - user entity Oro\Bundle\CalendarBundle\Entity\CalendarEvent or null
+    * indexer_item - indexer item Oro\Bundle\SearchBundle\Query\Result\Item
+#}
+{% extends 'OroSearchBundle:Search:searchResultItem.html.twig' %}
+
+{% set showImage = false %}
+
+{% set recordUrl = indexer_item.recordUrl %}
+{% set title = entity.orderId %}
+
+{% set entityType = 'ph.paymenthub.subscription.entity_label'|trans %}
+
+{% set entityInfo = [
+    {'title': 'ph.paymenthub.subscriptions.label.state'|trans, 'value': entity.state ? entity.state : 'N/A'},
+    {'title': 'ph.paymenthub.subscriptions.label.created_at'|trans, 'value': entity.createdAt ? entity.createdAt|date('Y-m-d H:i:s'): 'N/A'},
+    {'title': 'ph.paymenthub.subscriptions.label.start_date'|trans, 'value': entity.startDate ? entity.startDate|date('Y-m-d H:i:s'): 'N/A'},
+    {'title': 'ph.paymenthub.subscriptions.label.end_date'|trans, 'value': entity.endDate ? entity.endDate|date('Y-m-d H:i:s'): 'N/A'},
+    {'title': 'ph.paymenthub.subscriptions.label.type'|trans, 'value': entity.type ? entity.type: 'N/A'},
+    {'title': 'ph.paymenthub.subscriptions.label.source'|trans, 'value': entity.source ? entity.source: 'N/A'}
+] %}

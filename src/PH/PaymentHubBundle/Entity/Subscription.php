@@ -228,7 +228,7 @@ class Subscription implements SubscriptionInterface
     protected $interval;
 
     /**
-     * @ORM\Column(type="date", nullable=true, name="start_date")
+     * @ORM\Column(type="datetime", nullable=true, name="start_date")
      *
      * @var |Date
      */

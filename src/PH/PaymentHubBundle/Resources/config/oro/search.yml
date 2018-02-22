@@ -1,0 +1,56 @@
+search:
+    PH\PaymentHubBundle\Entity\Customer:
+        alias: ph_customer                                       # Alias for 'from' keyword in advanced search
+        search_template: 'PHPaymentHubBundle:Search:customer_result.html.twig'    # Template to use in search result page for this entity type
+        label: ph.paymenthub.subscriptions.label.customer        # Label for entity to identify entity in search results
+        route:
+            name: subscriptions.customer_view                    # Route name to generate url link to the entity record
+            parameters:                                          # Array with parameters for route
+                id: id
+        mode: normal                                             # optional, default normal. Defines behavior for entities
+        title_fields: [firstName, lastName]                                # with inheritance hierarchy. See possible values in config
+        fields:                                                  # dump reference or in class constants Oro\Bundle\SearchBundle\Query\Mode
+            -
+                name: firstName                                  # Name of field in entity
+                target_type: text                                # Type of virtual search field. Supported target types:
+                target_fields: [name]
+
+            -
+                name: lastName
+                target_type: text
+                target_fields: [name]
+
+            -
+                name: email
+                target_type: text
+
+    PH\PaymentHubBundle\Entity\Subscription:
+        alias: ph_subscription
+        search_template: 'PHPaymentHubBundle:Search:subscription_result.html.twig'
+        label: ph.paymenthub.subscriptions.label.subscription
+        route:
+            name: subscriptions.subscription_view
+            parameters:
+                id: id
+        mode: normal
+        title_fields: [orderId]
+        fields:
+            -
+                name: orderId
+                target_type: text
+                target_fields: [name]
+
+            -
+                name: source
+                target_type: text
+                target_fields: [name]
+
+            -
+                name: total
+                target_type: decimal
+                target_fields: [name]
+
+            -
+                name: state
+                target_type: text
+                target_fields: [name]

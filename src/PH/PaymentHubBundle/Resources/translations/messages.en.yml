@@ -19,6 +19,9 @@ ph.paymenthub.customer.name_suffix.label: Name suffix
 ph.paymenthub.customer.process_email_verification.label: Process email verification
 ph.paymenthub.customer.subscriptions.label: Subscriptions
 ph.paymenthub.customer.owner.label: Owner
+ph.paymenthub.customer.contact_forbidden.label: Contact Forbidden
+ph.paymenthub.customer.id.label: Id
+ph.paymenthub.customer.organization.label: Organization
 
 ph.paymenthub.subscription.activation_email_send.label: Activation email send
 ph.paymenthub.subscription.checkout_completed_at.label: Checkout completed at
@@ -44,6 +47,25 @@ ph.paymenthub.subscription.token.label: Token
 ph.paymenthub.subscription.total.label: Total
 ph.paymenthub.subscription.type.label: Type
 ph.paymenthub.subscription.updated_at.label: Updated at
+ph.paymenthub.subscription.email.label: Email
+ph.paymenthub.subscription.end_date.label: End Date
+ph.paymenthub.subscription.id.label: Id
+ph.paymenthub.subscription.intention.label: Intention
+ph.paymenthub.subscription.phone.label: Phone
+ph.paymenthub.subscription.source.label: Source
+
+ph.paymenthub.payment.id.label: Id
+ph.paymenthub.payment.subscription.label: Subscription
+ph.paymenthub.payment.amount.label: Amount
+ph.paymenthub.payment.created_at.label: Created at
+ph.paymenthub.payment.currency_code.label: Currency code
+ph.paymenthub.payment.holder_name.label: Holder name
+ph.paymenthub.payment.method_code.label: Method code
+ph.paymenthub.payment.payment_id.label: Payment id
+ph.paymenthub.payment.state.label: State
+ph.paymenthub.payment.updated_at.label: Updated at
+ph.paymenthub.payment.errors.label: Errors
+
 ph.paymenthub.subscriptions.bank_account.label: Change bank account details
 ph.paymenthub.subscriptions.bank_account_success.label: The bank account details were changed susccessfully.
 ph.paymenthub.subscriptions.bank_account_error.label: Error occured.
@@ -56,7 +78,7 @@ ph.paymenthub.subscriptions.label.token: Token
 ph.paymenthub.subscriptions.label.amount: Total amount
 ph.paymenthub.subscriptions.label.method: Payment Method
 ph.paymenthub.subscriptions.label.state: State
-ph.paymenthub.subscriptions.label.payment_state: Payment stat
+ph.paymenthub.subscriptions.label.payment_state: Payment state
 ph.paymenthub.subscriptions.label.purchase_state: Purchase state
 ph.paymenthub.subscriptions.label.created_at: Created at
 ph.paymenthub.subscriptions.label.updated_at: Updated at

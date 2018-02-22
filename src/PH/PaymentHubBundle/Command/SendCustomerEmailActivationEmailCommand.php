@@ -13,6 +13,7 @@ use PH\PaymentHubBundle\Entity\NotificationLog;
 use PH\PaymentHubBundle\Entity\NotificationLogInterface;
 use PH\PaymentHubBundle\Entity\Subscription;
 use PH\PaymentHubBundle\Repository\CustomerRepository;
+use PH\PaymentHubBundle\Service\CustomerServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -63,6 +64,7 @@ class SendCustomerEmailActivationEmailCommand extends ContainerAwareCommand impl
         $entityManager = $container->get('doctrine')->getManager();
         /** @var CustomerRepository $repository */
         $repository = $entityManager->getRepository(Customer::class);
+        /** @var CustomerServiceInterface $customerService */
         $customerService = $container->get('ph_payment_hub.service.customer');
 
         $customers = $repository->getForEmailVerification()->getResult();

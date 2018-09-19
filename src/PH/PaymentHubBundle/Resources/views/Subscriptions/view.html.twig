@@ -48,7 +48,7 @@
                 <div class="responsive-block">
                     {{ UI.renderProperty('ph.paymenthub.subscriptions.label.id'|trans, subscription.orderId) }}
                     {{ UI.renderProperty('ph.paymenthub.subscriptions.label.token'|trans, subscription.token) }}
-                    {{ UI.renderProperty('ph.paymenthub.subscriptions.label.amount'|trans, subscription.total|number_format(2, '.', ',')) }}
+                    {{ UI.renderProperty('ph.paymenthub.subscriptions.label.amount'|trans, (subscription.total/100)|number_format(2, '.', ',')) }}
                     {{ UI.renderProperty('ph.paymenthub.subscriptions.label.method'|trans, subscription.providerType) }}
                     {{ UI.renderProperty('ph.paymenthub.subscriptions.label.state'|trans, subscription.state) }}
                     {{ UI.renderProperty('ph.paymenthub.subscriptions.label.payment_state'|trans, subscription.paymentState) }}
@@ -74,7 +74,7 @@
                     <div class="responsive-block">
                         {{ UI.renderProperty('ph.paymenthub.payments.label.id'|trans, payment.paymentId) }}
                         {{ UI.renderProperty('ph.paymenthub.payments.label.method_code'|trans, payment.methodCode) }}
-                        {{ UI.renderProperty('ph.paymenthub.payments.label.amount'|trans, payment.amount) }}
+                        {{ UI.renderProperty('ph.paymenthub.payments.label.amount'|trans, (payment.amount/100)|number_format(2, '.', ',')) }}
                         {{ UI.renderProperty('ph.paymenthub.payments.label.currency'|trans, payment.currencyCode) }}
                         {{ UI.renderProperty('ph.paymenthub.subscriptions.label.state'|trans, payment.state) }}
                         {% if subscription.type == 'recurring' %}{{ UI.renderProperty('Holder name'|trans, payment.holderName) }}{% endif %}

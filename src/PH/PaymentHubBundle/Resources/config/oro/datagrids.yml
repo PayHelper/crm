@@ -151,6 +151,7 @@ datagrids:
                     - subscription.updatedAt
                     - subscription.paymentState
                     - subscription.total
+                    - subscription.total / 100 AS decimalTotal
                     - subscription.type
                     - subscription.providerType
                     - GROUP_CONCAT(customer.firstName, ' ', customer.lastName) AS customerFullNames
@@ -166,7 +167,8 @@ datagrids:
             orderId:
                 label: 'ph.paymenthub.subscriptions.label.id'
                 frontend_type: string
-            total:
+            decimalTotal:
+                label: 'Total amount'
                 label: 'ph.paymenthub.subscriptions.label.amount'
                 frontend_type: string
             state:
@@ -226,7 +228,7 @@ datagrids:
             columns:
                 orderId:
                     data_name: subscription.orderId
-                total:
+                decimalTotal:
                     data_name: subscription.total
                 state:
                     data_name: subscription.state

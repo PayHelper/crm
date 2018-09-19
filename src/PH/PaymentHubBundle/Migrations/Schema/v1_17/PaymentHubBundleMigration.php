@@ -13,9 +13,6 @@ class PaymentHubBundleMigration implements Migration
      */
     public function up(Schema $schema, QueryBag $queries)
     {
-        $schema->getTable('ph_payment')->addColumn('bankName', 'string', array('notnull' => false));
-        $schema->getTable('ph_payment')->addColumn('iban', 'string', array('notnull' => false));
-        $schema->getTable('ph_payment')->addColumn('bin', 'string', array('notnull' => false));
-        $schema->getTable('ph_payment')->addColumn('accountNumber', 'string', array('notnull' => false));
+        $queries->addQuery('ALTER TABLE ph_subscription CHANGE start_date start_date DATETIME DEFAULT NULL;');
     }
 }

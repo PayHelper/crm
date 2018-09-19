@@ -50,7 +50,7 @@
                     {{ UI.renderProperty('ph.paymenthub.subscriptions.label.token'|trans, subscription.token) }}
                     {{ UI.renderProperty('ph.paymenthub.subscriptions.label.amount'|trans, (subscription.total/100)|number_format(2, '.', ',')) }}
                     {{ UI.renderProperty('ph.paymenthub.subscriptions.label.method'|trans, subscription.providerType) }}
-                    {{ UI.renderProperty('ph.paymenthub.subscriptions.label.state'|trans, subscription.state) }}
+                    {{ UI.renderProperty('ph.paymenthub.subscriptions.label.state'|trans, subscription.state == 'new' ? 'Unconfirmed' : subscription.state) }}
                     {{ UI.renderProperty('ph.paymenthub.subscriptions.label.payment_state'|trans, subscription.paymentState) }}
                     {{ UI.renderProperty('ph.paymenthub.subscriptions.label.purchase_state'|trans, subscription.purchaseState) }}
                     {{ UI.renderProperty('ph.paymenthub.subscriptions.label.created_at'|trans, subscription.createdAt | date('Y-m-d H:i:s')) }}

@@ -22,7 +22,7 @@ class SubscriptionType extends AbstractType
             ->add('notes')
             ->add('state', ChoiceType::class, [
                 'choices' => [
-                    SubscriptionInterface::STATE_NEW => 'New',
+                    SubscriptionInterface::STATE_NEW => 'Unconfirmed',
                     SubscriptionInterface::STATE_FULFILLED => 'Fulfilled',
                     SubscriptionInterface::STATE_CANCELED => 'Cancelled',
                     SubscriptionInterface::STATE_REFUNDED => 'Refunded',

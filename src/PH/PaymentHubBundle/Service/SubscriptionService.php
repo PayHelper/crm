@@ -66,7 +66,7 @@ class SubscriptionService implements SubscriptionServiceInterface
         $subscription->setState($data['state']);
         $subscription->setTotal($data['total']);
         $subscription->setOrderId($data['id']);
-        $subscription->setPurchaseState($data['purchase_state']); //purchase_state
+        $subscription->setPurchaseState($data['purchase_state']);
 
         $subscription->setPaymentState($data['payment_state']);
         $subscription->setCheckoutCompletedAt(new \DateTime($data['purchase_completed_at']));

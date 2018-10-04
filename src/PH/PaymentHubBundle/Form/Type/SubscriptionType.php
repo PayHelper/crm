@@ -23,11 +23,12 @@ class SubscriptionType extends AbstractType
             ->add('state', ChoiceType::class, [
                 'choices' => [
                     SubscriptionInterface::STATE_NEW => 'Unconfirmed',
-                    SubscriptionInterface::STATE_FULFILLED => 'Fulfilled',
+                    SubscriptionInterface::STATE_FULFILLED => 'Confirmed',
                     SubscriptionInterface::STATE_BOUNCED => 'Bounced',
                     SubscriptionInterface::STATE_CANCELED => 'Cancelled',
                     SubscriptionInterface::STATE_REFUNDED => 'Refunded',
                     SubscriptionInterface::STATE_TERMINATED => 'Terminated',
+                    SubscriptionInterface::STATE_EXPIRED => 'Expired'
                 ],
             ])
             ->add('purchaseState', ChoiceType::class, [

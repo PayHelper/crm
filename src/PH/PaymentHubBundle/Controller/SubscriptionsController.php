@@ -93,7 +93,11 @@ class SubscriptionsController extends Controller
             try {
                 $subscriptionCanceller->cancel($subscription);
             } catch (GuzzleRestException $e) {
-                $result = $e->getResponse()->getBodyAsString();
+                $result = $e->getMessage();
+
+                if (null !== $e->getResponse()) {
+                    $result = $e->getResponse()->getBodyAsString();
+                }
 
                 return new JsonResponse(json_decode($result, true), Response::HTTP_BAD_REQUEST);
             }

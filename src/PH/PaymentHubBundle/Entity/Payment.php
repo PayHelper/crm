@@ -101,6 +101,34 @@ class Payment implements PaymentInterface
     protected $holderName;
 
     /**
+     * @ORM\Column(type="string")
+     *
+     * @var string
+     */
+    protected $bankName;
+
+    /**
+     * @ORM\Column(type="string")
+     *
+     * @var string
+     */
+    protected $iban;
+
+    /**
+     * @ORM\Column(type="string")
+     *
+     * @var string
+     */
+    protected $accountNumber;
+
+    /**
+     * @ORM\Column(type="string")
+     *
+     * @var string
+     */
+    protected $bin;
+
+    /**
      * @ORM\Column(type="json_array", nullable=true)
      *
      * @ConfigField(
@@ -289,5 +317,69 @@ class Payment implements PaymentInterface
     public function hasErrors()
     {
         return !empty($this->errors);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBankName()
+    {
+        return $this->bankName;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setBankName($bankName)
+    {
+        $this->bankName = $bankName;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getIban()
+    {
+        return $this->iban;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setIban($iban)
+    {
+        $this->iban = $iban;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAccountNumber()
+    {
+        return $this->accountNumber;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setAccountNumber($accountNumber)
+    {
+        $this->accountNumber = $accountNumber;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBin()
+    {
+        return $this->bin;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setBin($bin)
+    {
+        $this->bin = $bin;
     }
 }

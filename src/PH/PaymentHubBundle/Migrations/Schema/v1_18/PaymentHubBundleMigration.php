@@ -20,5 +20,9 @@ class PaymentHubBundleMigration implements Migration
                 array('notnull' => false, 'comment' => '(DC2Type:array)')
             );
         }
+        $schema->getTable('ph_payment')->addColumn('bankName', 'string', array('notnull' => false));
+        $schema->getTable('ph_payment')->addColumn('iban', 'string', array('notnull' => false));
+        $schema->getTable('ph_payment')->addColumn('bin', 'string', array('notnull' => false));
+        $schema->getTable('ph_payment')->addColumn('accountNumber', 'string', array('notnull' => false));
     }
 }

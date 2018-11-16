@@ -12,6 +12,8 @@ interface SubscriptionInterface
     const STATE_REFUNDED = 'refunded';
     const STATE_FULFILLED = 'fulfilled';
     const STATE_EXPIRED = 'expired';
+    const STATE_TERMINATED = 'terminated';
+    const STATE_BOUNCED = 'bounced';
 
     const INTERVAL_MONTH = '1 month';
     const INTERVAL_YEAR = '1 year';

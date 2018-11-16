@@ -13,6 +13,13 @@ class PaymentHubBundleMigration implements Migration
      */
     public function up(Schema $schema, QueryBag $queries)
     {
+        if (!$schema->getTable('ph_contact_address')->hasColumn('serialized_data')) {
+            $schema->getTable('ph_contact_address')->addColumn(
+                'serialized_data',
+                'text',
+                array('notnull' => false, 'comment' => '(DC2Type:array)')
+            );
+        }
         $schema->getTable('ph_payment')->addColumn('bankName', 'string', array('notnull' => false));
         $schema->getTable('ph_payment')->addColumn('iban', 'string', array('notnull' => false));
         $schema->getTable('ph_payment')->addColumn('bin', 'string', array('notnull' => false));

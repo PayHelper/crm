@@ -54,7 +54,7 @@ class PaymentType extends AbstractType
             ->add('state', ChoiceType::class, [
                 'label' => 'ph.paymenthub.subscription.state.label',
                 'choices' => [
-                    PaymentInterface::STATE_NEW => 'New',
+                    PaymentInterface::STATE_NEW => 'Unconfirmed',
                     PaymentInterface::STATE_AWAITING_PAYMENT => 'Awaiting payment',
                     PaymentInterface::STATE_PARTIALLY_PAID => 'Partially Paid',
                     PaymentInterface::STATE_CANCELLED => 'Canceled',

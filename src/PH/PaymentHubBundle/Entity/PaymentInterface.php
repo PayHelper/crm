@@ -127,4 +127,44 @@ interface PaymentInterface
      * @return bool
      */
     public function hasErrors();
+
+    /**
+     * @return string
+     */
+    public function getBankName();
+
+    /**
+     * @param string $bankName
+     */
+    public function setBankName($bankName);
+
+    /**
+     * @return string
+     */
+    public function getIban();
+
+    /**
+     * @param string $iban
+     */
+    public function setIban($iban);
+
+    /**
+     * @return string
+     */
+    public function getAccountNumber();
+
+    /**
+     * @param string $accountNumber
+     */
+    public function setAccountNumber($accountNumber);
+
+    /**
+     * @return string
+     */
+    public function getBin();
+
+    /**
+     * @param string $bin
+     */
+    public function setBin($bin);
 }

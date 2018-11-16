@@ -11,16 +11,48 @@ use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Bic;
+use Symfony\Component\Validator\Constraints\Iban;
 
 class PaymentType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('methodCode', TextType::class)
-            ->add('currencyCode', CurrencyType::class)
-            ->add('amount', NumberType::class)
+            ->add('methodCode', TextType::class, [
+                'label' => 'ph.paymenthub.payments.label.method_code',
+            ])
+            ->add('currencyCode', CurrencyType::class, [
+                'label' => 'ph.paymenthub.payments.label.currency',
+            ])
+            ->add('amount', NumberType::class, [
+                'label' => 'ph.paymenthub.payments.label.amount',
+            ])
+            ->add('holderName', TextType::class, [
+                'label' => 'ph.paymenthub.payments.label.holder_name',
+            ])
+            ->add('bankName', TextType::class, [
+                'label' => 'ph.paymenthub.payments.label.bank_name',
+            ])
+            ->add('iban', TextType::class, [
+                'label' => 'ph.paymenthub.payments.label.iban',
+                'constraints' => [
+                    new Iban(),
+                ],
+            ])
+            ->add('accountNumber', TextType::class, [
+                'label' => 'ph.paymenthub.payments.label.account_number',
+            ])
+            ->add('bin', TextType::class, [
+                'label' => 'ph.paymenthub.payments.label.bic',
+                'constraints' => [
+                    new Bic([
+                        'message' => 'ph.paymenthub.payments.error.bic',
+                    ]),
+                ],
+            ])
             ->add('state', ChoiceType::class, [
+                'label' => 'ph.paymenthub.subscription.state.label',
                 'choices' => [
                     PaymentInterface::STATE_NEW => 'New',
                     PaymentInterface::STATE_AWAITING_PAYMENT => 'Awaiting payment',

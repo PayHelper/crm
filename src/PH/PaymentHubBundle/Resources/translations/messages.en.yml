@@ -97,6 +97,12 @@ ph.paymenthub.payments.label.amount: Amount
 ph.paymenthub.payments.label.currency: Currency
 ph.paymenthub.payments.label.holder_name: Holder name
 ph.paymenthub.payments.label.errors: Errors
+ph.paymenthub.payments.label.bank_name: Bank name
+ph.paymenthub.payments.label.account_number: Account number
+ph.paymenthub.payments.label.iban: IBAN
+ph.paymenthub.payments.label.bic: BIC
+
+ph.paymenthub.payments.error.bic: This is not a valid Bank Identification Number (BIN).
 
 ph.paymenthub.subscription.entity_label: PaymentHub Subscription
 ph.paymenthub.subscription.entity_plural_label: PaymentHub Subscriptions

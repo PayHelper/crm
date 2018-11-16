@@ -6,3 +6,11 @@ PH\PaymentHubBundle\Entity\Subscription:
             - NotBlank: ~
         startDate:
             - NotBlank: ~
+
+PH\PaymentHubBundle\Entity\Payment:
+    properties:
+        iban:
+            - Iban: ~
+        bin:
+            - Bic:
+                message: This is not a valid Bank Identification Number (BIN).

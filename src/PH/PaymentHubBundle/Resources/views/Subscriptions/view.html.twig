@@ -78,6 +78,10 @@
                         {{ UI.renderProperty('ph.paymenthub.payments.label.currency'|trans, payment.currencyCode) }}
                         {{ UI.renderProperty('ph.paymenthub.subscriptions.label.state'|trans, payment.state) }}
                         {% if subscription.type == 'recurring' %}{{ UI.renderProperty('Holder name'|trans, payment.holderName) }}{% endif %}
+                        {% if subscription.type == 'recurring' %}{{ UI.renderProperty('Bank name'|trans, payment.bankName) }}{% endif %}
+                        {% if subscription.type == 'recurring' %}{{ UI.renderProperty('BIN'|trans, payment.bin) }}{% endif %}
+                        {% if subscription.type == 'recurring' %}{{ UI.renderProperty('Account Number'|trans, payment.accountNumber) }}{% endif %}
+                        {% if subscription.type == 'recurring' %}{{ UI.renderProperty('IBAN'|trans, payment.iban) }}{% endif %}
                         {{ UI.renderProperty('ph.paymenthub.subscriptions.label.created_at'|trans, payment.createdAt | date('Y-m-d H:i:s')) }}
                         {{ UI.renderProperty('ph.paymenthub.subscriptions.label.updated_at'|trans, payment.updatedAt ?  payment.updatedAt|date('Y-m-d H:i:s'): '') }}
                         {% if payment.hasErrors() %}{{ UI.renderProperty('ph.paymenthub.payments.label.errors'|trans, payment.errors) }} {% endif %}
